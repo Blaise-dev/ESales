@@ -9,6 +9,10 @@ import 'bootstrap'
 import 'bootstrap-icons/font/bootstrap-icons.css'
 import '@fortawesome/fontawesome-free/css/all.css'
 import 'flag-icons/css/flag-icons.min.css'
+import 'bootstrap/dist/css/bootstrap.css';
+import 'bootstrap/dist/js/bootstrap.bundle.js';
+
+
 
 import App from './App.vue'
 import router from './router'
