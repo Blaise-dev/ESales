@@ -1,14 +1,16 @@
-<script setup></script>
+<script setup>
+import CountrySelect from '../components/CountrySelect.vue'
+</script>
 
 <template>
   <div class="container-fluid vh-100">
     <div class="row flex-grow-1 w-100 h-100 m-0">
       <!-- Partie gauche: Slider -->
-      <div class="col-md-5 p-0">
-        <div class="d-flex justify-content-start align-items-end mt-5">
+      <div class="col-md-6 p-0 mb-2">
+        <div class="d-flex justify-content-md-start justify-content-sm-around align-items-end mt-5">
           <img src="@/assets/logo.png" class="d-block w-25 h-25 m-5" />
 
-          <div class="mt-5">
+          <div class="mt-5 mb-sm-5 col-sm-4">
             <select name="language" id="language" class="form-select" required>
               <option value="fr">Français</option>
               <option value="en">Anglais</option>
@@ -18,28 +20,35 @@
       </div>
 
       <!-- Colonne de droite avec le formulaire -->
-      <div class="col-md-7 d-flex flex-column align-items-center justify-content-center bg-light">
+      <div
+        class="col-md-6 d-flex flex-column align-items-center justify-content-center bg-light custom-animation-form"
+      >
         <form class="w-100">
           <h2 class="mb-4">Créer un compte</h2>
           <div class="mb-3">
-            <label for="country" class="form-label">Pays <span class="text-danger">*</span></label>
-            <select name="country" class="form-select" id="country" required>
-              <option value="France">France</option>
-            </select>
+            <div class="text-subtitle-1 text-medium-emphasis">
+              Région <span class="text-danger">*</span>
+            </div>
+            <CountrySelect />
           </div>
           <div class="mb-3">
-            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-            <input
+            <div class="text-subtitle-1 text-medium-emphasis">
+              Email <span class="text-danger">*</span>
+            </div>
+
+            <v-text-field
               type="email"
               name="email"
-              class="form-control"
               id="email"
+              density="compact"
               placeholder="example@gmail.com"
+              prepend-inner-icon="mdi-email-outline"
+              variant="outlined"
               required
-            />
+            ></v-text-field>
           </div>
           <div class="d-flex justify-content-between">
-            <p>Nom complet <span class="text-danger">*</span></p>
+            <p class="d-none d-lg-block">Nom complet <span class="text-danger">*</span></p>
             <div class="mb-3">
               <input
                 type="text"
@@ -62,45 +71,57 @@
             </div>
           </div>
           <div class="mb-3">
-            <label for="phone" class="form-label"
-              >Téléphone <span class="text-danger">*</span></label
-            >
-            <input
+            <div class="text-subtitle-1 text-medium-emphasis">
+              Télephone <span class="text-danger">*</span>
+            </div>
+            <v-text-field
               type="tel"
               name="phone"
-              class="form-control"
               id="phone"
-              placeholder="(+33) 6 45 23 83 64"
+              density="compact"
+              placeholder="(+33) 6 12 78 11 78"
+              prepend-inner-icon="mdi-phone-outline"
+              variant="outlined"
               required
-            />
+            ></v-text-field>
           </div>
 
           <div class="mb-3">
-            <label for="password" class="form-label"
-              >Mot de passe <span class="text-danger">*</span></label
-            >
-            <input
-              type="password"
+            <div class="text-subtitle-1 text-medium-emphasis">
+              Mot de passe <span class="text-danger">*</span>
+            </div>
+
+            <v-text-field
               name="password"
-              class="form-control"
               id="password"
               placeholder="**********************"
+              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="visible ? 'text' : 'password'"
+              density="compact"
+              prepend-inner-icon="mdi-lock-outline"
+              variant="outlined"
+              @click:append-inner="visible = !visible"
               required
-            />
+            ></v-text-field>
           </div>
 
           <div class="mb-3">
-            <label for="password" class="form-label"
-              >Confirmation de mot de passe <span class="text-danger">*</span></label
-            >
-            <input
-              type="password"
-              name="password"
-              class="form-control"
-              id="password"
+            <div class="text-subtitle-1 text-medium-emphasis">
+              Confirmation de mot de passe <span class="text-danger">*</span>
+            </div>
+
+            <v-text-field
+              name="password_confirm"
+              id="password_confirm"
               placeholder="**********************"
+              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="visible ? 'text' : 'password'"
+              density="compact"
+              prepend-inner-icon="mdi-lock-outline"
+              variant="outlined"
+              @click:append-inner="visible = !visible"
               required
-            />
+            ></v-text-field>
           </div>
 
           <!-- Submit button -->
@@ -168,14 +189,14 @@
   .p-0 {
     padding: 0 !important;
   }
-}
-input::placeholder {
-  color: rgb(122, 122, 122); /* Change la couleur du placeholder à gris */
-}
-.carousel-item img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  overflow: hidden; /* Masquer les parties de l'image qui dépassent */
+  input::placeholder {
+    color: rgb(122, 122, 122); /* Change la couleur du placeholder à gris */
+  }
+  .carousel-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    overflow: hidden; /* Masquer les parties de l'image qui dépassent */
+  }
 }
 </style>
