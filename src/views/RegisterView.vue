@@ -1,5 +1,6 @@
 <script setup>
 import CountrySelect from '../components/CountrySelect.vue'
+import Logo from '../components/Logo.vue'
 </script>
 
 <template>
@@ -135,6 +136,11 @@ import CountrySelect from '../components/CountrySelect.vue'
               S'inscrire
             </button>
             <br />
+          </div>
+
+          <div class="d-flex justify-content-center align-items-center">
+            Déjà un compte ?
+            <RouterLink to="/login" class="green">Se connecter</RouterLink>
           </div>
 
           <div class="divider d-flex align-items-center my-4">
