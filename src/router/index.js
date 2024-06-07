@@ -40,8 +40,9 @@ const router = createRouter({
     {
       path: '/acceuil',
       name: 'acceuil',
-      component: () => import('../views/AcceuilView.vue')
-    }
+      component: () => import('../views/AccView.vue')
+    },
+   
   ]
 })
 
