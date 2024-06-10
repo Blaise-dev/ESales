@@ -1,5 +1,3 @@
-<script setup></script>
-
 <template>
   <div class="container-fluid vh-100">
     <div class="row flex-grow-1 w-100 h-100 m-0">
@@ -48,16 +46,24 @@
       <!-- Colonne de droite avec le formulaire -->
       <div class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light">
         <img src="@/assets/logo.png" class="d-block w-25 h-25" />
-        <form class="w-100">
-          <h2 class="mb-4">Se connecter</h2>
+        <form class="w-100" @submit.prevent="login">
+          <h2 class="mb-4">S'authentifier</h2>
+
           <div class="mb-3">
-            <label for="email" class="form-label">Email <span class="text-danger">*</span></label>
-            <input
+            <div class="text-subtitle-1 text-medium-emphasis">
+              Email <span class="text-danger">*</span>
+            </div>
+
+            <v-text-field
+              v-model="email"
               type="email"
               name="email"
-              class="form-control"
               id="email"
               placeholder="example@gmail.com"
+              prepend-inner-icon="mdi-email-outline"
+              variant="outlined"
+              error
+              :error-messages="error"
               required
             />
           </div>
@@ -68,15 +74,21 @@
           <br />
 
           <div class="mb-3">
-            <label for="password" class="form-label"
-              >Mot de passe <span class="text-danger">*</span></label
-            >
-            <input
-              type="password"
+            <div class="text-subtitle-1 text-medium-emphasis">
+              Mot de passe <span class="text-danger">*</span>
+            </div>
+
+            <v-text-field
+              v-model="password"
               name="password"
-              class="form-control"
               id="password"
               placeholder="**********************"
+              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="visible ? 'text' : 'password'"
+              :error-messages="error"
+              prepend-inner-icon="mdi-lock-outline"
+              variant="outlined"
+              @click:append-inner="visible = !visible"
               required
             />
           </div>
@@ -130,6 +142,45 @@
     </div>
   </div>
 </template>
+
+<script>
+import apiClient from '../api.js'
+
+export default {
+  name: 'LoginView',
+
+  data: () => ({
+    visible: false,
+    email: '',
+    password: '',
+    error: ''
+  }),
+
+  methods: {
+    async login() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+
+        const response = await apiClient.get('/users?email=' + this.email)
+        const user = response.data
+        console.log(user)
+
+        if (user.length == 0) {
+          this.error = 'Email ou mot de passe incorrect'
+          return
+        } else {
+          localStorage.setItem('token', user.token) // on enregistre le token dans le localStorage
+          this.$router.push('/') // nous renvoie à la page d'accueil
+        }
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    }
+  }
+}
+</script>
 
 <style>
 @media (min-width: 1024px) {
