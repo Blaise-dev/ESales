@@ -45,9 +45,7 @@
       </div>
 
       <!-- Colonne de droite avec le formulaire -->
-      <div
-        class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light custom-animation-form"
-      >
+      <div class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light">
         <img src="@/assets/logo.png" class="d-block w-25 h-25" />
         <form class="w-100" @submit.prevent="login">
           <h2 class="mb-4">S'authentifier</h2>
@@ -61,15 +59,15 @@
             v-model="email"
               type="email"
               name="email"
+              class="form-control"
               id="email"
-              density="compact"
               placeholder="example@gmail.com"
               prepend-inner-icon="mdi-email-outline"
               variant="outlined"
               error
               :error-messages="error"
               required
-            ></v-text-field>
+            />
           </div>
 
           <div class="d-flex justify-content-end">
@@ -85,6 +83,7 @@
             <v-text-field
             v-model="password"
               name="password"
+              class="form-control"
               id="password"
               placeholder="**********************"
               :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
@@ -95,7 +94,7 @@
               variant="outlined"
               @click:append-inner="visible = !visible"
               required
-            ></v-text-field>
+            />
           </div>
 
           <div class="d-flex justify-content-start mb-4">
@@ -122,13 +121,13 @@
               to="/register"
               data-mdb-button-init
               data-mdb-ripple-init
-              class="w-50 btn btn-success btn-lg btn-block"
+              class="w-50 btn btn-primary btn-lg btn-block"
               ><i class="bi bi-person-fill"></i> Créer un compte</RouterLink
             >
           </div>
 
           <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0 text-muted">AUTRE</p>
+            <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
           </div>
 
           <div class="d-flex flex-column align-items-center">
@@ -193,6 +192,20 @@ export default {
 
 <style>
 @media (min-width: 1024px) {
+  .login {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+  .bg-image {
+    background-image: url('@/assets/jeune-femme-excitee-montrant-banniere-pointant-du-doigt-vers-gauche-souriant-camera-debout-etonnee-par-mur-blanc.jpg'); /* Assurez-vous que le chemin de l'image est correct */
+    background-size: cover; /* Couvrir tout le bloc */
+    background-position: center; /* Centrer l'image */
+    height: 999px; /* Vous pouvez ajuster la hauteur selon vos besoins */
+    display: flex;
+    align-items: center; /* Centrer verticalement le contenu */
+    justify-content: center; /* Centrer horizontalement le contenu */
+  }
   .divider:after,
   .divider:before {
     content: '';
@@ -200,6 +213,7 @@ export default {
     height: 1px;
     background: #eee;
   }
+
   .vh-100 {
     height: 100vh;
   }
