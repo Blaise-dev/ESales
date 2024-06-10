@@ -38,9 +38,9 @@ const router = createRouter({
       component: () => import('../views/PaiementView.vue')
     },
     {
-      path: '/acceuil',
-      name: 'acceuil',
-      component: () => import('../views/AcceuilView.vue')
+      path: '/accueil',
+      name: 'accueil',
+      component: () => import('../views/AccView.vue')
     },
     {
       path: '/products',
@@ -49,5 +49,16 @@ const router = createRouter({
     }
   ]
 })
+
+//On utilise ce guard pour protéger certaines parties de notre application qui nécessitent une authentification
+
+router.beforeEach((to, from, next) => {
+  const loggedIn = localStorage.getItem('token');
+  if (to.matched.some(record => record.meta.requiresAuth) && !loggedIn) {
+    next('/login');
+  } else {
+    next();
+  }
+});
 
 export default router
