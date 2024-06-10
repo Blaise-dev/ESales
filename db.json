@@ -1,12 +1,20 @@
 {
-    "users":  [
-    { 
-        "id": 1, "nom": "Tony", "prenom": "Stark", "password":"tonystark@avengers.com", 
-        "photo": "https://www.shoshosein.com/sites/default/files/styles/largeur_max/public/personnages/marvel-animes/tony-stark.png?itok=uBwGRgLH"
+  "users": [
+    {
+      "id": "1",
+      "nom": "Tony",
+      "prenom": "Stark",
+      "email": "tonystark@avengers.com",
+      "password": "ironman",
+      "photo": "https://www.shoshosein.com/sites/default/files/styles/largeur_max/public/personnages/marvel-animes/tony-stark.png?itok=uBwGRgLH"
     },
-    { 
-        "id": 2, "nom": "Kakashi", "prenom": "Hatake", "password":"kakashihatake@hokage.com", 
-        "photo": "https://manga-faction.com/wp-content/uploads/2023/07/hq1m30rh14171.jpg"
+    {
+      "id": "2",
+      "nom": "Kakashi",
+      "prenom": "Hatake",
+      "email": "kakashihatake@hokage.com",
+      "password": "sensei007",
+      "photo": "https://manga-faction.com/wp-content/uploads/2023/07/hq1m30rh14171.jpg"
     }
-]
-  }
+  ]
+}

@@ -1,4 +1,3 @@
-<script setup></script>
 
 <template>
   <div class="container-fluid vh-100">
@@ -50,7 +49,7 @@
         class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light custom-animation-form"
       >
         <img src="@/assets/logo.png" class="d-block w-25 h-25" />
-        <form class="w-100">
+        <form class="w-100" @submit.prevent="login">
           <h2 class="mb-4">S'authentifier</h2>
 
           <div class="mb-3">
@@ -59,6 +58,7 @@
             </div>
 
             <v-text-field
+            v-model="email"
               type="email"
               name="email"
               id="email"
@@ -66,6 +66,8 @@
               placeholder="example@gmail.com"
               prepend-inner-icon="mdi-email-outline"
               variant="outlined"
+              error
+              :error-messages="error"
               required
             ></v-text-field>
           </div>
@@ -81,11 +83,13 @@
             </div>
 
             <v-text-field
+            v-model="password"
               name="password"
               id="password"
               placeholder="**********************"
               :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
               :type="visible ? 'text' : 'password'"
+              :error-messages="error"
               density="compact"
               prepend-inner-icon="mdi-lock-outline"
               variant="outlined"
@@ -145,10 +149,45 @@
 </template>
 
 <script>
+import apiClient from '../api.js';
+
 export default {
+
+  name : 'LoginView',
+
   data: () => ({
-    visible: false
-  })
+    visible: false,
+    email:"",
+    password: "",
+    error: ""
+  }),
+ 
+  methods: {
+    async login() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+
+        const response = await apiClient.get('/users?email=' + this.email);
+        const user = response.data;
+        console.log(user)
+
+        if (user.length == 0) {
+          this.error = "Email ou mot de passe incorrect";
+          return;
+        }
+       
+        else {
+          localStorage.setItem('token', user.token); // on enregistre le token dans le localStorage
+          this.$router.push('/') // nous renvoie à la page d'accueil
+        }
+      
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer.";
+        console.error('Erreur de connexion:', error);
+      }
+    }
+  }    
 }
 </script>
 
