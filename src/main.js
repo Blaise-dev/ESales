@@ -23,6 +23,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.js'
 import App from './App.vue'
 import router from './router'
 
+// main.js
+import '@fortawesome/fontawesome-free/css/all.css';
+
+
 const app = createApp(App)
 
 const vuetify = createVuetify({

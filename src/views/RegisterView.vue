@@ -30,7 +30,6 @@ import Logo from '../components/Logo.vue'
             <div class="text-subtitle-1 text-medium-emphasis">
               Région <span class="text-danger">*</span>
             </div>
-            <CountrySelect />
           </div>
           <div class="mb-3">
             <div class="text-subtitle-1 text-medium-emphasis">
