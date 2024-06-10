@@ -1,0 +1,12 @@
+{
+    "users":  [
+    { 
+        "id": 1, "nom": "Tony", "prenom": "Stark", "password":"tonystark@avengers.com", 
+        "photo": "https://www.shoshosein.com/sites/default/files/styles/largeur_max/public/personnages/marvel-animes/tony-stark.png?itok=uBwGRgLH"
+    },
+    { 
+        "id": 2, "nom": "Kakashi", "prenom": "Hatake", "password":"kakashihatake@hokage.com", 
+        "photo": "https://manga-faction.com/wp-content/uploads/2023/07/hq1m30rh14171.jpg"
+    }
+]
+  }
