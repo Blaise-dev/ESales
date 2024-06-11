@@ -8,11 +8,11 @@
         <div class="card-body">
           <h5 class="card-title">{{ item.name }}</h5>
           <p class="card-text">{{ item.description }}</p> 
-          <p class="card-text">{{ item.price }} €</p>
-          <div class="quantity-controls">
+          <p class="card-text"><strong>{{ item.price * item.quantity }} €</strong></p>
+            <div class="quantity-controls">
             <div class="oval-button-group">
               <button @click="decrementQuantity" class="btn-simple">-</button>
-              <span class="quantity">{{ quantity }}</span>
+              <span class="mx-2">{{ item.quantity }}</span>
               <button @click="incrementQuantity" class="btn-simple">+</button>
             </div>
            </div>
@@ -27,18 +27,18 @@ export default {
   props: {
     item: Object // Propriété pour recevoir les données de l'article
   },
-  data() {
-    return {
-      quantity: 1 
-    };
-  },
+ 
   methods: {
     incrementQuantity() {
-      this.quantity++;
+      this.item.quantity++;
+      this.$emit('updateQuantity', this.item.quantity);
     },
-    decrementQuantity() {
-      if (this.quantity > 1) {
-        this.quantity--;
+
+
+   decrementQuantity() {
+      if (this.item.quantity > 1) {
+        this.item.quantity--;
+        this.$emit('updateQuantity', this.item.quantity);
       }
     }
   }
