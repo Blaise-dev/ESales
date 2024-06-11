@@ -1,19 +1,19 @@
 <script setup>
 import { RouterView } from 'vue-router'
 
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
+import Base from '@/components/Base.vue'
 </script>
 
 <template>
   <div id="app" class="d-flex flex-column min-vh-100">
     <v-app class="flex-grow-1">
-      <Header />
-      <v-main>
-        <!-- Vous pouvez ajouter d'autres éléments ici, comme une barre de navigation, si nécessaire -->
-        <RouterView />
-      </v-main>
-      <Footer />
+      <Base>
+        <!-- Contenu de la page -->
+        <v-main>
+          <!-- Vous pouvez ajouter d'autres éléments ici, comme une barre de navigation, si nécessaire -->
+          <RouterView />
+        </v-main>
+      </Base>
     </v-app>
   </div>
 </template>
