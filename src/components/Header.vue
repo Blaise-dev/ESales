@@ -8,15 +8,6 @@ import Logo from '../components/Logo.vue'
       <div
         class="d-flex flex-wrap align-items-around justify-content-around justify-content-lg-around"
       >
-        <RouterLink
-          to="/"
-          class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"
-        >
-          <svg class="bi me-2" width="40" height="32" role="img" aria-label="Bootstrap">
-            <use xlink:href="#bootstrap" />
-          </svg>
-        </RouterLink>
-
         <button @click="toggleTheme" class="btn btn-outline-light theme-toggle me-4">
           <v-icon>{{ darkTheme ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
         </button>
@@ -70,13 +61,19 @@ import Logo from '../components/Logo.vue'
         <Logo style="height: 50px; width: 50px" />
       </RouterLink>
       <form class="w-50 col-lg-auto mb-3 mb-lg-0" role="search">
-        <input
-          type="search"
-          class="form-control"
-          placeholder="Search..."
-          aria-label="Search"
-          style="height: 50px"
-        />
+        <v-text-field
+          v-model="search"
+          label="Recherche"
+          placeholder="Recherche..."
+          :loading="loading"
+          append-inner-icon="mdi-magnify"
+          dense
+          variant="solo"
+          solo-inverted
+          hide-details
+          single-line
+          @click:append-inner="onClick"
+        ></v-text-field>
       </form>
       <div class="d-flex align-items-center ms-5">
         <!-- ms-3 adds margin-left -->
@@ -116,7 +113,7 @@ import Logo from '../components/Logo.vue'
         </v-btn>
       </template>
       <v-list>
-        <v-list-item v-for="(item, index) in items" :key="index" :value="index">
+        <v-list-item v-for="(item, index) in categories" :key="index" :value="index">
           <v-list-item-title>{{ item.title }}</v-list-item-title>
         </v-list-item>
       </v-list>
@@ -130,18 +127,38 @@ export default {
   name: 'Header',
   data() {
     return {
+      loaded: false,
+      loading: false,
       darkTheme: true, // Initial theme set to dark
       showWishesList: false,
       showCart: false,
       wishesListItemsCount: 2, // Example count of notifications
       cartItemsCount: 3, // Example count of cart items
+      search: '',
       menu: false,
-      items: [
+      categories: [
         { title: 'Technologie' },
         { title: 'Cosmétique' },
         { title: 'Vestimentaire' },
         { title: 'Alimentaire' }
       ]
+    }
+  },
+  methods: {
+    toggleMenu() {
+      this.menu = !this.menu
+    },
+    selectCategory(category) {
+      this.search = category // Vous pouvez ajuster ce comportement selon vos besoins
+      this.menu = false // Fermer le menu après avoir sélectionné une catégorie
+    },
+    onClick() {
+      this.loading = true
+
+      setTimeout(() => {
+        this.loading = false
+        this.loaded = true
+      }, 5000)
     }
   }
 }
