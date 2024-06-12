@@ -62,8 +62,7 @@
               placeholder="example@gmail.com"
               prepend-inner-icon="mdi-email-outline"
               variant="outlined"
-              error
-              :error-messages="error"
+              :error-messages="errorEmail"
               required
             />
           </div>
@@ -85,7 +84,7 @@
               placeholder="**********************"
               :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
               :type="visible ? 'text' : 'password'"
-              :error-messages="error"
+              :error-messages="errorPwd"
               prepend-inner-icon="mdi-lock-outline"
               variant="outlined"
               @click:append-inner="visible = !visible"
@@ -98,6 +97,8 @@
             <div class="form-check">
               <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
               <label class="form-check-label" for="form1Example3"> Souviens-toi de moi ? </label>
+              <span v-if="error" class="text-danger ms-3">{{ error }}</span>
+
             </div>
           </div>
 
@@ -153,20 +154,22 @@ export default {
     visible: false,
     email: '',
     password: '',
-    error: ''
+    errorEmail: '',
+    errorPwd:'',
+    error:''
   }),
 
   methods: {
     async login() {
       try {
         // On vérifie si l'email existe dans la base de données
-
-        const response = await apiClient.get('/users?email=' + this.email)
+        const response = await apiClient.get(`/users?email=${this.email}&password=${this.password}`)
         const user = response.data
         console.log(user)
 
         if (user.length == 0) {
-          this.error = 'Email ou mot de passe incorrect'
+          this.errorEmail = 'Email incorrect'
+          this.errorPwd = 'Mot de passe incorrect'
           return
         } else {
           localStorage.setItem('token', user.token) // on enregistre le token dans le localStorage
