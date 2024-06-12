@@ -1,6 +1,8 @@
 <!-- ProductCard.vue -->
 <template>
-    <div class="col-md-3">
+  
+    <div class="col-md-3 size">
+      <RouterLink to="/products" class="link_product">
       <div class="card">
         <img :src="imageSrc" class="card-img-top" :alt="productTitle">
         <div class="card-body">
@@ -18,7 +20,10 @@
           <a href="#" class="btn btn-primary">Ajouter au panier</a>
         </div>
       </div>
+      </RouterLink>
     </div>
+  
+    
   </template>
   
   <script>
@@ -53,5 +58,9 @@
   .checked {
     color: orange;
   }
+  .link_product {
+    text-decoration: none;
+  }
+
   </style>
   
