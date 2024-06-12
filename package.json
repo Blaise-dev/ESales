@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "format": "prettier --write src/",
-    "json-server": "node server.js"
+    "json-server": "node ./src/server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
