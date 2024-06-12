@@ -342,7 +342,7 @@ export default {
       }
       this.comments.push(newComment)
       this.newComment = {
-        name: 'Théo Backbwell',
+        author: 'Théo Backbwell',
         text: '',
         rating: 0
       }
