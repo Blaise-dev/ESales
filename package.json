@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "test:unit": "vitest",
     "format": "prettier --write src/",
-    "json-server": "node server.js"
+    "json-server": "node ./src/server.js"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^6.5.2",
@@ -19,13 +19,11 @@
     "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "flag-icons": "^7.2.2",
-    "json-server": "^1.0.0-beta.1",
-    "json-server-auth": "^2.1.0",
     "pinia": "^2.1.7",
     "vue": "^3.4.21",
     "vue-router": "^4.3.0",
     "vuetify": "^3.6.7",
-    "vuex": "^4.0.2"
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@rushstack/eslint-patch": "^1.8.0",

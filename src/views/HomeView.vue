@@ -77,6 +77,7 @@
      <br>
     <!-- New Product Category Section with Carousel -->
     <h2 class="text-center"><strong>Nouvelles catégories</strong></h2>
+    
     <div id="product-category-section" class="container mt-5">
       <div id="productCarousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
@@ -120,8 +121,10 @@
           :productPrice="product.productPrice"
           :productRating="product.productRating"
           :productReviews="product.productReviews"
+          
         />
       </div>
+      
       <div class="text-center mt-4">
         <a href="#" class="btn btn-link" @click="loadMoreProducts" v-if="!isLoading">Voir plus</a>
       </div>

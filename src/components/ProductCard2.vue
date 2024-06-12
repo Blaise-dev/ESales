@@ -1,5 +1,6 @@
 <template>
   <div class="custom-container">
+    <RouterLink to="/products" class="link_product">
     <div class="card h-100 text-center custom-card">
       <div class="card-body d-flex justify-content-between align-items-start">
         <div class="text-container">
@@ -7,15 +8,18 @@
           <h3 class="card-title">{{ title }}</h3>
           <p class="card-text">{{ description }}</p>
           <br>
-          <a :href="link" class="btn custom-btn">Acheter maintenant <span class="arrow">→</span></a>
+          <RouterLink to="/paiement" class="btn custom-btn">Acheter maintenant <span class="arrow">→</span></RouterLink>
         </div>
         <img :src="imageSrc" class="custom-image" alt="Product image" />
       </div>
     </div>
+  </RouterLink>
   </div>
 </template>
 
 <script>
+import { RouterLink } from 'vue-router';
+
 export default {
   name: 'ProductCard2',
   props: {
@@ -88,4 +92,7 @@ export default {
   background-color: #000000; /* Noir au survol */
   text-decoration: none;
 }
+.link_product {
+    text-decoration: none;
+  }
 </style>

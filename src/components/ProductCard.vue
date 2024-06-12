@@ -1,6 +1,8 @@
 <!-- ProductCard.vue -->
 <template>
-    <div class="col-md-3">
+  
+    <div class="col-md-3 size">
+      <RouterLink to="/products" class="link_product">
       <div class="card">
         <img :src="imageSrc" class="card-img-top" :alt="productTitle">
         <div class="card-body">
@@ -15,13 +17,18 @@
             ></span>
             <p>({{ productReviews }} commentaires)</p>
           </div>
-          <a href="#" class="btn btn-primary">Ajouter au panier</a>
+          <RouterLink to="/shoppingcart" class="btn btn-primary">Ajouter au panier</RouterLink>
         </div>
       </div>
+      </RouterLink>
     </div>
+  
+    
   </template>
   
   <script>
+import { RouterLink } from 'vue-router';
+
   export default {
     name: 'ProductCard',
     props: {
@@ -53,5 +60,9 @@
   .checked {
     color: orange;
   }
+  .link_product {
+    text-decoration: none;
+  }
+
   </style>
   

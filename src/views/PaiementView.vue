@@ -1,10 +1,11 @@
 <script setup></script>
 
 <template>
-
+<br>
+<br>
 <div class="d-flex align-items-center mb-4 ms-3 ">
     <div class="d-flex align-items-center mb-4">
-      <h4 class="text-primary mb-0" style="margin-left: 200px;">Paiement par Carte Bancaire</h4>
+      <h3 class="text-primary mb-0" style="margin-left: 200px;">Paiement par Carte Bancaire  </h3>
     
           <div class="ms-3">
            <img src="/src/assets/VISA.png" alt="VISA" class="payment-icon me-2">
@@ -74,17 +75,23 @@
 
           <!-- Submit button -->
           <div class="d-flex flex-column align-items-center">
-            <button
+            
+           
+            <RouterLink
+              to = "/Cpaiement"
               data-mdb-button-init
               data-mdb-ripple-init
               class="mb-3 w-50 btn btn-primary btn-lg btn-block"
+             
             >
               <i class="bi bi-check-circle me-2"></i>
-              Valider
-            </button>
+              Valider  
+          
+            </RouterLink>
             <br />
           
-          <button
+          <RouterLink
+             to="/shoppingcart"
              data-mdb-button-init
              data-mdb-ripple-init
              class="mb-3 w-50 btn btn-danger btn-lg btn-block"
@@ -92,7 +99,7 @@
             >
               <i class="bi bi-x-circle me-2"></i>
               Abandonner
-            </button>
+          </RouterLink>
             <div class="mt-4 text-center">
             <i class="bi bi-lock-fill me-2"></i>
             Paiement 100% sécurisé
