@@ -17,7 +17,7 @@
             ></span>
             <p>({{ productReviews }} commentaires)</p>
           </div>
-          <a href="#" class="btn btn-primary">Ajouter au panier</a>
+          <RouterLink to="/shoppingcart" class="btn btn-primary">Ajouter au panier</RouterLink>
         </div>
       </div>
       </RouterLink>
@@ -27,6 +27,8 @@
   </template>
   
   <script>
+import { RouterLink } from 'vue-router';
+
   export default {
     name: 'ProductCard',
     props: {

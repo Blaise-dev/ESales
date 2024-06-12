@@ -77,6 +77,7 @@
      <br>
     <!-- New Product Category Section with Carousel -->
     <h2 class="text-center"><strong>Nouvelles catégories</strong></h2>
+    
     <div id="product-category-section" class="container mt-5">
       <div id="productCarousel" class="carousel slide" data-ride="carousel">
         <div class="carousel-inner">
