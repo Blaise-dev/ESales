@@ -19,5 +19,9 @@ server.use(router)
 
 // Démarrez le serveur
 server.listen(3000, () => {
-  console.log('JSON Server is running')
-})
+  console.log('JSON Server is running');
+});
+
+
+//Pour démarrer le serveur dans un terminal
+//json-server --watch db.json --port 3000

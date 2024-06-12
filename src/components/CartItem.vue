@@ -1,8 +1,8 @@
 <template>
-  <div class="card">
+  <div class="card mb-3 cart-item">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img :src="item.imageUrl" class="card-img" alt="Image de l'article">
+        <img :src="item.image" class="card-img-top" alt="Image de l'article">
       </div>
       <div class="col-md-8">
         <div class="card-body">
@@ -24,6 +24,7 @@
 
 <script>
 export default {
+  name: 'CartItem',
   props: {
     item: Object // Propriété pour recevoir les données de l'article
   },
@@ -46,6 +47,10 @@ export default {
 </script>
 
 <style scoped>
+.cart-item {
+  max-width: 100%;
+}
+
 .quantity-controls {
   display: flex;
   align-items: center;
