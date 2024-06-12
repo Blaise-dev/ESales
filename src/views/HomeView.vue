@@ -120,8 +120,10 @@
           :productPrice="product.productPrice"
           :productRating="product.productRating"
           :productReviews="product.productReviews"
+          
         />
       </div>
+      
       <div class="text-center mt-4">
         <a href="#" class="btn btn-link" @click="loadMoreProducts" v-if="!isLoading">Voir plus</a>
       </div>

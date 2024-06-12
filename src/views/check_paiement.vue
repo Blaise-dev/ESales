@@ -7,10 +7,10 @@
       </div>
     </div>
     <div class="droite">
-      <a href="#" class="back-link">
+      <RouterLink to="/" class="back-link">
         <img src="/src/assets/Retour.png" alt="Retour" class="back-link-icon">
         Retour à la page d'accueil
-      </a>
+      </RouterLink>
     </div>
   <div class="container">
     
