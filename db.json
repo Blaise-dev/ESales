@@ -16,5 +16,30 @@
       "password": "sensei007",
       "photo": "https://manga-faction.com/wp-content/uploads/2023/07/hq1m30rh14171.jpg"
     }
-  ]
-}
+  ],
+    "cartItems": [
+      {
+        "id": 1,
+        "name": "sac femme",
+        "price": 10.99,
+        "quantity": 1,
+        "image": "https://www.cdiscount.com/pdt2/8/9/0/1/700x700/cus2009790679890/rw/sac-a-main-femme-sac-femme-sac-a-bandouliere-femme.jpg"
+      },
+      {
+        "id": 2,
+        "name": "basquets",
+        "price": 24.99,
+        "quantity": 1,
+        "image": "https://media.modz.fr/pictures/2022/08-aout/8027430/zoom2/baskets-femme-violet-nike-8027430_659.jpg"
+      },
+      {
+        "id": 3,
+        "name": "casques",
+        "price": 14.99,
+        "quantity": 1,
+        "image": "https://boulanger.scene7.com/is/image/Boulanger/6925281967061_h_f_l_0?wid=500&hei=500"
+      }
+    ]
+  }
+  
+
