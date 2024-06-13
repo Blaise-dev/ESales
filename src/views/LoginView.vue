@@ -163,18 +163,18 @@ export default {
       try {
         // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get(`/users?email=${this.email}&password=${this.password}`)
-        const user = response.data
-        console.log(user)
+        let user = response.data
 
         if (user.length == 0) {
           this.errorEmail = 'Email incorrect'
           this.errorPwd = 'Mot de passe incorrect'
           return
         } else {
+          user = user[0]
           localStorage.setItem('token', user.token) // on enregistre le token dans le localStorage
-          alert(user.token)
 
-          this.$store.dispatch('login', { user, token })
+          this.$store.dispatch('setUser', user)
+          this.$store.dispatch('setToken', user.token)
           this.$router.push('/') // nous renvoie à la page d'accueil
         }
       } catch (error) {
