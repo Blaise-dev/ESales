@@ -143,7 +143,6 @@ import { mapGetters } from 'vuex'
 </template>
 
 <script>
-import store from '@/stores'
 export default {
   name: 'Header',
   data() {
