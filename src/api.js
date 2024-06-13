@@ -5,7 +5,11 @@ const apiClient = axios.create({
   headers: {
     'Content-Type': 'application/json'
   },
+  
 });
+
+
+
 
 // Nous ajoutons un interceptor pour inclure le token dans les headers si disponible
 /*apiClient.interceptors.request.use(

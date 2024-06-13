@@ -7,27 +7,13 @@
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="2"></li>
     </ol>
     <div class="carousel-inner">
-      <CarouselItem
-        imageSrc="/src/assets/fusionage.png"
-        altText="First slide"
-        isActive="true"
-        topText="Starting at $274.00"
-        mainText="The best tablet Collection 2023"
-        bottomText="Exclusive offer -35% off this week"
-      />
-      <CarouselItem
-        imageSrc="/src/assets/fusionage2.png"
-        altText="Second slide"
-        topText="Top Text for Slide 2"
-        mainText="Main Text for Slide 2"
-        bottomText="Bottom Text for Slide 2"
-      />
-      <CarouselItem
-        imageSrc="/src/assets/fusionage.png"
-        altText="Third slide"
-        topText="Top Text for Slide 3"
-        mainText="Main Text for Slide 3"
-        bottomText="Bottom Text for Slide 3"
+      <CarouselItem v-for="carousselProduct in carousselProducts"
+        :imageSrc="carousselProduct.imageSrc"
+        :altText="carousselProduct.altText"
+        :isActive="carousselProduct.isActive"
+        :topText="carousselProduct.topText"
+        :mainText="carousselProduct.mainText"
+        :bottomText="carousselProduct.bottomText"
       />
     </div>
     <a class="carousel-control-prev" href="#carouselExampleSlidesOnly" role="button" data-slide="prev">
@@ -71,7 +57,6 @@
       </div>
     </div>
   </div>
-
 
      <br>
      <br>
@@ -137,12 +122,16 @@
   </div>
 </template>
 
-<script>
-import ProductCard from '/src/components/component1.vue';
-import ProductCategoryCard from '/src/components/component2.vue';
-import ProductCard2 from '/src/components/component3.vue'
-import CarouselItem from '/src/components/component4.vue'
 
+
+
+
+<script>
+import ProductCard from '/src/components/ProductCard.vue';
+import ProductCategoryCard from '/src/components/Categories.vue';
+import ProductCard2 from '/src/components/ProductCard2.vue'
+import CarouselItem from '/src/components/CarouselComponent.vue'
+import apiClient from '../api.js';
 
 export default {
   components: {
@@ -150,11 +139,10 @@ export default {
     ProductCategoryCard,
     ProductCard2,
     CarouselItem,
-
-
   },
   data() {
     return {
+      carousselProducts: null,
       products: [
         {
           imageSrc: '/src/assets/SAC.png',
@@ -251,7 +239,24 @@ export default {
       return this.chunkArray(this.categories, 5);
     },
   },
+  created() {
+    this.fetchCarousselProducts()
+  },
   methods: {
+    async fetchCarousselProducts() {
+      try {
+        
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get("/carousselProducts")
+        console.log(response.data)
+        this.carousselProducts = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
+
     loadMoreProducts(event) {
       event.preventDefault();
       this.isLoading = true;
@@ -294,6 +299,9 @@ export default {
   },
 };
 </script>
+
+
+
 
 <style scoped>
 #product-category-section {
@@ -342,3 +350,5 @@ export default {
   margin-left: 0;
 }
 </style>
+
+

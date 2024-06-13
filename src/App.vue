@@ -15,7 +15,8 @@ import Base from '@/components/Base.vue'
         </v-main>
       </Base>
     </v-app>
-  </div>
+  </div>npm install -g json-server
+
 </template>
 
 <style scoped>

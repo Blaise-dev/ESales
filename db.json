@@ -16,5 +16,127 @@
       "password": "sensei007",
       "photo": "https://manga-faction.com/wp-content/uploads/2023/07/hq1m30rh14171.jpg"
     }
+  ],
+   "carousselProducts": [
+     {
+      "id": "1",
+        "imageSrc":"/src/assets/fusionage.png",
+        "altText" : "First slide",
+        "isActive":"true",
+        "topText" :"Starting at $274.00",
+        "mainText" :"The best tablet Collection 2023",
+        "bottomText" :"Exclusive offer -35% off this week"
+     },
+     {
+      "id": "2",
+       "imageSrc":"/src/assets/fusionage2.png",
+        "altText" :"Second slide",
+       "topText" : "Top Text for Slide 2",
+        "mainText" :"Main Text for Slide 2",
+        "bottomText" : "Bottom Text for Slide 2"
+      },
+      {
+        "id": "3",
+        "imageSrc" :"/src/assets/fusionage.png",
+        "altText" : "Third slide",
+        "topText" : "Top Text for Slide 3",
+        "mainText" :"Main Text for Slide 3",
+        "bottomText" : "Bottom Text for Slide 3"
+     }
+   ],
+   "products2": [
+   {
+    "id":"1",
+    "title":"T-Shirt Tunic Tops Blouse",
+    "description":"",
+    "imageSrc": "/src/assets/Trico.png",
+    "link" :"#"
+   },
+   {
+    "id": "2",
+    "title":"Satchel Tote Crossbody Bags",
+    "description": "",
+    "imageSrc" : "src/assets/SAC.png",
+    "link": "#"
+  },
+  {
+    "id": "3",
+    "title" : "Men's Tennis Walking Shoes",
+    "description" :"",
+    " imageSrc":"src/assets/spadrine.png",
+    "link" : "#"
+   }
+
+   ],
+  "products4": [
+    {
+      "id": 1,
+      "imageSrc": "/src/assets/SAC.png",
+      "productTitle": "Sonos Beam Gen 2 Soundbar",
+      "productPrice": "$930.00",
+      "productRating": 3,
+      "productReviews": 9
+    },
+    {
+      "id": 2,
+      "imageSrc": "/src/assets/SAC.png",
+      "productTitle": "Bose Smart Soundbar 900",
+      "productPrice": "$689.00",
+      "productRating": 3,
+      "productReviews": 9
+    },
+    {
+      "id": 3,
+      "imageSrc": "/src/assets/SAC.png",
+      "productTitle": "Sennheiser Ambeo Soundbar",
+      "productPrice": "$1,679.00",
+      "productRating": 4,
+      "productReviews": 10
+    },
+    {
+      "id": 4,
+      "imageSrc": "/src/assets/SAC.png",
+      "productTitle": "Microsoft Surface Pro 8",
+      "productPrice": "$606.00",
+      "productRating": 4,
+      "productReviews": 10
+    }
+  ],
+  "categories3": [
+    {
+      "id": 1,
+      "imageSrc": "/src/assets/A.png",
+      "categoryTitle": "Headphones",
+      "productCount": 5,
+      "linkUrl": "/headphones"
+    },
+    {
+      "id": 2,
+      "imageSrc": "/src/assets/A.png",
+      "categoryTitle": "With Bluetooth",
+      "productCount": 7,
+      "linkUrl": "/soundbars"
+    },
+    {
+      "id": 3,
+      "imageSrc": "/src/assets/A.png",
+      "categoryTitle": "Mobile Phone",
+      "productCount": 5,
+      "linkUrl": "/soundbars"
+    },
+    {
+      "id": 4,
+      "imageSrc": "/src/assets/A.png",
+      "categoryTitle": "CPU Heat Pipes",
+      "productCount": 7,
+      "linkUrl": "/soundbars"
+    },
+    {
+      "id": 5,
+      "imageSrc": "/src/assets/A.png",
+      "categoryTitle": "Smart Watch",
+      "productCount": 6,
+      "linkUrl": "/soundbars"
+    }
   ]
 }

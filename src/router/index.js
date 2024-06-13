@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
-
+import Vue from 'vue';
+import Vuex from 'vuex';
+import axios from '../plugins/axios'; // Importer l'instance Axios
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
