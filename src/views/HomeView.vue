@@ -16,19 +16,28 @@
         :bottomText="carousselProduct.bottomText"
       />
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleSlidesOnly" role="button" data-slide="prev">
+    <a
+      class="carousel-control-prev"
+      href="#carouselExampleSlidesOnly"
+      role="button"
+      data-slide="prev"
+    >
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="sr-only">Previous</span>
     </a>
-    <a class="carousel-control-next" href="#carouselExampleSlidesOnly" role="button" data-slide="next">
+    <a
+      class="carousel-control-next"
+      href="#carouselExampleSlidesOnly"
+      role="button"
+      data-slide="next"
+    >
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="sr-only">Next</span>
     </a>
   </div>
-     
-    
-     <br>
-    <!--première partie -->
+
+  <br />
+  <!--première partie -->
   <div class="container-fluid">
     <div class="row no-gutters">
       <div class="col-12 col-md-4">
@@ -149,90 +158,82 @@ export default {
           productTitle: 'Sonos Beam Gen 2 Soundbar',
           productPrice: '$930.00',
           productRating: 3,
-          productReviews: 9,
+          productReviews: 9
         },
         {
           imageSrc: '/src/assets/SAC.png',
           productTitle: 'Bose Smart Soundbar 900',
           productPrice: '$689.00',
           productRating: 3,
-          productReviews: 9,
+          productReviews: 9
         },
         {
           imageSrc: '/src/assets/SAC.png',
           productTitle: 'Sennheiser Ambeo Soundbar',
           productPrice: '$1,679.00',
           productRating: 4,
-          productReviews: 10,
+          productReviews: 10
         },
         {
           imageSrc: '/src/assets/SAC.png',
           productTitle: 'Microsoft Surface Pro 8',
           productPrice: '$606.00',
           productRating: 4,
-          productReviews: 10,
-        },
+          productReviews: 10
+        }
       ],
       categories: [
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'Headphones',
           productCount: 5,
-          linkUrl: '/headphones',
-
+          linkUrl: '/headphones'
         },
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'With Bluetooth',
           productCount: 7,
-          linkUrl: '/soundbars',
-
+          linkUrl: '/soundbars'
         },
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'Mobile Phone',
           productCount: 5,
-          linkUrl: '/soundbars',
-
+          linkUrl: '/soundbars'
         },
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'CPU Heat Pipes',
           productCount: 7,
-          linkUrl: '/soundbars',
-
+          linkUrl: '/soundbars'
         },
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'Smart Watch',
           productCount: 6,
-          linkUrl: '/soundbars',
-
+          linkUrl: '/soundbars'
         },
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'Smart Watch',
           productCount: 6,
-          linkUrl: '/soundbars',
-
+          linkUrl: '/soundbars'
         },
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'Smart Watch',
           productCount: 6,
-          linkUrl: '/soundbars',
-
+          linkUrl: '/soundbars'
         },
         {
           imageSrc: '/src/assets/A.png',
           categoryTitle: 'Smart Watch',
           productCount: 6,
-          linkUrl: '/soundbars',
-
-        },
+          linkUrl: '/soundbars'
+        }
       ],
-      isLoading: false,
-    };
+      isLoading: false
+    }
   },
   computed: {
     categoryChunks() {
@@ -258,8 +259,8 @@ export default {
     },
 
     loadMoreProducts(event) {
-      event.preventDefault();
-      this.isLoading = true;
+      event.preventDefault()
+      this.isLoading = true
       // Simuler un chargement asynchrone
       setTimeout(() => {
         const moreProducts = [
@@ -268,36 +269,36 @@ export default {
             productTitle: 'Apple AirPods Pro',
             productPrice: '$249.00',
             productRating: 5,
-            productReviews: 120,
+            productReviews: 120
           },
           {
             imageSrc: '/src/assets/SAC.png',
             productTitle: 'Samsung Galaxy Buds',
             productPrice: '$129.00',
             productRating: 4,
-            productReviews: 95,
+            productReviews: 95
           },
           {
             imageSrc: '/src/assets/SAC.png',
             productTitle: 'Sony WH-1000XM4',
             productPrice: '$349.00',
             productRating: 5,
-            productReviews: 220,
-          },
-        ];
-        this.products.push(...moreProducts);
-        this.isLoading = false;
-      }, 2000);
+            productReviews: 220
+          }
+        ]
+        this.products.push(...moreProducts)
+        this.isLoading = false
+      }, 2000)
     },
     chunkArray(arr, size) {
-      const result = [];
+      const result = []
       for (let i = 0; i < arr.length; i += size) {
-        result.push(arr.slice(i, i + size));
+        result.push(arr.slice(i, i + size))
       }
-      return result;
-    },
-  },
-};
+      return result
+    }
+  }
+}
 </script>
 
 
@@ -333,12 +334,11 @@ export default {
 }
 
 .custom-carousel-img {
-  max-height: 500px; 
+  max-height: 500px;
   object-fit: cover;
 }
 /* New CSS for Carousel Controls */
 .custom-carousel-control-icon {
-  
   filter: invert(1); /* Change the color of the icon to black */
 }
 .container-fluid {

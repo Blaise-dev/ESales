@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import store from '@/stores'
 import HomeView from '../views/HomeView.vue'
 import Vue from 'vue';
 import Vuex from 'vuex';
@@ -56,6 +57,11 @@ const router = createRouter({
       component: () => import('../views/ShoppingCartView.vue')
     },
     {
+      path: '/checkout',
+      name: 'checkout',
+      component: () => import('../views/CheckoutView.vue')
+    },
+    {
       path: '/search',
       name: 'search',
       component: () => import('../views/ProductSearchView.vue')
@@ -63,14 +69,18 @@ const router = createRouter({
   ]
 })
 
-//On utilise ce guard pour protéger certaines parties de notre application qui nécessitent une authentification
-
+// Guard de navigation global
 router.beforeEach((to, from, next) => {
-  const loggedIn = localStorage.getItem('token')
-  if (to.matched.some((record) => record.meta.requiresAuth) && !loggedIn) {
-    next('/login')
+  const isAuthenticated = store.getters.isAuthenticated // Vérifiez si le token existe dans le store
+
+  if (isAuthenticated && to.name === 'login') {
+    // Si l'utilisateur est authentifié et essaie d'accéder à la page de connexion, redirigez-le vers la page d'accueil
+    next({ name: 'home' })
+  } else if (isAuthenticated && to.name === 'register') {
+    // Si l'utilisateur est authentifié et essaie d'accéder à la page de connexion, redirigez-le vers la page d'accueil
+    next({ name: 'home' })
   } else {
-    next()
+    next() // Continue la navigation
   }
 })
 
