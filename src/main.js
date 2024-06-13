@@ -22,11 +22,10 @@ import 'bootstrap/dist/js/bootstrap.bundle.js'
 
 import App from './App.vue'
 import router from './router'
-import store from './stores/vuex'
+import store from './stores'
 
 // main.js
-import '@fortawesome/fontawesome-free/css/all.css';
-
+import '@fortawesome/fontawesome-free/css/all.css'
 
 const app = createApp(App)
 

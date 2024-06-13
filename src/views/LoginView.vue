@@ -98,7 +98,6 @@
               <input class="form-check-input" type="checkbox" value="" id="form1Example3" checked />
               <label class="form-check-label" for="form1Example3"> Souviens-toi de moi ? </label>
               <span v-if="error" class="text-danger ms-3">{{ error }}</span>
-
             </div>
           </div>
 
@@ -155,8 +154,8 @@ export default {
     email: '',
     password: '',
     errorEmail: '',
-    errorPwd:'',
-    error:''
+    errorPwd: '',
+    error: ''
   }),
 
   methods: {
@@ -173,6 +172,9 @@ export default {
           return
         } else {
           localStorage.setItem('token', user.token) // on enregistre le token dans le localStorage
+          alert(user.token)
+
+          this.$store.dispatch('login', { user, token })
           this.$router.push('/') // nous renvoie à la page d'accueil
         }
       } catch (error) {
