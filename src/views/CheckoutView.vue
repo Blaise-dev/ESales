@@ -55,19 +55,19 @@
       </div>
       
       <!-- Liste des articles du panier -->
-      <div class="col-md-6">
-        <div class="card">
+      <div class="col-md-6 text-container">
+        <div class="card summary-card">
           <div class="card-body">
             <h5 class="card-title">Récapitulatif de commande</h5>
+            <hr>
              <!-- Ajout du message d'erreur -->
              <div v-if="errorMessage" class="alert alert-danger" role="alert">
                 {{ errorMessage }}
             </div>
             <!-- Liste des articles du panier -->
-            <div v-for="(item, index) in cartItems" :key="index">
-              <div class="media mb-3">
-                <img :src="item.image" class="mr-3" alt="Image de l'article" style="max-width: 100px;">
-                <div class="media-body">
+            <div v-for="(item, index) in cartItems" :key="index" class="media mb-3">
+              <img :src="item.image" class="mr-3" alt="Image de l'article" style="max-width: 100px;">
+              <div class="media-body">
                   <h5 class="mt-0">{{ item.name }}</h5>
                   <p>{{ item.description }}</p>
                   <p>{{ item.price }} € x {{ item.quantity }}</p>
@@ -76,15 +76,16 @@
             </div>
             <!-- Total -->
             <hr>
-            <div class="d-flex justify-content-between">
-              <strong>Total:</strong>
+            <div class="d-flex justify-content-between mt-3 mb-3"> 
+              <div class="total-price">
+                <strong>Total:</strong>
+              </div>
               <strong>{{ getTotalPrice() }} €</strong>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -130,4 +131,16 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+
+.summary-card {
+  max-width: 500px; /* Limite la largeur de la carte de récapitulatif */
+  margin-left: auto; 
+  margin-right: auto; 
+}
+
+.total-price {
+  margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
+}
+
+</style>
