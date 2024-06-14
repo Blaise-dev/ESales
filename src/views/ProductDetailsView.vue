@@ -1,5 +1,5 @@
 <script setup>
-import apiClient from '../api.js'
+import apiClient from '@/api'
 import { mapGetters } from 'vuex'
 </script>
 

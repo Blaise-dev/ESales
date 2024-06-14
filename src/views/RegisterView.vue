@@ -1,6 +1,6 @@
 <script setup>
-import CountrySelect from '../components/CountrySelect.vue'
-import Logo from '../components/Logo.vue'
+import CountrySelect from '@/components/CountrySelect.vue'
+import Logo from '@/components/Logo.vue'
 </script>
 
 <template>

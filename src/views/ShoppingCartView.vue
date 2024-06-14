@@ -46,8 +46,8 @@
 </template>
 
 <script>
-import apiClient from '../api.js'
-import CartItem from '/src/components/CartItem.vue'; 
+import apiClient from '@/api'
+import CartItem from '@/components/CartItem.vue'; 
 
 export default {
   components: {

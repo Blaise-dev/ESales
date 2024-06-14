@@ -144,7 +144,7 @@
 </template>
 
 <script>
-import apiClient from '../api.js'
+import apiClient from '@/api'
 
 export default {
   name: 'LoginView',

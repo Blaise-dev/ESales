@@ -8,10 +8,10 @@
       <h3 class="text-primary mb-0" style="margin-left: 200px;">Paiement par Carte Bancaire  </h3>
     
           <div class="ms-3">
-           <img src="/src/assets/VISA.png" alt="VISA" class="payment-icon me-2">
-           <img src="/src/assets/MC.png" alt="MasterCard" class="payment-icon me-2">
-           <img src="/src/assets/CB.png" alt="CB" class="payment-icon me-2">
-           <img src="/src/assets/pay.png" alt="Paylib" class="payment-icon">
+           <img src="@/assets/VISA.png" alt="VISA" class="payment-icon me-2">
+           <img src="@/assets/MC.png" alt="MasterCard" class="payment-icon me-2">
+           <img src="@/assets/CB.png" alt="CB" class="payment-icon me-2">
+           <img src="@/assets/pay.png" alt="Paylib" class="payment-icon">
           </div>
     </div>
 </div>
