@@ -182,6 +182,20 @@ export default {
         this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
         console.error('Erreur de connexion:', error)
       }
+    },
+    async fetchPanier(){
+      try {
+        const response = await apiClient.get(`/panier`)
+        let panier = response.data
+
+        this.$store.dispatch('setPanier', panier)
+
+      }
+      catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
     }
   }
 }
