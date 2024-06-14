@@ -31,24 +31,24 @@
   "panier": [
     {
       "id": 1,
-      "name": "sac femme",
-      "price": 10.99,
+      "name": "T-shirt à manches courtes et col en V dégradé pour l'été",
+      "price": 5.99,
       "quantity": 1,
-      "image": "https://www.cdiscount.com/pdt2/8/9/0/1/700x700/cus2009790679890/rw/sac-a-main-femme-sac-femme-sac-a-bandouliere-femme.jpg"
+      "image": "https://img.ltwebstatic.com/images3_pi/2024/04/12/3a/1712889276a136a33dda04c49933d4a8a01b886cf7_thumbnail_720x.webp"
     },
     {
       "id": 2,
-      "name": "basquets",
-      "price": 24.99,
+      "name": "Chemise en lin décontractée",
+      "price": 26.79,
       "quantity": 1,
-      "image": "https://media.modz.fr/pictures/2022/08-aout/8027430/zoom2/baskets-femme-violet-nike-8027430_659.jpg"
+      "image": "https://m.media-amazon.com/images/I/61fls6A2anL._AC_UY1000_.jpg"
     },
     {
       "id": 3,
-      "name": "casques",
-      "price": 14.99,
+      "name": "Polo classique en coton",
+      "price": 9.90,
       "quantity": 1,
-      "image": "https://boulanger.scene7.com/is/image/Boulanger/6925281967061_h_f_l_0?wid=500&hei=500"
+      "image": "https://owayo-cdn.com/cdn-cgi/image/format=auto,fit=contain,width=490/newhp/img/productHome/productSeitenansicht/productservice/poloshirt_classic_herren/st3000_blm.png"
     }
   ],
   "produits": [
