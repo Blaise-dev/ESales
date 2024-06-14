@@ -80,7 +80,9 @@
               <div class="total-price">
                 <strong>Total:</strong>
               </div>
+              <div class="item-price">
               <strong>{{ getTotalPrice() }} €</strong>
+              </div>
             </div>
           </div>
         </div>
@@ -117,7 +119,7 @@ export default {
     async fetchCartItems() {
       try {
         // Effectuez une requête GET à l'URL de votre backend JSON pour récupérer les articles du panier
-        const response = await apiClient.get('/cartItems');
+        const response = await apiClient.get('/panier');
         this.cartItems = response.data;
       } catch (error) {
         this.errorMessage = 'Erreur lors de la récupération des articles du panier: ' + error.message;
@@ -141,6 +143,10 @@ export default {
 
 .total-price {
   margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
+}
+
+.item-price {
+  margin-right: 10px; /* Ajuste la marge en haut du conteneur total-price */
 }
 
 </style>

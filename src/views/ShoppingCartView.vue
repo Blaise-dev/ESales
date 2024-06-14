@@ -69,7 +69,7 @@ export default {
     async fetchCartItems() {
       try {
         // Effectuer une requête GET à l'URL de notre backend JSON pour récupérer les articles du panier
-        const response = await apiClient.get('/cartItems');
+        const response = await apiClient.get('/panier');
         this.cartItems = response.data;
       } catch (error) {
         this.errorMessage = 'Erreur lors de la récupération des articles du panier: ' + error.message;
