@@ -59,6 +59,7 @@
         <div class="card summary-card">
           <div class="card-body">
             <h5 class="card-title">Récapitulatif de commande</h5>
+            <hr>
              <!-- Ajout du message d'erreur -->
              <div v-if="errorMessage" class="alert alert-danger" role="alert">
                 {{ errorMessage }}
@@ -75,8 +76,10 @@
             </div>
             <!-- Total -->
             <hr>
-            <div class="d-flex justify-content-between">
-              <strong>Total:</strong>
+            <div class="d-flex justify-content-between mt-3 mb-3"> 
+              <div class="total-price">
+                <strong>Total:</strong>
+              </div>
               <strong>{{ getTotalPrice() }} €</strong>
             </div>
           </div>
@@ -134,6 +137,10 @@ export default {
   max-width: 500px; /* Limite la largeur de la carte de récapitulatif */
   margin-left: auto; 
   margin-right: auto; 
+}
+
+.total-price {
+  margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
 }
 
 </style>
