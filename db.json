@@ -89,57 +89,56 @@
       ]
     }
   ],
-   "carousselProducts": [
-     {
+  "carousselProducts": [
+    {
       "id": "1",
-        "imageSrc":"/src/assets/fusionage.png",
-        "altText" : "First slide",
-        "isActive":"true",
-        "topText" :"Starting at $274.00",
-        "mainText" :"The best tablet Collection 2023",
-        "bottomText" :"Exclusive offer -35% off this week"
-     },
-     {
+      "imageSrc": "/src/assets/fusionage.png",
+      "altText": "First slide",
+      "isActive": true,
+      "topText": "Starting at $274.00",
+      "mainText": "The best tablet Collection 2023",
+      "bottomText": "Exclusive offer -35% off this week"
+    },
+    {
       "id": "2",
-       "imageSrc":"/src/assets/fusionage2.png",
-        "altText" :"Second slide",
-       "topText" : "Top Text for Slide 2",
-        "mainText" :"Main Text for Slide 2",
-        "bottomText" : "Bottom Text for Slide 2"
-      },
-      {
-        "id": "3",
-        "imageSrc" :"/src/assets/fusionage.png",
-        "altText" : "Third slide",
-        "topText" : "Top Text for Slide 3",
-        "mainText" :"Main Text for Slide 3",
-        "bottomText" : "Bottom Text for Slide 3"
-     }
-   ],
-   "products2": [
-   {
-    "id":"1",
-    "title":"T-Shirt Tunic Tops Blouse",
-    "description":"",
-    "imageSrc": "/src/assets/Trico.png",
-    "link" :"#"
-   },
-   {
-    "id": "2",
-    "title":"Satchel Tote Crossbody Bags",
-    "description": "",
-    "imageSrc" : "src/assets/SAC.png",
-    "link": "#"
-  },
-  {
-    "id": "3",
-    "title" : "Men's Tennis Walking Shoes",
-    "description" :"",
-    " imageSrc":"src/assets/spadrine.png",
-    "link" : "#"
-   }
-
-   ],
+      "imageSrc": "/src/assets/fusionage2.png",
+      "altText": "Second slide",
+      "topText": "Top Text for Slide 2",
+      "mainText": "Main Text for Slide 2",
+      "bottomText": "Bottom Text for Slide 2"
+    },
+    {
+      "id": "3",
+      "imageSrc": "/src/assets/fusionage.png",
+      "altText": "Third slide",
+      "topText": "Top Text for Slide 3",
+      "mainText": "Main Text for Slide 3",
+      "bottomText": "Bottom Text for Slide 3"
+    }
+  ],
+  "products2": [
+    {
+      "id": "1",
+      "title": "T-Shirt Tunic Tops Blouse",
+      "description": "",
+      "imageSrc": "/src/assets/Trico.png",
+      "link": "#"
+    },
+    {
+      "id": "2",
+      "title": "Satchel Tote Crossbody Bags",
+      "description": "",
+      "imageSrc": "src/assets/SAC.png",
+      "link": "#"
+    },
+    {
+      "id": "3",
+      "title": "Men's Tennis Walking Shoes",
+      "description": "",
+      " imageSrc": "src/assets/spadrine.png",
+      "link": "#"
+    }
+  ],
   "products4": [
     {
       "id": 1,
