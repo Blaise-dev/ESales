@@ -137,9 +137,9 @@
 
 <script>
 import ProductCard from '/src/components/ProductCard.vue';
-import ProductCategoryCard from '/src/components/Categories.vue';
+import ProductCategoryCard from '/src/components/ProductCategoryCard.vue';
 import ProductCard2 from '/src/components/ProductCard2.vue'
-import CarouselItem from '/src/components/CarouselComponent.vue'
+import CarouselItem from '/src/components/CarouselItem.vue'
 import apiClient from '../api.js';
 
 export default {
