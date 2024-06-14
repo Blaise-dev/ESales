@@ -8,13 +8,14 @@
     </ol>
     <div class="carousel-inner">
       <CarouselItem
-        v-for="carousselProduct in carousselProducts"
+        v-for="(index, carousselProduct) in carousselProducts"
         :imageSrc="carousselProduct.imageSrc"
         :altText="carousselProduct.altText"
         :isActive="carousselProduct.isActive"
         :topText="carousselProduct.topText"
         :mainText="carousselProduct.mainText"
         :bottomText="carousselProduct.bottomText"
+        :key="index"
       />
     </div>
     <a
