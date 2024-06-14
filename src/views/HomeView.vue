@@ -275,25 +275,29 @@ export default {
       setTimeout(() => {
         const moreProducts = [
           {
-            imageSrc: '/src/assets/SAC.png',
-            productTitle: 'Apple AirPods Pro',
-            productPrice: '$249.00',
-            productRating: 5,
-            productReviews: 120
+            imageSrc:
+              'https://s.alicdn.com/@sc04/kf/Hdd38f5e36a7943c5bb758982a4ca7517W.jpg_720x720q50.jpg',
+            productTitle: 'Jean Denim déchiré 3xl pour femme, Skinny, vente en gros',
+            productPrice: '8,13 €',
+            productRating: 3,
+            productReviews: 9
           },
           {
-            imageSrc: '/src/assets/SAC.png',
-            productTitle: 'Samsung Galaxy Buds',
-            productPrice: '$129.00',
+            imageSrc:
+              'https://www.cdiscount.com/pdt2/8/3/3/1/700x700/mp57929833/rw/jean-homme-jean-homme-slim-fit-stretch-jeans-car.jpg',
+            productTitle:
+              'Jean Homme Cargo Grandes Poches, Jean Homme Skinny Pantalon Denim Jogging Travail',
+            productPrice: '36,06 €',
             productRating: 4,
-            productReviews: 95
+            productReviews: 10
           },
           {
-            imageSrc: '/src/assets/SAC.png',
-            productTitle: 'Sony WH-1000XM4',
-            productPrice: '$349.00',
-            productRating: 5,
-            productReviews: 220
+            imageSrc: 'https://m.media-amazon.com/images/I/71+Rfs3mkYL._AC_UY1000_.jpg',
+            productTitle:
+              'Pantalon Homme Jean Homme Casual Jean Homme Regular Pantalon Homme Jeans avec Poche',
+            productPrice: '25,87 €',
+            productRating: 4,
+            productReviews: 10
           }
         ]
         this.products.push(...moreProducts)
