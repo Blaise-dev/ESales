@@ -93,10 +93,12 @@ export default {
     },
     proceedToCheckout() {
       // rediriger l'utilisateur vers la page de paiement ou de commande
-      console.log('Procéder à la caisse');
+      this.$router.push('/checkout') 
+      console.log('Procéder à la caisse')
     },
     continueShopping() {
       //  rediriger l'utilisateur vers la page d'accueil ou de shopping
+      this.$router.push('/') 
       console.log('Continuer vos achats');
     }
   }

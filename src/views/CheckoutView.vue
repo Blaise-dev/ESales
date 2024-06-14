@@ -47,7 +47,7 @@
                 <label for="comments">Commentaires</label>
                 <textarea class="form-control" id="comments" rows="3" v-model="deliveryInfo.comments"></textarea>
               </div>
-              <button type="submit" class="btn btn-primary">Valider la commande</button>
+              <button type="submit" class="btn btn-primary" @click="proceedPaiement">Valider la commande</button>
               <button type="button" class="btn btn-secondary ml-2" @click="goBack">Retour au panier</button>
             </form>
           </div>
@@ -128,6 +128,10 @@ export default {
     },
     getTotalPrice() {
       return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    },
+    proceedPaiement(){
+      this.$router.push('/Cpaiement') 
+      console.log('Procéder à la caisse')
     }
   }
 };
