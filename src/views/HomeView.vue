@@ -123,11 +123,12 @@
       <ProductCard
         v-for="(product, index) in products"
         :key="index"
-        :imageSrc="product.imageSrc"
-        :productTitle="product.productTitle"
-        :productPrice="product.productPrice"
-        :productRating="product.productRating"
-        :productReviews="product.productReviews"
+        :imageSrc="product.photos[0].src"
+        :productId="product.id"
+        :productTitle="product.name"
+        :productPrice="product.price"
+        :productRating="4"
+        :productReviews="product.comments.length"
       />
     </div>
 
@@ -159,91 +160,8 @@ export default {
   data() {
     return {
       carousselProducts: null,
-      products: [
-        {
-          imageSrc:
-            'https://image.made-in-china.com/202f0j00tknlfeUssLza/Wholesale-Fashion-New-Mon-Fit-Women-Fashion-Jean-Pants-Ripped-Denim-Light-Blue-Jeans-for-Women.webp',
-          productTitle: 'Jean pantalon déchiré Denim Jeans bleu clair pour les femmes',
-          productPrice: '7,63 €',
-          productRating: 3,
-          productReviews: 9
-        },
-        {
-          imageSrc:
-            'https://s.alicdn.com/@sc04/kf/Hdd38f5e36a7943c5bb758982a4ca7517W.jpg_720x720q50.jpg',
-          productTitle: 'Jean Denim déchiré 3xl pour femme, Skinny, vente en gros',
-          productPrice: '8,13 €',
-          productRating: 3,
-          productReviews: 9
-        },
-        {
-          imageSrc:
-            'https://www.cdiscount.com/pdt2/8/3/3/1/700x700/mp57929833/rw/jean-homme-jean-homme-slim-fit-stretch-jeans-car.jpg',
-          productTitle:
-            'Jean Homme Cargo Grandes Poches, Jean Homme Skinny Pantalon Denim Jogging Travail',
-          productPrice: '36,06 €',
-          productRating: 4,
-          productReviews: 10
-        },
-        {
-          imageSrc: 'https://m.media-amazon.com/images/I/71+Rfs3mkYL._AC_UY1000_.jpg',
-          productTitle:
-            'Pantalon Homme Jean Homme Casual Jean Homme Regular Pantalon Homme Jeans avec Poche',
-          productPrice: '25,87 €',
-          productRating: 4,
-          productReviews: 10
-        }
-      ],
-      categories: [
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Headphones',
-          productCount: 5,
-          linkUrl: '/headphones'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'With Bluetooth',
-          productCount: 7,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Mobile Phone',
-          productCount: 5,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'CPU Heat Pipes',
-          productCount: 7,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        }
-      ],
+      products: null,
+      categories: null,
       isLoading: false
     }
   },
@@ -254,13 +172,14 @@ export default {
   },
   created() {
     this.fetchCarousselProducts()
+    this.fetchNewProducts()
+    this.fetchCategories()
   },
   methods: {
     async fetchCarousselProducts() {
       try {
         // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get('/carousselProducts')
-        console.log(response.data)
         this.carousselProducts = response.data
       } catch (error) {
         // Gérer les erreurs de requête
@@ -268,7 +187,28 @@ export default {
         console.error('Erreur de connexion:', error)
       }
     },
-
+    async fetchNewProducts() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get('/products4')
+        this.products = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
+    async fetchCategories() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get('/categories3')
+        this.categories = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
     loadMoreProducts(event) {
       event.preventDefault()
       this.isLoading = true
@@ -307,8 +247,10 @@ export default {
     },
     chunkArray(arr, size) {
       const result = []
-      for (let i = 0; i < arr.length; i += size) {
-        result.push(arr.slice(i, i + size))
+      if (arr != null) {
+        for (let i = 0; i < arr.length; i += size) {
+          result.push(arr.slice(i, i + size))
+        }
       }
       return result
     }

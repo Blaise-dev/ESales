@@ -1,4 +1,9 @@
 {
+  "": {
+    "Projet": "ESales, Site de E-Commerce, mono-vendeur.",
+    "Auteurs": ["Blaise", "Fatima", "David"],
+    "Langage Front": "VueJS"
+  },
   "users": [
     {
       "id": "1",
