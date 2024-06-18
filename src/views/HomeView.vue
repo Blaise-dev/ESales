@@ -41,28 +41,16 @@
   <div class="container-fluid">
     <div class="row no-gutters">
       <div class="col-12 col-md-4">
-        <ProductCard2
-          title="T-Shirt Tunic Tops Blouse"
-          description=""
-          imageSrc="/src/assets/Trico.png"
-          link="#"
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <ProductCard2
-          title="Satchel Tote Crossbody Bags"
-          description=""
-          imageSrc="src/assets/SAC.png"
-          link="#"
-        />
-      </div>
-      <div class="col-12 col-md-4">
-        <ProductCard2
-          title="Men's Tennis Walking Shoes"
-          description=""
-          imageSrc="src/assets/spadrine.png"
-          link="#"
-        />
+        <div class="carousel-inner ">
+             <ProductCard2  v-for="products2 in products2" 
+             :title="products2.title"
+             :description="products2.description"
+             :imageSrc="products2.imageSrc"
+             :link="products2.link"
+         
+               />
+        
+        </div>
       </div>
     </div>
   </div>
@@ -77,14 +65,12 @@
         <div class="carousel-inner">
           <div v-for="(chunk, chunkIndex) in categoryChunks" :key="chunkIndex" :class="['carousel-item', { active: chunkIndex === 0 }]">
             <div class="row justify-content-center">
-              <ProductCategoryCard
-                v-for="(category, index) in chunk"
-                :key="index"
-                :imageSrc="category.imageSrc"
-                :categoryTitle="category.categoryTitle"
-                :productCount="category.productCount"
-                :linkUrl="category.linkUrl"
-
+              <ProductCategoryCard v-for="categories3 in categories3"
+                :key="categories3.index"
+                :imageSrc="categories3.category.imageSrc"
+                :categoryTitle="categories3.categoryTitle"
+                :productCount="categories3.productCount"
+                :linkUrl="categories3.linkUrl"
               />
             </div>
           </div>
@@ -107,15 +93,13 @@
     <div id="new-arrivals-section" class="container mt-5">
       <h2 class="text-center"><strong>Nouvelles arrivées</strong></h2>
       <div class="row">
-        <ProductCard
-          v-for="(product, index) in products"
-          :key="index"
-          :imageSrc="product.imageSrc"
-          :productTitle="product.productTitle"
-          :productPrice="product.productPrice"
-          :productRating="product.productRating"
-          :productReviews="product.productReviews"
-          
+        <ProductCard v-for="products4 in products4"
+          :key="products4.index"
+          :imageSrc="products4.imageSrc"
+          :productTitle="products4.productTitle"
+          :productPrice="products4.productPrice"
+          :productRating="products4.productRating"
+          :productReviews="products4.productReviews"
         />
       </div>
       
@@ -152,87 +136,10 @@ export default {
   data() {
     return {
       carousselProducts: null,
-      products: [
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Sonos Beam Gen 2 Soundbar',
-          productPrice: '$930.00',
-          productRating: 3,
-          productReviews: 9
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Bose Smart Soundbar 900',
-          productPrice: '$689.00',
-          productRating: 3,
-          productReviews: 9
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Sennheiser Ambeo Soundbar',
-          productPrice: '$1,679.00',
-          productRating: 4,
-          productReviews: 10
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Microsoft Surface Pro 8',
-          productPrice: '$606.00',
-          productRating: 4,
-          productReviews: 10
-        }
-      ],
-      categories: [
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Headphones',
-          productCount: 5,
-          linkUrl: '/headphones'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'With Bluetooth',
-          productCount: 7,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Mobile Phone',
-          productCount: 5,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'CPU Heat Pipes',
-          productCount: 7,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        },
-        {
-          imageSrc: '/src/assets/A.png',
-          categoryTitle: 'Smart Watch',
-          productCount: 6,
-          linkUrl: '/soundbars'
-        }
-      ],
-      isLoading: false
+      products2: null,
+      categories: null,
+      isLoading: false,
+      products4 : null
     }
   },
   computed: {
@@ -242,16 +149,40 @@ export default {
   },
   created() {
     this.fetchCarousselProducts()
+    this.fetchProducts2()
+    this.fetchProducts4()
   },
   methods: {
     async fetchCarousselProducts() {
       try {
         
-        // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get("/carousselProducts")
         console.log(response.data)
         this.carousselProducts = response.data
       } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
+    async fetchProducts2(){ 
+      try{
+        const response = await apiClient.get("/products2")
+        console.log(response.data)
+        this.products2 = response.data
+      }catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+
+    },
+    async fetchProducts4(){
+      try{
+        const response = await apiClient.get("/products4")
+        console.log(response.data)
+        this.products4 = response.data
+      }catch (error) {
         // Gérer les erreurs de requête
         this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
         console.error('Erreur de connexion:', error)
@@ -342,7 +273,7 @@ export default {
   filter: invert(1); /* Change the color of the icon to black */
 }
 .container-fluid {
-  padding: 3;
+  padding: 5;
 }
 
 .row.no-gutters {
