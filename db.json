@@ -443,7 +443,7 @@
   "carousselProducts": [
     {
       "id": "1",
-      "imageSrc": "/src/assets/fusionage.png",
+      "imageSrc": "/src/assets/pay.png",
       "altText": "First slide",
       "isActive": true,
       "topText": "Starting at $274.00",
@@ -452,16 +452,18 @@
     },
     {
       "id": "2",
-      "imageSrc": "/src/assets/fusionage2.png",
+      "imageSrc": "/src/assets/pay.png",
       "altText": "Second slide",
+      "isActive": false,
       "topText": "Top Text for Slide 2",
       "mainText": "Main Text for Slide 2",
       "bottomText": "Bottom Text for Slide 2"
     },
     {
       "id": "3",
-      "imageSrc": "/src/assets/fusionage.png",
+      "imageSrc": "/src/assets/pay.png",
       "altText": "Third slide",
+      "isActive": false,
       "topText": "Top Text for Slide 3",
       "mainText": "Main Text for Slide 3",
       "bottomText": "Bottom Text for Slide 3"
@@ -484,9 +486,9 @@
     },
     {
       "id": "3",
-      "title": "Men's Tennis Walking Shoes",
+      "title": "Men'sss Tennis Walking Shoes",
       "description": "",
-      " imageSrc": "src/assets/spadrine.png",
+      "imageSrc": "/src/assets/Trico.png",
       "link": "#"
     }
   ],

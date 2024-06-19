@@ -54,8 +54,7 @@ export default {
   border: none; /* Suppression des bordures */
   width: 100%;
   border-radius: 0;
-  height: 300px;
-  margin: 0 10px; /* Marges latérales réduites pour espacer les cartes */
+  margin: 10 10px; /* Marges latérales réduites pour espacer les cartes */
 }
 
 .card-body {

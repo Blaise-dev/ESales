@@ -1,5 +1,6 @@
 <template>
   <!-- Carousel Section -->
+   
   <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="0" class="active"></li>
@@ -7,17 +8,27 @@
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="2"></li>
     </ol>
     <div class="carousel-inner">
-      <CarouselItem
-        v-for="(index, carousselProduct) in carousselProducts"
-        :imageSrc="carousselProduct.imageSrc"
-        :altText="carousselProduct.altText"
-        :isActive="carousselProduct.isActive"
-        :topText="carousselProduct.topText"
-        :mainText="carousselProduct.mainText"
-        :bottomText="carousselProduct.bottomText"
-        :key="index"
-      />
-    </div>
+        <div
+          v-for="(chunk, chunkIndex) in carouProducts"
+          :key="chunkIndex"
+          :class="['carousel-item', { active: chunkIndex === 0 }]"
+        >
+          <div class="row justify-content-center">
+            <CarouselItem
+              v-for="(carousselProducts, index) in chunk"
+              :id="carousselProducts.id"
+              :imageSrc="carousselProducts.imageSrc"
+              :altText="carousselProducts.altText"
+              :isActive="carousselProducts.isActive"
+              :topText="carousselProducts.topText"
+              :mainText="carousselProducts.mainText"
+              :bottomText="carousselProducts.bottomText"
+              :key="index"
+           />
+          </div>
+        </div>
+      </div>
+     
     <a
       class="carousel-control-prev"
       href="#carouselExampleSlidesOnly"
@@ -43,19 +54,23 @@
   <div class="container-fluid">
     <div class="row no-gutters">
       <div class="col-12 col-md-4">
-        <div class="carousel-inner ">
-             <ProductCard2  v-for="products2 in products2" 
-             :title="products2.title"
-             :description="products2.description"
-             :imageSrc="products2.imageSrc"
-             :link="products2.link"
-         
-               />
-        
+        <div class="carousel-inner product-card-container ">
+             <ProductCard2 
+             v-for="(product66, index) in products2"
+              :key="index"
+              :id="product66.id"
+             :title="product66.title"
+             :description="product66.description"
+             :link="product66.link"
+             :imageSrc="product66.imageSrc"
+             />
         </div>
+               
       </div>
     </div>
-  </div>
+    </div>
+  
+
 
   <br />
   <br />
@@ -137,6 +152,7 @@ import ProductCategoryCard from '@/components/ProductCategoryCard.vue'
 import ProductCard2 from '@/components/ProductCard2.vue'
 import CarouselItem from '@/components/CarouselItem.vue'
 import apiClient from '@/api'
+import { Carousel } from 'bootstrap'
 
 export default {
   components: {
@@ -150,18 +166,27 @@ export default {
       carousselProducts: null,
       products: null,
       categories: null,
-      isLoading: false
+      isLoading: false,
+      products2 :null
     }
   },
   computed: {
     categoryChunks() {
       return this.chunkArray(this.categories, 5)
+    },
+    carouProducts() {
+      return this.chunkArray(this.carousselProducts, 5)
+
+    },
+    products2Chunks() {
+      return this.chunkArray(this.products2, 5)
     }
   },
   created() {
     this.fetchCarousselProducts()
     this.fetchNewProducts()
     this.fetchCategories()
+    this.fetchProducts2()
   },
   methods: {
     async fetchCarousselProducts() {
@@ -169,6 +194,17 @@ export default {
         // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get('/carousselProducts')
         this.carousselProducts = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
+    async fetchProducts2() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get('/products2')
+        this.products2 = response.data
       } catch (error) {
         // Gérer les erreurs de requête
         this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
@@ -290,5 +326,10 @@ export default {
 .row.no-gutters {
   margin-right: 0;
   margin-left: 0;
+}
+product-card-container {
+  display: flex;
+  flex-wrap: wrap; /* Permet de passer à la ligne suivante si nécessaire */
+  gap: 10px; /* Espacement entre les cartes */
 }
 </style>
