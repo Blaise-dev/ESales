@@ -1,11 +1,7 @@
 {
   "": {
     "Projet": "ESales, Site de E-Commerce, mono-vendeur.",
-    "Auteurs": [
-      "Blaise",
-      "Fatima",
-      "David"
-    ],
+    "Auteurs": ["Blaise", "Fatima", "David"],
     "Langage Front": "VueJS"
   },
   "users": [
@@ -73,13 +69,7 @@
       "name": "T-shirt à manches courtes et col en V dégradé pour l'été",
       "description": "Description du produit 1.",
       "price": "5.99",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
       "photos": [
         {
           "src": "https://img.ltwebstatic.com/images3_pi/2024/04/12/3a/1712889276a136a33dda04c49933d4a8a01b886cf7_thumbnail_720x.webp"
@@ -113,12 +103,7 @@
       "name": "Chemise en lin décontractée",
       "description": "Chemise en lin légère, idéale pour une tenue décontractée et élégante.",
       "price": "26.79",
-      "sizes": [
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
+      "sizes": ["M", "L", "XL", "XXL"],
       "photos": [
         {
           "src": "https://m.media-amazon.com/images/I/61fls6A2anL._AC_UY1000_.jpg"
@@ -152,12 +137,7 @@
       "name": "Polo classique en coton",
       "description": "Polo élégant en coton, parfait pour un look casual chic.",
       "price": "9.90",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["S", "M", "L", "XL"],
       "photos": [
         {
           "src": "https://owayo-cdn.com/cdn-cgi/image/format=auto,fit=contain,width=490/newhp/img/productHome/productSeitenansicht/productservice/poloshirt_classic_herren/st3000_blm.png"
@@ -191,12 +171,7 @@
       "name": "Débardeur de sport respirant",
       "description": "Débardeur léger et respirant, parfait pour toutes vos activités sportives.",
       "price": "8.99",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["S", "M", "L", "XL"],
       "photos": [
         {
           "src": "https://p.globalsources.com/IMAGES/PDT/B5765148862/Vetements-de-sport.png"
@@ -230,12 +205,7 @@
       "name": "Sweat-shirt à capuche unisexe",
       "description": "Sweat-shirt confortable avec capuche, idéal pour les soirées fraîches.",
       "price": "24.99",
-      "sizes": [
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
+      "sizes": ["M", "L", "XL", "XXL"],
       "photos": [
         {
           "src": "https://images.teamshirts.net/image/upload/c_scale,w_auto/c_limit,f_auto,fl_lossy,q_auto,w_324/v1/sprd-eu/productTypes/20/views/1/appearances/812%2Cwidth%3D1200%2Cheight%3D1200%2CmediaType%3Dpng"
@@ -269,13 +239,7 @@
       "name": "Robe d'été à motifs floraux",
       "description": "Robe légère et fluide avec des motifs floraux colorés, parfaite pour les journées estivales.",
       "price": "7.99",
-      "sizes": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["XS", "S", "M", "L", "XL"],
       "photos": [
         {
           "src": "https://m.media-amazon.com/images/I/81xsO6hjIIL._AC_UY1000_DpWeblab_.jpg"
@@ -299,13 +263,7 @@
       "name": "Jeans skinny délavé pour homme",
       "description": "Jeans skinny avec un effet délavé, idéal pour un look casual et tendance.",
       "price": "45.00",
-      "sizes": [
-        "28",
-        "30",
-        "32",
-        "34",
-        "36"
-      ],
+      "sizes": ["28", "30", "32", "34", "36"],
       "photos": [
         {
           "src": "https://silvery-destockjeans.com/2476-large_default/jeans-skinny-bleu-brut-dechire-delave.jpg"
@@ -329,13 +287,7 @@
       "name": "Sweat à capuche unisexe",
       "description": "Sweat à capuche confortable en coton, disponible en plusieurs couleurs.",
       "price": "19.99",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
       "photos": [
         {
           "src": "https://img.joomcdn.net/eba8ea2d9300da6fd1f8bcd717e31b44787d2abd_1024_1024.jpeg"
@@ -385,13 +337,7 @@
       "name": "Sandales en cuir pour femme",
       "description": "Sandales en cuir véritable, idéales pour l'été avec leur design élégant et confortable.",
       "price": "29.99",
-      "sizes": [
-        "36",
-        "37",
-        "38",
-        "39",
-        "40"
-      ],
+      "sizes": ["36", "37", "38", "39", "40"],
       "photos": [
         {
           "src": "https://m.media-amazon.com/images/I/81KrghnMdGL._AC_UY900_.jpg"
@@ -418,11 +364,7 @@
       "name": "Jean pantalon déchiré Denim Jeans bleu clair pour les femmes",
       "description": "Jean Denim bleu clair déchiré pour les femmes, parfait pour un look décontracté et à la mode.",
       "price": "7.63",
-      "sizes": [
-        "S",
-        "M",
-        "L"
-      ],
+      "sizes": ["S", "M", "L"],
       "photos": [
         {
           "src": "https://image.made-in-china.com/202f0j00tknlfeUssLza/Wholesale-Fashion-New-Mon-Fit-Women-Fashion-Jean-Pants-Ripped-Denim-Light-Blue-Jeans-for-Women.webp"
@@ -443,11 +385,7 @@
       "name": "Jean Denim déchiré 3xl pour femme, Skinny, vente en gros",
       "description": "Jean Skinny Denim déchiré pour femme, disponible en taille 3XL, idéal pour un style audacieux.",
       "price": "8.13",
-      "sizes": [
-        "XL",
-        "XXL",
-        "3XL"
-      ],
+      "sizes": ["XL", "XXL", "3XL"],
       "photos": [
         {
           "src": "https://s.alicdn.com/@sc04/kf/Hdd38f5e36a7943c5bb758982a4ca7517W.jpg_720x720q50.jpg"
@@ -468,11 +406,7 @@
       "name": "Jean Homme Cargo Grandes Poches, Jean Homme Skinny Pantalon Denim Jogging Travail",
       "description": "Jean Cargo pour homme avec grandes poches, parfait pour le travail ou les loisirs.",
       "price": "36.06",
-      "sizes": [
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["M", "L", "XL"],
       "photos": [
         {
           "src": "https://www.cdiscount.com/pdt2/8/3/3/1/700x700/mp57929833/rw/jean-homme-jean-homme-slim-fit-stretch-jeans-car.jpg"
@@ -493,12 +427,7 @@
       "name": "Pantalon Homme Jean Homme Casual Jean Homme Regular Pantalon Homme Jeans avec Poche",
       "description": "Pantalon en Jean décontracté pour homme avec poches, adapté à toutes les occasions.",
       "price": "25.87",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["S", "M", "L", "XL"],
       "photos": [
         {
           "src": "https://m.media-amazon.com/images/I/71+Rfs3mkYL._AC_UY1000_.jpg"
@@ -518,7 +447,7 @@
   "carousselProducts": [
     {
       "id": "1",
-      "imageSrc": "/src/assets/pay.png",
+      "imageSrc": "/src/assets/fusionage.png",
       "altText": "First slide",
       "isActive": true,
       "topText": "Starting at $274.00",
@@ -527,18 +456,16 @@
     },
     {
       "id": "2",
-      "imageSrc": "/src/assets/pay.png",
+      "imageSrc": "/src/assets/fusionage2.png",
       "altText": "Second slide",
-      "isActive": false,
       "topText": "Top Text for Slide 2",
       "mainText": "Main Text for Slide 2",
       "bottomText": "Bottom Text for Slide 2"
     },
     {
       "id": "3",
-      "imageSrc": "/src/assets/pay.png",
+      "imageSrc": "/src/assets/fusionage.png",
       "altText": "Third slide",
-      "isActive": false,
       "topText": "Top Text for Slide 3",
       "mainText": "Main Text for Slide 3",
       "bottomText": "Bottom Text for Slide 3"
@@ -546,25 +473,78 @@
   ],
   "products2": [
     {
-      "id": "1",
-      "title": "T-Shirt Tunic Tops Blouse",
-      "description": "",
-      "imageSrc": "/src/assets/Trico.png",
-      "link": "#"
+      "id": 8,
+      "name": "Sweat à capuche unisexe",
+      "description": "Sweat à capuche confortable en coton, disponible en plusieurs couleurs.",
+      "price": "19.99",
+      "sizes": ["S", "M", "L", "XL", "XXL"],
+      "photos": [
+        {
+          "src": "https://img.joomcdn.net/eba8ea2d9300da6fd1f8bcd717e31b44787d2abd_1024_1024.jpeg"
+        },
+        {
+          "src": "https://img.joomcdn.net/d7ba9a866b6b09e9632b96c6d9808fd6062150fc_1024_1024.jpeg"
+        }
+      ],
+      "comments": [
+        {
+          "author": "Clara Rossi",
+          "date": "2024-06-07",
+          "rating": 4,
+          "text": "Très doux et agréable à porter, mais les manches sont un peu longues.",
+          "avatar": "https://randomuser.me/api/portraits/women/7.jpg"
+        }
+      ]
     },
     {
-      "id": "2",
-      "title": "Satchel Tote Crossbody Bags",
-      "description": "",
-      "imageSrc": "src/assets/SAC.png",
-      "link": "#"
+      "id": 7,
+      "name": "Jeans skinny délavé pour homme",
+      "description": "Jeans skinny avec un effet délavé, idéal pour un look casual et tendance.",
+      "price": "45.00",
+      "sizes": ["28", "30", "32", "34", "36"],
+      "photos": [
+        {
+          "src": "https://silvery-destockjeans.com/2476-large_default/jeans-skinny-bleu-brut-dechire-delave.jpg"
+        },
+        {
+          "src": "https://silvery-destockjeans.com/2474-home_default/jeans-skinny-bleu-brut-dechire-delave.jpg"
+        }
+      ],
+      "comments": [
+        {
+          "author": "Pierre Dupont",
+          "date": "2024-06-05",
+          "rating": 5,
+          "text": "Parfait ! Très confortable et de bonne qualité.",
+          "avatar": "https://randomuser.me/api/portraits/men/6.jpg"
+        }
+      ]
     },
     {
-      "id": "3",
-      "title": "Men'sss Tennis Walking Shoes",
-      "description": "",
-      "imageSrc": "/src/assets/Trico.png",
-      "link": "#"
+      "id": 9,
+      "name": "Montre classique en acier inoxydable",
+      "description": "Montre élégante avec bracelet en acier inoxydable et cadran minimaliste.",
+      "price": "59.99",
+      "photos": [
+        {
+          "src": "https://www.cdiscount.com/pdt2/1/1/0/3/700x700/cha6410687774110/rw/montre-classique-en-acier-inoxydable-pour-femme-a.jpg"
+        },
+        {
+          "src": "https://m.media-amazon.com/images/I/71bKoWxrBOL._AC_UY900_DpWeblab_.jpg"
+        },
+        {
+          "src": "https://m.media-amazon.com/images/I/815bpoa2P9L._AC_SX569_.jpg"
+        }
+      ],
+      "comments": [
+        {
+          "author": "Lucas Girard",
+          "date": "2024-06-10",
+          "rating": 5,
+          "text": "Montre très élégante, parfaite pour les occasions spéciales.",
+          "avatar": "https://randomuser.me/api/portraits/men/7.jpg"
+        }
+      ]
     }
   ],
   "products4": [
@@ -573,13 +553,7 @@
       "name": "Robe d'été à motifs floraux",
       "description": "Robe légère et fluide avec des motifs floraux colorés, parfaite pour les journées estivales.",
       "price": "7.99",
-      "sizes": [
-        "XS",
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["XS", "S", "M", "L", "XL"],
       "photos": [
         {
           "src": "https://m.media-amazon.com/images/I/81xsO6hjIIL._AC_UY1000_DpWeblab_.jpg"
@@ -603,13 +577,7 @@
       "name": "Jeans skinny délavé pour homme",
       "description": "Jeans skinny avec un effet délavé, idéal pour un look casual et tendance.",
       "price": "45.00",
-      "sizes": [
-        "28",
-        "30",
-        "32",
-        "34",
-        "36"
-      ],
+      "sizes": ["28", "30", "32", "34", "36"],
       "photos": [
         {
           "src": "https://silvery-destockjeans.com/2476-large_default/jeans-skinny-bleu-brut-dechire-delave.jpg"
@@ -633,13 +601,7 @@
       "name": "Sweat à capuche unisexe",
       "description": "Sweat à capuche confortable en coton, disponible en plusieurs couleurs.",
       "price": "19.99",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL",
-        "XXL"
-      ],
+      "sizes": ["S", "M", "L", "XL", "XXL"],
       "photos": [
         {
           "src": "https://img.joomcdn.net/eba8ea2d9300da6fd1f8bcd717e31b44787d2abd_1024_1024.jpeg"
@@ -689,13 +651,7 @@
       "name": "Sandales en cuir pour femme",
       "description": "Sandales en cuir véritable, idéales pour l'été avec leur design élégant et confortable.",
       "price": "29.99",
-      "sizes": [
-        "36",
-        "37",
-        "38",
-        "39",
-        "40"
-      ],
+      "sizes": ["36", "37", "38", "39", "40"],
       "photos": [
         {
           "src": "https://m.media-amazon.com/images/I/81KrghnMdGL._AC_UY900_.jpg"
@@ -722,11 +678,7 @@
       "name": "Jean pantalon déchiré Denim Jeans bleu clair pour les femmes",
       "description": "Jean Denim bleu clair déchiré pour les femmes, parfait pour un look décontracté et à la mode.",
       "price": "7.63",
-      "sizes": [
-        "S",
-        "M",
-        "L"
-      ],
+      "sizes": ["S", "M", "L"],
       "photos": [
         {
           "src": "https://image.made-in-china.com/202f0j00tknlfeUssLza/Wholesale-Fashion-New-Mon-Fit-Women-Fashion-Jean-Pants-Ripped-Denim-Light-Blue-Jeans-for-Women.webp"
@@ -747,11 +699,7 @@
       "name": "Jean Denim déchiré 3xl pour femme, Skinny, vente en gros",
       "description": "Jean Skinny Denim déchiré pour femme, disponible en taille 3XL, idéal pour un style audacieux.",
       "price": "8.13",
-      "sizes": [
-        "XL",
-        "XXL",
-        "3XL"
-      ],
+      "sizes": ["XL", "XXL", "3XL"],
       "photos": [
         {
           "src": "https://s.alicdn.com/@sc04/kf/Hdd38f5e36a7943c5bb758982a4ca7517W.jpg_720x720q50.jpg"
@@ -772,11 +720,7 @@
       "name": "Jean Homme Cargo Grandes Poches, Jean Homme Skinny Pantalon Denim Jogging Travail",
       "description": "Jean Cargo pour homme avec grandes poches, parfait pour le travail ou les loisirs.",
       "price": "36.06",
-      "sizes": [
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["M", "L", "XL"],
       "photos": [
         {
           "src": "https://www.cdiscount.com/pdt2/8/3/3/1/700x700/mp57929833/rw/jean-homme-jean-homme-slim-fit-stretch-jeans-car.jpg"
@@ -797,12 +741,7 @@
       "name": "Pantalon Homme Jean Homme Casual Jean Homme Regular Pantalon Homme Jeans avec Poche",
       "description": "Pantalon en Jean décontracté pour homme avec poches, adapté à toutes les occasions.",
       "price": "25.87",
-      "sizes": [
-        "S",
-        "M",
-        "L",
-        "XL"
-      ],
+      "sizes": ["S", "M", "L", "XL"],
       "photos": [
         {
           "src": "https://m.media-amazon.com/images/I/71+Rfs3mkYL._AC_UY1000_.jpg"

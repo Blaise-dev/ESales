@@ -10,7 +10,8 @@ const store = createStore({
   state: {
     user: userFromLocalStorage || null,
     token: tokenFromLocalStorage || null,
-    productSearch: null
+    productSearch: null,
+    paymentData: null
   },
   mutations: {
     setUser(state, user) {
@@ -23,6 +24,12 @@ const store = createStore({
     },
     setProductSearch(state, search) {
       state.productSearch = search
+    },
+    setPaymentData(state, data) {
+      state.paymentData = data
+    },
+    clearPaymentData(state) {
+      state.paymentData = null
     },
     clearAuthData(state) {
       state.user = null
@@ -42,6 +49,12 @@ const store = createStore({
     setProductSearch({ commit }, search) {
       commit('setProductSearch', search)
     },
+    updatePaymentData({ commit }, data) {
+      commit('setPaymentData', data)
+    },
+    clearPaymentData({ commit }) {
+      commit('clearPaymentData')
+    },
     logout({ commit }) {
       commit('clearAuthData')
       Cookies.remove('token')
@@ -51,6 +64,7 @@ const store = createStore({
     user: (state) => state.user,
     token: (state) => state.token,
     productSearch: (state) => state.productSearch,
+    paymentData: (state) => state.paymentData,
     isAuthenticated: (state) => !!state.token
   }
 })

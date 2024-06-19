@@ -43,10 +43,11 @@
     <div class="row no-gutters">
       <div v-for="product2 in products2" class="col-12 col-md-4">
         <ProductCard2
+          :id="product2.id"
           :title="product2.title"
           :description="product2.description"
-          :imageSrc="product2.imageSrc"
-          :link="product2.link"
+          :imageSrc="product2.photos[0].src"
+          :price="product2.price"
         />
       </div>
     </div>
