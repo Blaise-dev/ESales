@@ -18,20 +18,20 @@
           <div class="card-body">
             <div class="d-flex justify-content-between price-item my-2">
               <strong>Sous-total</strong>
-              <strong>{{ getSubtotal() }} €</strong>
+              <strong>{{ getSubtotal }} €</strong>
             </div>
             <div class="d-flex justify-content-between price-item my-2">
               <span>Taxe (20%)</span>
-              <span>{{ getTax() }} €</span>
+              <span>{{ getTax }} €</span>
             </div>
             <div class="d-flex justify-content-between price-item my-2">
               <span>Livraison</span>
-              <span>{{ getShipping() }} €</span>
+              <span>{{ getShipping }} €</span>
             </div>
             <hr>
             <div class="d-flex justify-content-between price-item my-2">
               <strong>Total</strong>
-              <strong>{{ getTotalPrice() }} €</strong>
+              <strong>{{ getTotalPrice }} €</strong>
             </div>
             <div class="d-flex flex-column align-items-center mt-3">
               <button class="btn btn-primary btn-block mb-2 custom-btn" @click="proceedToCheckout">Procéder à la caisse</button>
@@ -65,38 +65,42 @@ export default {
     // Récupérer les articles du panier depuis le backend JSON 
     this.fetchCartItems();
   },
+  computed: {
+    getSubtotal() {
+      return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+    },
+    getTax() {
+      return this.getSubtotal * 0.20; // Calcul de la taxe à 20%
+    },
+    getShipping() {
+      return 5; // Exemple de coût fixe de livraison
+    },
+    getTotalPrice() {
+      return this.getSubtotal + this.getTax + this.getShipping;
+    }
+  },
   methods: {
     async fetchCartItems() {
       try {
         // Effectuer une requête GET à l'URL de notre backend JSON pour récupérer les articles du panier
-        const response = await apiClient.get('/cartItems');
+        const response = await apiClient.get('/panier');
         this.cartItems = response.data;
       } catch (error) {
         this.errorMessage = 'Erreur lors de la récupération des articles du panier: ' + error.message;
         console.error('Erreur lors de la récupération des articles du panier:', error);
       }
     },
-    getSubtotal() {
-      return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-    },
-    getTax() {
-      return this.getSubtotal() * this.taxRate;
-    },
-    getShipping() {
-      return this.shippingCost;
-    },
-    getTotalPrice() {
-      return this.getSubtotal() + this.getTax() + this.getShipping();
-    },
     updateQuantity(index, newQuantity) {
       this.cartItems[index].quantity = newQuantity;
     },
     proceedToCheckout() {
       // rediriger l'utilisateur vers la page de paiement ou de commande
-      console.log('Procéder à la caisse');
+      this.$router.push('/checkout') 
+      console.log('Procéder à la caisse')
     },
     continueShopping() {
       //  rediriger l'utilisateur vers la page d'accueil ou de shopping
+      this.$router.push('/') 
       console.log('Continuer vos achats');
     }
   }

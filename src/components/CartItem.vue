@@ -2,20 +2,20 @@
   <div class="card mb-3 cart-item">
     <div class="row no-gutters">
       <div class="col-md-4">
-        <img :src="item.image" class="card-img-top" alt="Image de l'article">
+        <img :src="item.image" class="card-img-top img-fluid" alt="Image de l'article">
       </div>
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title">{{ item.name }}</h5>
-          <p class="card-text">{{ item.description }}</p> 
           <p class="card-text"><strong>{{ item.price * item.quantity }} €</strong></p>
-            <div class="quantity-controls">
+          <!-- Autres informations de l'article -->
+          <div class="quantity-controls">
             <div class="oval-button-group">
-              <button @click="decrementQuantity" class="btn-simple">-</button>
+              <button @click="decrementQuantity" class="btn-simple oval-button">-</button>
               <span class="mx-2">{{ item.quantity }}</span>
-              <button @click="incrementQuantity" class="btn-simple">+</button>
+              <button @click="incrementQuantity" class="btn-simple oval-button">+</button>
             </div>
-           </div>
+          </div>
         </div>
       </div>
     </div>
@@ -26,17 +26,14 @@
 export default {
   name: 'CartItem',
   props: {
-    item: Object // Propriété pour recevoir les données de l'article
+    item: Object
   },
- 
   methods: {
     incrementQuantity() {
       this.item.quantity++;
       this.$emit('updateQuantity', this.item.quantity);
     },
-
-
-   decrementQuantity() {
+    decrementQuantity() {
       if (this.item.quantity > 1) {
         this.item.quantity--;
         this.$emit('updateQuantity', this.item.quantity);
@@ -49,38 +46,31 @@ export default {
 <style scoped>
 .cart-item {
   max-width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.card-body {
+  padding: 10px;
 }
 
 .quantity-controls {
-  display: flex;
-  align-items: center;
+  margin-top: 10px;
 }
-
-.quantity-controls button {
-  margin: 0 5px;
-  border-radius: 20px; /* Rendre les boutons ovales */
-}
-
-.quantity {
-  margin: 0 10px;
-}
-
-.card-img {
-  width: 100%;
-}
-
-.btn-simple {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-}
-
 
 .oval-button-group {
   border-radius: 20px;
-  background-color: #f0f0f0; 
-  padding: 5px; 
+  background-color: #f0f0f0;
+  margin: 0 10px;
+  padding: 5px;
 }
 
+.oval-button {
+  width: 50px; /* Largeur du bouton */
+  height: 20px; /* Hauteur du bouton */
+  font-size: 1.2em; /* Taille du texte du bouton */
+  margin: 0 2px 0 5px; /* Réduit l'espace à droite du bouton */
+}
 
 </style>

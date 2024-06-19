@@ -1,23 +1,37 @@
 <script setup>
 import ProductCard from '@/components/ProductCard.vue'
+
+import apiClient from '@/api'
+import { mapGetters } from 'vuex'
 </script>
 
 <template>
   <v-row class="mt-5">
     <v-col cols="9">
-      <h2 class="mb-4 pl-5 ml-3">Résultats de recherche pour « t-shirts{{ search }}»</h2>
-      <v-col class="p-4 d-flex justify-content-start flex-wrap">
-        <ProductCard
-          class="m-1"
-          v-for="(result, index) in results"
-          :key="index"
-          :imageSrc="result.imageSrc"
-          :productTitle="result.productTitle"
-          :productPrice="result.productPrice"
-          :productRating="result.productRating"
-          :productReviews="result.productReviews"
-        />
+      <h2 class="mb-4 pl-5 ml-3">Résultats de recherche pour « {{ this.productSearch }} »</h2>
+      <v-col v-if="!error">
+        <v-col
+          v-if="this.results && this.results.length != 0"
+          class="p-4 d-flex justify-content-start flex-wrap"
+        >
+          <ProductCard
+            v-for="(result, index) in results"
+            :key="index"
+            :imageSrc="result.photos[0].src"
+            :productId="result.id"
+            :productTitle="result.name"
+            :productPrice="result.price"
+            :productRating="4"
+            :productReviews="result.comments.length"
+          />
+        </v-col>
+        <v-col v-else class="p-4 d-flex justify-content-start flex-wrap">
+          <div class="text-secondary w-50 mx-auto m-5">Aucun résultat pour votre recherche</div>
+        </v-col>
       </v-col>
+      <div v-else class="alert alert-danger w-50 mx-auto m-5" role="alert">
+        {{ errorMessage }}
+      </div>
     </v-col>
     <v-col cols="3">
       <v-row>
@@ -127,58 +141,7 @@ export default {
   name: 'ProductSearchView',
   data() {
     return {
-      search: '',
-      results: [
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Sonos Beam Gen 2 Soundbar',
-          productPrice: '$930.00',
-          productRating: 3,
-          productReviews: 9
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Bose Smart Soundbar 900',
-          productPrice: '$689.00',
-          productRating: 3,
-          productReviews: 9
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Sennheiser Ambeo Soundbar',
-          productPrice: '$1,679.00',
-          productRating: 4,
-          productReviews: 10
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Microsoft Surface Pro 8',
-          productPrice: '$606.00',
-          productRating: 4,
-          productReviews: 10
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Microsoft Surface Pro 8',
-          productPrice: '$606.00',
-          productRating: 4,
-          productReviews: 10
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Microsoft Surface Pro 8',
-          productPrice: '$606.00',
-          productRating: 4,
-          productReviews: 10
-        },
-        {
-          imageSrc: '/src/assets/SAC.png',
-          productTitle: 'Microsoft Surface Pro 8',
-          productPrice: '$606.00',
-          productRating: 4,
-          productReviews: 10
-        }
-      ],
+      results: null,
       categoryOpen: true,
       priceOpen: false,
       brandOpen: false,
@@ -191,10 +154,38 @@ export default {
         brands: [],
         rating: []
       },
-      nratings: [1, 2, 3, 4, 5]
+      nratings: [1, 2, 3, 4, 5],
+      errorMessage: '',
+      error: false,
+
+      showAlert: false
+    }
+  },
+  created() {
+    // Code à exécuter à la création de la page.
+
+    this.fetchSearchResults()
+  },
+  // ...
+  watch: {
+    '$store.state.productSearch': {
+      handler() {
+        this.fetchSearchResults()
+      }
     }
   },
   methods: {
+    async fetchSearchResults() {
+      try {
+        const response = await apiClient.get(`/produits?q=${this.productSearch}`)
+        this.results = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.errorMessage = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.error = true
+        console.error('Erreur de connexion:', error)
+      }
+    },
     applyFilters() {
       // Code pour appliquer les filtres, par exemple émettre un événement ou appeler une méthode API
       console.log(this.filters)
@@ -202,6 +193,10 @@ export default {
     handleChange(event) {
       alert('OK')
     }
+  },
+  computed: {
+    ...mapGetters(['user']),
+    ...mapGetters(['productSearch'])
   }
 }
 </script>

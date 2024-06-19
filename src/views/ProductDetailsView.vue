@@ -4,6 +4,16 @@ import { mapGetters } from 'vuex'
 </script>
 
 <template>
+  <div
+    v-if="showAlert"
+    class="alert alert-danger alert-dismissible fade show w-50 mx-auto m-5"
+    role="alert"
+  >
+    {{ errorMessage }}
+    <button type="button" class="close" @click="closeAlert" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
   <div class="container d-flex align-items-center mt-5">
     <v-row>
       <v-col
@@ -271,22 +281,40 @@ export default {
         text: '',
         rating: 0
       },
-      currentSlide: 0
+      currentSlide: 0,
+      errorMessage: '',
+      showAlert: false
     }
   },
   created() {
     this.fetchProductDetails()
   },
+  computed: {
+    productId() {
+      return this.$route.params.id
+    }
+  },
   methods: {
     async fetchProductDetails() {
       try {
-        // On vérifie si l'email existe dans la base de données
-        const response = await apiClient.get(`/produits/1`)
+        const response = await apiClient.get(`/produits/${this.productId}`)
         const data = response.data
         this.produit = data
       } catch (error) {
         // Gérer les erreurs de requête
-        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.errorMessage = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
+    async pushNewComment() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        //const response = await apiClient.post(`/produits/${this.productId}/comments`)
+        //const data = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.errorMessage = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.triggerAlert()
         console.error('Erreur de connexion:', error)
       }
     },
@@ -326,6 +354,7 @@ export default {
         date: new Date().toISOString().split('T')[0],
         avatar: user.photo
       }
+      this.pushNewComment()
       this.produit.comments.push(newComment)
       this.newComment = {
         author: user.nom + ' ' + user.prenom,
@@ -336,6 +365,15 @@ export default {
     formatDate(date) {
       const options = { day: '2-digit', month: 'long', year: 'numeric' }
       return new Date(date).toLocaleDateString('fr-FR', options)
+    },
+    triggerAlert() {
+      this.showAlert = true
+      setTimeout(() => {
+        this.showAlert = false
+      }, 5000) // Alert disappears after 3 seconds
+    },
+    closeAlert() {
+      this.showAlert = false
     }
   }
 }

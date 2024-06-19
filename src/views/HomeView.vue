@@ -7,13 +7,15 @@
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="2"></li>
     </ol>
     <div class="carousel-inner">
-      <CarouselItem v-for="carousselProduct in carousselProducts"
+      <CarouselItem
+        v-for="(index, carousselProduct) in carousselProducts"
         :imageSrc="carousselProduct.imageSrc"
         :altText="carousselProduct.altText"
         :isActive="carousselProduct.isActive"
         :topText="carousselProduct.topText"
         :mainText="carousselProduct.mainText"
         :bottomText="carousselProduct.bottomText"
+        :key="index"
       />
     </div>
     <a
@@ -55,109 +57,117 @@
     </div>
   </div>
 
-     <br>
-     <br>
-    <!-- New Product Category Section with Carousel -->
-    <h2 class="text-center"><strong>Nouvelles catégories</strong></h2>
-    
-    <div id="product-category-section" class="container mt-5">
-      <div id="productCarousel" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner">
-          <div v-for="(chunk, chunkIndex) in categoryChunks" :key="chunkIndex" :class="['carousel-item', { active: chunkIndex === 0 }]">
-            <div class="row justify-content-center">
-              <ProductCategoryCard v-for="categories3 in categories3"
-                :key="categories3.index"
-                :imageSrc="categories3.category.imageSrc"
-                :categoryTitle="categories3.categoryTitle"
-                :productCount="categories3.productCount"
-                :linkUrl="categories3.linkUrl"
-              />
-            </div>
+  <br />
+  <br />
+  <!-- New Product Category Section with Carousel -->
+  <h2 class="text-center"><strong>Nouvelles catégories</strong></h2>
+
+  <div id="product-category-section" class="container mt-5">
+    <div id="productCarousel" class="carousel slide" data-ride="carousel">
+      <div class="carousel-inner">
+        <div
+          v-for="(chunk, chunkIndex) in categoryChunks"
+          :key="chunkIndex"
+          :class="['carousel-item', { active: chunkIndex === 0 }]"
+        >
+          <div class="row justify-content-center">
+            <ProductCategoryCard
+              v-for="(category, index) in chunk"
+              :key="index"
+              :imageSrc="category.imageSrc"
+              :categoryTitle="category.categoryTitle"
+              :productCount="category.productCount"
+              :linkUrl="category.linkUrl"
+            />
           </div>
         </div>
-        <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
-          <span class="carousel-control-prev-icon  custom-carousel-control-icon" aria-hidden="true"></span>
-          <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next  custom-carousel-control-icon" href="#productCarousel" role="button" data-slide="next">
-          <span class="carousel-control-next-icon" aria-hidden="true"></span>
-          <span class="sr-only">Next</span>
-        </a>
+      </div>
+      <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
+        <span
+          class="carousel-control-prev-icon custom-carousel-control-icon"
+          aria-hidden="true"
+        ></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a
+        class="carousel-control-next custom-carousel-control-icon"
+        href="#productCarousel"
+        role="button"
+        data-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </div>
+  <br />
+  <br />
+  <br />
+  <br />
+  <!-- New Arrivals Section -->
+  <div id="new-arrivals-section" class="container mt-5">
+    <h2 class="text-center"><strong>Nouvelles arrivées</strong></h2>
+    <div class="row">
+      <ProductCard
+        v-for="(product, index) in products"
+        :key="index"
+        :imageSrc="product.photos[0].src"
+        :productId="product.id"
+        :productTitle="product.name"
+        :productPrice="product.price"
+        :productRating="4"
+        :productReviews="product.comments.length"
+      />
+    </div>
+
+    <div class="text-center mt-4">
+      <a href="#" class="btn btn-link" @click="loadMoreProducts" v-if="!isLoading">Voir plus</a>
+    </div>
+    <div v-if="isLoading" class="text-center mt-4">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
       </div>
     </div>
-    <br>
-     <br>
-     <br>
-     <br>
-    <!-- New Arrivals Section -->
-    <div id="new-arrivals-section" class="container mt-5">
-      <h2 class="text-center"><strong>Nouvelles arrivées</strong></h2>
-      <div class="row">
-        <ProductCard v-for="products4 in products4"
-          :key="products4.index"
-          :imageSrc="products4.imageSrc"
-          :productTitle="products4.productTitle"
-          :productPrice="products4.productPrice"
-          :productRating="products4.productRating"
-          :productReviews="products4.productReviews"
-        />
-      </div>
-      
-      <div class="text-center mt-4">
-        <a href="#" class="btn btn-link" @click="loadMoreProducts" v-if="!isLoading">Voir plus</a>
-      </div>
-      <div v-if="isLoading" class="text-center mt-4">
-        <div class="spinner-border" role="status">
-          <span class="sr-only">Loading...</span>
-        </div>
-      </div>
-   
   </div>
 </template>
 
-
-
-
-
 <script>
-import ProductCard from '@/components/ProductCard.vue';
-import ProductCategoryCard from '@/components/ProductCategoryCard.vue';
+import ProductCard from '@/components/ProductCard.vue'
+import ProductCategoryCard from '@/components/ProductCategoryCard.vue'
 import ProductCard2 from '@/components/ProductCard2.vue'
 import CarouselItem from '@/components/CarouselItem.vue'
-import apiClient from '@/api';
+import apiClient from '@/api'
 
 export default {
   components: {
     ProductCard,
     ProductCategoryCard,
     ProductCard2,
-    CarouselItem,
+    CarouselItem
   },
   data() {
     return {
       carousselProducts: null,
-      products2: null,
+      products: null,
       categories: null,
-      isLoading: false,
-      products4 : null
+      isLoading: false
     }
   },
   computed: {
     categoryChunks() {
-      return this.chunkArray(this.categories, 5);
-    },
+      return this.chunkArray(this.categories, 5)
+    }
   },
   created() {
     this.fetchCarousselProducts()
-    this.fetchProducts2()
-    this.fetchProducts4()
+    this.fetchNewProducts()
+    this.fetchCategories()
   },
   methods: {
     async fetchCarousselProducts() {
       try {
-        
-        const response = await apiClient.get("/carousselProducts")
-        console.log(response.data)
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get('/carousselProducts')
         this.carousselProducts = response.data
       } catch (error) {
         // Gérer les erreurs de requête
@@ -165,30 +175,28 @@ export default {
         console.error('Erreur de connexion:', error)
       }
     },
-    async fetchProducts2(){ 
-      try{
-        const response = await apiClient.get("/products2")
-        console.log(response.data)
-        this.products2 = response.data
-      }catch (error) {
-        // Gérer les erreurs de requête
-        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
-        console.error('Erreur de connexion:', error)
-      }
-
-    },
-    async fetchProducts4(){
-      try{
-        const response = await apiClient.get("/products4")
-        console.log(response.data)
-        this.products4 = response.data
-      }catch (error) {
+    async fetchNewProducts() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get('/products4')
+        this.products = response.data
+      } catch (error) {
         // Gérer les erreurs de requête
         this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
         console.error('Erreur de connexion:', error)
       }
     },
-
+    async fetchCategories() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get('/categories3')
+        this.categories = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
     loadMoreProducts(event) {
       event.preventDefault()
       this.isLoading = true
@@ -196,25 +204,29 @@ export default {
       setTimeout(() => {
         const moreProducts = [
           {
-            imageSrc: '/src/assets/SAC.png',
-            productTitle: 'Apple AirPods Pro',
-            productPrice: '$249.00',
-            productRating: 5,
-            productReviews: 120
+            imageSrc:
+              'https://s.alicdn.com/@sc04/kf/Hdd38f5e36a7943c5bb758982a4ca7517W.jpg_720x720q50.jpg',
+            productTitle: 'Jean Denim déchiré 3xl pour femme, Skinny, vente en gros',
+            productPrice: '8,13 €',
+            productRating: 3,
+            productReviews: 9
           },
           {
-            imageSrc: '/src/assets/SAC.png',
-            productTitle: 'Samsung Galaxy Buds',
-            productPrice: '$129.00',
+            imageSrc:
+              'https://www.cdiscount.com/pdt2/8/3/3/1/700x700/mp57929833/rw/jean-homme-jean-homme-slim-fit-stretch-jeans-car.jpg',
+            productTitle:
+              'Jean Homme Cargo Grandes Poches, Jean Homme Skinny Pantalon Denim Jogging Travail',
+            productPrice: '36,06 €',
             productRating: 4,
-            productReviews: 95
+            productReviews: 10
           },
           {
-            imageSrc: '/src/assets/SAC.png',
-            productTitle: 'Sony WH-1000XM4',
-            productPrice: '$349.00',
-            productRating: 5,
-            productReviews: 220
+            imageSrc: 'https://m.media-amazon.com/images/I/71+Rfs3mkYL._AC_UY1000_.jpg',
+            productTitle:
+              'Pantalon Homme Jean Homme Casual Jean Homme Regular Pantalon Homme Jeans avec Poche',
+            productPrice: '25,87 €',
+            productRating: 4,
+            productReviews: 10
           }
         ]
         this.products.push(...moreProducts)
@@ -223,17 +235,16 @@ export default {
     },
     chunkArray(arr, size) {
       const result = []
-      for (let i = 0; i < arr.length; i += size) {
-        result.push(arr.slice(i, i + size))
+      if (arr != null) {
+        for (let i = 0; i < arr.length; i += size) {
+          result.push(arr.slice(i, i + size))
+        }
       }
       return result
     }
   }
 }
 </script>
-
-
-
 
 <style scoped>
 #product-category-section {
@@ -281,5 +292,3 @@ export default {
   margin-left: 0;
 }
 </style>
-
-

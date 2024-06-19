@@ -80,7 +80,7 @@ import { mapGetters } from 'vuex'
       <RouterLink to="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto">
         <Logo style="height: 50px; width: 50px" />
       </RouterLink>
-      <form class="w-50 col-lg-auto mb-3 mb-lg-0" role="search">
+      <form @submit.prevent="handleSubmit" class="w-50 col-lg-auto mb-3 mb-lg-0" role="search">
         <v-text-field
           v-model="search"
           label="Recherche"
@@ -92,7 +92,8 @@ import { mapGetters } from 'vuex'
           solo-inverted
           hide-details
           single-line
-          @click:append-inner="onClick"
+          @click:append-inner="handleSubmit"
+          required
         ></v-text-field>
       </form>
       <div class="d-flex align-items-center ms-5">
@@ -172,14 +173,17 @@ export default {
       this.search = category // Vous pouvez ajuster ce comportement selon vos besoins
       this.menu = false // Fermer le menu après avoir sélectionné une catégorie
     },
-    onClick() {
+    handleSubmit() {
+      this.$store.dispatch('setProductSearch', this.search)
       this.loading = true
 
       setTimeout(() => {
         this.loading = false
         this.loaded = true
-      }, 5000)
+        if (this.$router.currentRoute.path !== '/search') this.$router.push('/search')
+      }, 2000)
     },
+    onClick() {},
     logout() {
       this.$store.dispatch('logout')
       this.$router.push('/login') // nous renvoie à la page de connexion
