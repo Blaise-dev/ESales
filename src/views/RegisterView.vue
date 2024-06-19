@@ -25,7 +25,6 @@ import Logo from '@/components/Logo.vue'
         class="col-md-6 d-flex flex-column align-items-center justify-content-center bg-light custom-animation-form"
       >
         <form @submit.prevent="handleSubmit" class="w-100">
-        <form @submit.prevent="handleSubmit" class="w-100">
           <h2 class="mb-4">Créer un compte</h2>
           <div class="mb-3">
             <div class="text-subtitle-1 text-medium-emphasis">
@@ -131,7 +130,6 @@ import Logo from '@/components/Logo.vue'
               data-mdb-button-init
               data-mdb-ripple-init
               class="mb-3 w-50 btn btn-primary btn-lg btn-block"
-              @click="registerUser"
               @click="registerUser"
             >
               <i class="bi bi-check-circle me-2"></i>
