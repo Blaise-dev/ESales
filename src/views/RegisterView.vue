@@ -24,7 +24,7 @@ import Logo from '@/components/Logo.vue'
       <div
         class="col-md-6 d-flex flex-column align-items-center justify-content-center bg-light custom-animation-form"
       >
-        <form class="w-100">
+        <form @submit.prevent="handleSubmit" class="w-100">
           <h2 class="mb-4">Créer un compte</h2>
           <div class="mb-3">
             <div class="text-subtitle-1 text-medium-emphasis">
@@ -37,6 +37,7 @@ import Logo from '@/components/Logo.vue'
             </div>
 
             <v-text-field
+              v-model="email"
               type="email"
               name="email"
               id="email"
@@ -51,6 +52,7 @@ import Logo from '@/components/Logo.vue'
             <p class="d-none d-lg-block">Nom complet <span class="text-danger">*</span></p>
             <div class="mb-3">
               <input
+                v-model="nom"
                 type="text"
                 name="nom"
                 class="form-control"
@@ -61,6 +63,7 @@ import Logo from '@/components/Logo.vue'
             </div>
             <div class="mb-3">
               <input
+                v-model="prenom"
                 type="text"
                 name="prenom"
                 class="form-control"
@@ -75,6 +78,7 @@ import Logo from '@/components/Logo.vue'
               Télephone <span class="text-danger">*</span>
             </div>
             <v-text-field
+              v-model="tel"
               type="tel"
               name="phone"
               id="phone"
@@ -92,6 +96,7 @@ import Logo from '@/components/Logo.vue'
             </div>
 
             <v-text-field
+              v-model="password"
               name="password"
               id="password"
               placeholder="**********************"
@@ -130,6 +135,7 @@ import Logo from '@/components/Logo.vue'
               data-mdb-button-init
               data-mdb-ripple-init
               class="mb-3 w-50 btn btn-primary btn-lg btn-block"
+              @click="registerUser"
             >
               <i class="bi bi-check-circle me-2"></i>
               S'inscrire
@@ -162,6 +168,53 @@ import Logo from '@/components/Logo.vue'
     </div>
   </div>
 </template>
+
+<script>
+import apiClient from '@/api'
+
+export default {
+  data() {
+    return {
+      email: '',
+      nom: '',
+      prenom: '',
+      tel: '',
+      password: '',
+      photo: null,
+      isLoading: false,
+      loaded: false
+    }
+  },
+  methods: {
+    async registerUser() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.post('/users', {
+          nom: this.nom,
+          prenom: this.prenom,
+          email: this.email,
+          password: this.password,
+          photo: 'null',
+          token: 'ADAFZEJHDJQSD111--'
+        })
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        console.error('Erreur de connexion:', error)
+      }
+    },
+    handleSubmit() {
+      this.isLoading = true
+
+      setTimeout(() => {
+        this.isLoading = false
+        this.loaded = true
+        this.$router.push('/login')
+      }, 2000)
+    }
+  }
+}
+</script>
 
 <style>
 @media (min-width: 1024px) {
