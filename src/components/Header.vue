@@ -1,6 +1,7 @@
 <script setup>
 import Logo from '@/components/Logo.vue'
 import { mapGetters } from 'vuex'
+import apiClient from '@/api'
 </script>
 
 <template>
@@ -98,23 +99,131 @@ import { mapGetters } from 'vuex'
       </form>
       <div class="d-flex align-items-center ms-5">
         <!-- ms-3 adds margin-left -->
-        <button class="btn position-relative me-2" @click="showWishesList = !showWishesList">
-          <v-icon class="display-6 text-secondary">mdi-heart-outline</v-icon>
-          <span
-            v-if="wishesListItemsCount > 0"
-            class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle"
-            >{{ wishesListItemsCount }}</span
-          >
-        </button>
 
-        <button class="btn position-relative me-2" @click="showCart = !showCart">
-          <v-icon class="display-6 text-secondary">mdi-cart-outline</v-icon>
-          <span
-            v-if="cartItemsCount > 0"
-            class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle"
-            >{{ cartItemsCount }}</span
-          >
-        </button>
+        <v-menu v-model="showWishesList" :close-on-content-click="false" location="end">
+          <template v-slot:activator="{ props }">
+            <button
+              class="btn position-relative me-2"
+              @click="showWishesList = !showWishesList"
+              v-bind="props"
+            >
+              <v-icon class="display-6 text-secondary">mdi-heart-outline</v-icon>
+              <span
+                v-if="wishesListItemsCount > 0"
+                class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle"
+                >{{ wishesListItemsCount }}</span
+              >
+            </button>
+          </template>
+
+          <v-card min-width="300">
+            <v-card-title>Liste de souhaits</v-card-title>
+            <v-divider></v-divider>
+
+            <v-list>
+              <router-link
+                v-for="item in wishesList"
+                :key="item.id"
+                :to="`/produits/${item.id}`"
+                class="text-decoration-none"
+              >
+                <v-list-item :title="item.name" :subtitle="item.price" :prepend-avatar="item.image">
+                  <template v-slot:append>
+                    <v-btn
+                      :class="item.fav ? 'text-red' : ''"
+                      icon="mdi-heart"
+                      variant="text"
+                      @click.stop="toggleFav(item)"
+                    ></v-btn>
+                    <v-btn
+                      icon="mdi-delete"
+                      variant="text"
+                      @click.stop.prevent="removeFromWishesList(item.id)"
+                    ></v-btn>
+                  </template>
+                </v-list-item>
+              </router-link>
+              <v-list-item v-if="wishesListItemsCount === 0">
+                <v-list-item-content>
+                  <v-list-item-title>Votre liste de souhaits est vide.</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+
+            <v-card-actions>
+              <v-btn
+                color="red"
+                variant="text"
+                @click="clearWishesList"
+                v-if="wishesListItemsCount > 0"
+                >Vider la liste</v-btn
+              >
+              <v-spacer></v-spacer>
+              <v-btn variant="text" @click="showWishesList = false">Fermer</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
+
+        <v-menu v-model="showCart" :close-on-content-click="false" location="end">
+          <template v-slot:activator="{ props }">
+            <button class="btn position-relative me-2" @click="showCart = !showCart" v-bind="props">
+              <v-icon class="display-6 text-secondary">mdi-cart-outline</v-icon>
+              <span
+                v-if="cartItemsCount > 0"
+                class="badge bg-danger rounded-circle position-absolute top-0 start-100 translate-middle"
+                >{{ cartItemsCount }}</span
+              >
+            </button>
+          </template>
+
+          <v-card min-width="300">
+            <v-card-title>Panier</v-card-title>
+            <v-divider></v-divider>
+
+            <v-list v-if="this.cart != null">
+              <v-list-item
+                v-for="item in this.cart"
+                :key="item.id"
+                :title="item.name"
+                :subtitle="item.price"
+                :prepend-avatar="item.image"
+                @click="goToProduct(item.id)"
+              >
+                <template v-slot:append>
+                  <v-btn
+                    icon="mdi-delete"
+                    variant="text"
+                    @click.stop.prevent="removeFromCart(item.id)"
+                  ></v-btn>
+                </template>
+              </v-list-item>
+              <v-list-item v-if="cartItemsCount === 0">
+                <v-list-item-content>
+                  <v-list-item-title>Votre panier est vide.</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+
+            <v-list v-else>
+              <v-list-item>
+                <v-list-item-content class="d-flex flex-column align-items-center">
+                  <v-progress-circular
+                    indeterminate
+                    color="primary"
+                    class="mb-3"
+                  ></v-progress-circular>
+                  <v-list-item-title>Chargement du panier...</v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+
+            <v-divider></v-divider>
+
+            <v-card-actions>
+              <v-btn block color="blue" variant="text" @click="viewCart">Voir le panier</v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-menu>
       </div>
     </div>
   </div>
@@ -153,8 +262,25 @@ export default {
       darkTheme: true, // Initial theme set to dark
       showWishesList: false,
       showCart: false,
-      wishesListItemsCount: 2, // Example count of notifications
-      cartItemsCount: 3, // Example count of cart items
+
+      wishesList: [
+        {
+          id: 1,
+          image: 'https://m.media-amazon.com/images/I/61fls6A2anL._AC_UY1000_.jpg',
+          name: 'Produit 1',
+          price: '10 €',
+          fav: true
+        },
+        {
+          id: 2,
+          image: 'https://p.globalsources.com/IMAGES/PDT/B5765148862/Vetements-de-sport.png',
+          name: 'Produit 2',
+          price: '20 €',
+          fav: false
+        }
+        // Ajoutez autant de produits que nécessaire
+      ],
+      cart: null,
       search: '',
       menu: false,
       categories: [
@@ -165,7 +291,46 @@ export default {
       ]
     }
   },
+
+  created() {
+    // Code à exécuter à la création de la page.
+
+    this.fetchShoppingCart()
+  },
   methods: {
+    async fetchShoppingCart() {
+      try {
+        const response = await apiClient.get('/panier')
+        this.cart = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.errorMessage = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.error = true
+        console.error('Erreur de connexion:', error)
+      }
+    },
+    toggleFav(item) {
+      item.fav = !item.fav
+    },
+    clearWishesList() {
+      this.wishesList = []
+    },
+    removeFromWishesList(id) {
+      this.wishesList = this.wishesList.filter((item) => item.id !== id)
+    },
+
+    removeFromCart(id) {
+      this.cart = this.cart.filter((item) => item.id !== id)
+    },
+    viewCart() {
+      // Logique pour voir le panier
+      this.$router.push('/shoppingcart')
+      this.showCart = false
+    },
+    goToProduct(id) {
+      this.$router.push(`/products/${id}`)
+      this.showCart = false
+    },
     toggleMenu() {
       this.menu = !this.menu
     },
@@ -183,14 +348,21 @@ export default {
         if (this.$router.currentRoute.path !== '/search') this.$router.push('/search')
       }, 2000)
     },
-    onClick() {},
     logout() {
       this.$store.dispatch('logout')
       this.$router.push('/login') // nous renvoie à la page de connexion
     }
   },
   computed: {
-    ...mapGetters(['user'])
+    ...mapGetters(['user']),
+
+    wishesListItemsCount() {
+      return this.wishesList ? this.wishesList.length : 0
+    },
+
+    cartItemsCount() {
+      return this.cart ? this.cart.length : 0
+    }
   }
 }
 </script>
