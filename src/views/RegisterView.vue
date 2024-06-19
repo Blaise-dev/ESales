@@ -92,12 +92,12 @@
               name="password"
               id="password"
               placeholder="**********************"
-              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-              :type="visible ? 'text' : 'password'"
+              :append-inner-icon="visiblePassword ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="visiblePassword ? 'text' : 'password'"
               density="compact"
               prepend-inner-icon="mdi-lock-outline"
               variant="outlined"
-              @click:append-inner="visible = !visible"
+              @click:append-inner="visiblePassword = !visiblePassword"
               required
             ></v-text-field>
           </div>
@@ -111,12 +111,12 @@
               name="password_confirm"
               id="password_confirm"
               placeholder="**********************"
-              :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-              :type="visible ? 'text' : 'password'"
+              :append-inner-icon="visibleConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              :type="visibleConfirmPassword ? 'text' : 'password'"
               density="compact"
               prepend-inner-icon="mdi-lock-outline"
               variant="outlined"
-              @click:append-inner="visible = !visible"
+              @click:append-inner="visibleConfirmPassword = !visibleConfirmPassword"
               required
             ></v-text-field>
           </div>
@@ -174,7 +174,9 @@ export default {
       password: '',
       photo: null,
       isLoading: false,
-      loaded: false
+      loaded: false,
+      visiblePassword: false,
+      visibleConfirmPassword: false
     }
   },
   methods: {
@@ -207,46 +209,3 @@ export default {
   }
 }
 </script>
-
-<style>
-@media (min-width: 1024px) {
-  .login {
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-  }
-  .bg-image {
-    background-image: url('@/assets/jeune-femme-excitee-montrant-banniere-pointant-du-doigt-vers-gauche-souriant-camera-debout-etonnee-par-mur-blanc.jpg'); /* Assurez-vous que le chemin de l'image est correct */
-    background-size: cover; /* Couvrir tout le bloc */
-    background-position: center; /* Centrer l'image */
-    height: 999px; /* Vous pouvez ajuster la hauteur selon vos besoins */
-    display: flex;
-    align-items: center; /* Centrer verticalement le contenu */
-    justify-content: center; /* Centrer horizontalement le contenu */
-  }
-  .divider:after,
-  .divider:before {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: #eee;
-  }
-
-  .vh-100 {
-    height: 100vh;
-  }
-
-  .p-0 {
-    padding: 0 !important;
-  }
-  input::placeholder {
-    color: rgb(122, 122, 122); /* Change la couleur du placeholder à gris */
-  }
-  .carousel-item img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    overflow: hidden; /* Masquer les parties de l'image qui dépassent */
-  }
-}
-</style>
