@@ -63,10 +63,10 @@
     data() {
       return {
         Produits: [
-          { id: 7, image: '/src/assets/itrico.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 13, image: '/src/assets/ipantalon.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 27, image: '/src/assets/irobe.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 921, image: '/src/assets/ichapeau.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 7, image: '/src/assets/trico2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 13, image: '/src/assets/pantalon2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 27, image: '/src/assets/robe2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 921, image: '/src/assets/lunette2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
           { id: 14, image: 'path/to/robe.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
           { id: 35, image: 'path/to/blouse.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
           { id: 67, image: 'path/to/chemise.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
