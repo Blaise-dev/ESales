@@ -7,8 +7,7 @@
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title">{{ item.name }}</h5>
-          <p class="card-text"><strong>{{ item.price * item.quantity }} €</strong></p>
-          <!-- Autres informations de l'article -->
+          <p class="card-text"><strong>{{ (item.price * item.quantity).toFixed(2) }} €</strong></p>
           <div class="quantity-controls">
             <div class="oval-button-group">
               <button @click="decrementQuantity" class="btn-simple oval-button">-</button>
@@ -26,17 +25,18 @@
 export default {
   name: 'CartItem',
   props: {
-    item: Object
+    item: {
+      type: Object,
+      required: true
+    }
   },
   methods: {
     incrementQuantity() {
-      this.item.quantity++;
-      this.$emit('updateQuantity', this.item.quantity);
+      this.$emit('updateQuantity', this.item.quantity + 1);
     },
     decrementQuantity() {
       if (this.item.quantity > 1) {
-        this.item.quantity--;
-        this.$emit('updateQuantity', this.item.quantity);
+        this.$emit('updateQuantity', this.item.quantity - 1);
       }
     }
   }
@@ -72,5 +72,4 @@ export default {
   font-size: 1.2em; /* Taille du texte du bouton */
   margin: 0 2px 0 5px; /* Réduit l'espace à droite du bouton */
 }
-
 </style>
