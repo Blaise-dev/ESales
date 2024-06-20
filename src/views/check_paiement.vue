@@ -1,45 +1,49 @@
+<script setup>
+import { mapGetters } from 'vuex'
+</script>
+
 <template>
-  <br>
+  <br />
   <div class="header">
-      <div class="header-content ">
-        <p>Paiement accepté</p>
-        
-      </div>
+    <div class="header-content">
+      <p>Paiement accepté</p>
     </div>
-    <div class="droite">
-      <RouterLink to="/" class="back-link">
-        <img src="/src/assets/Retour.png" alt="Retour" class="back-link-icon">
-        Retour à la page d'accueil
-      </RouterLink>
-    </div>
+  </div>
+  <div class="droite">
+    <RouterLink to="/" class="back-link">
+      <img src="/src/assets/Retour.png" alt="Retour" class="back-link-icon" />
+      Retour à la page d'accueil
+    </RouterLink>
+  </div>
   <div class="container">
-    
-    <br>
-    <br>
+    <br />
+    <br />
     <div class="content">
       <h2 class="custom-header">Merci pour votre commande !</h2>
       <p>Commande Confirmée : #56</p>
-      <p class="custom-header1">Merci d'avoir commandé chez E-Sales. Votre commande a été reçue et est en cours de traitement.</p>
+      <p class="custom-header1">
+        Merci d'avoir commandé chez E-Sales. Votre commande a été reçue et est en cours de
+        traitement.
+      </p>
 
       <div class="order-summary">
         <h2 class="section-title">
-          <img class="section-title img" src="/src/assets/Résumé.png" alt="Order Summary Icon">
+          <img class="section-title img" src="/src/assets/Résumé.png" alt="Order Summary Icon" />
           Récapitulatif de votre commande :
         </h2>
         <ul class="circle-list">
-          <li>T-shirt à manches courtes et col en V dégradé pour l'été - Quantité: 1 - Prix: 5,99€</li>
-          <li>Class Chemise Décontractée À Manches Chauve-souris À Encolure En V Unie - Quantité: 1 - Prix: 5,52€</li>
-          <li>1 Pièce Étagère De Rangement De Cuisine - Quantité: 1 - Prix: 5,10€</li>
-          <li>1 pièce Fouet semi-automatique à rotation - Quantité: 1 - Prix: 1,80€</li>
-        <li>Sous-total: 50,00€</li>
-        <li>Frais de livraison: 5,00€</li>
-        <li>Total: 55,00€</li>
-      </ul>
+          <li v-for="produit in this.panier">
+            {{ produit.name }} - Quantité: {{ produit.quantity }} - Prix: {{ produit.price }} €
+          </li>
+          <li>Sous-total: {{ getSubtotal }} €</li>
+          <li>Frais de livraison: 5,00 €</li>
+          <li>Total: {{ getTotalPrice }}€</li>
+        </ul>
       </div>
-      
+
       <div class="delivery-info">
         <h2 class="section-title">
-          <img class="section-title img" src="/src/assets/livraison.png" alt="Delivery Info Icon">
+          <img class="section-title img" src="/src/assets/livraison.png" alt="Delivery Info Icon" />
           Informations de livraison :
         </h2>
         <ul class="circle-list">
@@ -51,23 +55,41 @@
 
       <div class="contact-info">
         <h2 class="section-title">
-          <img class="section-title img" src="/src/assets/contactez.png" alt="Contact Info Icon">
+          <img class="section-title img" src="/src/assets/contactez.png" alt="Contact Info Icon" />
           Contactez-nous :
         </h2>
         <ul class="circle-list">
           <li>Service clientèle: serviceclient@estores.com | +33 1 23 45 67 89</li>
           <li>Heures d'ouverture: Lundi à Vendredi - 9:00 à 18:00</li>
-          <li>Un e-mail de confirmation a été envoyé à votre adresse. Si vous avez des questions, n'hésitez pas à nous contacter.</li>
+          <li>
+            Un e-mail de confirmation a été envoyé à votre adresse. Si vous avez des questions,
+            n'hésitez pas à nous contacter.
+          </li>
         </ul>
       </div>
     </div>
   </div>
- 
 </template>
 
 <script>
 export default {
-  name: 'CheckoutPaiement'
+  name: 'CheckoutPaiement',
+  created() {
+    alert(this.panier[1])
+  },
+
+  computed: {
+    getSubtotal() {
+      return this.panier.reduce((total, item) => total + item.price * item.quantity, 0)
+    },
+    getTax() {
+      return this.getSubtotal * 0.2 // Calcul de la taxe à 20%
+    },
+    getTotalPrice() {
+      return this.getSubtotal + this.getTax + 5
+    },
+    ...mapGetters(['panier'])
+  }
 }
 </script>
 
@@ -133,7 +155,9 @@ body {
   margin-bottom: 10px;
 }
 
-.order-summary, .delivery-info, .contact-info {
+.order-summary,
+.delivery-info,
+.contact-info {
   background-color: #f8f9fa;
   padding: 15px;
   border: 8px solid #e0e0e0;
@@ -142,7 +166,9 @@ body {
   width: 800px;
 }
 
-.order-summary h2, .delivery-info h2, .contact-info h2 {
+.order-summary h2,
+.delivery-info h2,
+.contact-info h2 {
   color: #333333;
   font-size: 1.2rem;
   margin-bottom: 10px;
@@ -170,11 +196,11 @@ body {
 
 .custom-header {
   font-weight: bold; /* Met le texte en gras */
-  font-size: 40px;   /* Ajustez la taille de la police selon vos besoins */
+  font-size: 40px; /* Ajustez la taille de la police selon vos besoins */
 }
 
 .custom-header1 {
-  font-size: 12px; 
+  font-size: 12px;
 }
 
 .section-title img {

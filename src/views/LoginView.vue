@@ -175,6 +175,7 @@ export default {
 
           this.$store.dispatch('setUser', user)
           this.$store.dispatch('setToken', user.token)
+          this.fetchPanier()
           this.$router.push('/') // nous renvoie à la page d'accueil
         }
       } catch (error) {
@@ -183,15 +184,13 @@ export default {
         console.error('Erreur de connexion:', error)
       }
     },
-    async fetchPanier(){
+    async fetchPanier() {
       try {
         const response = await apiClient.get(`/panier`)
         let panier = response.data
 
         this.$store.dispatch('setPanier', panier)
-
-      }
-      catch (error) {
+      } catch (error) {
         // Gérer les erreurs de requête
         this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
         console.error('Erreur de connexion:', error)
