@@ -62,7 +62,45 @@ const router = createRouter({
       path: '/search',
       name: 'search',
       component: () => import('../views/ProductSearchView.vue')
-    }
+    },
+    
+    {
+      path: '/AjoutCateg',
+      name: 'AjoutCateg',
+      component: () => import('../views/AjoutCateg.vue')
+
+    },
+    {
+      path: '/AjoutProduit',
+      name: 'AjoutProduit',
+      component: () => import('../views/AjoutProduit.vue')
+
+    },
+    {
+      path: '/AjoutRole',
+      name: 'AjoutRole',
+      component: () => import('../views/AjouterRole.vue')
+
+    },
+    {
+      path: '/ProfilPasswrd',
+      name: 'ProfilPasswrd',
+      component: () => import('../views/ProfilPasswrd.vue')
+
+    },
+    {
+      path: '/Categorie',
+      name: 'Categorie',
+      component: () => import('../views/CategorieView.vue')
+
+    },
+    {
+      path: '/Produit',
+      name: 'Produit',
+      component: () => import('../views/ProduitView.vue')
+
+    },
+    
   ]
 })
 
