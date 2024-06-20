@@ -345,7 +345,13 @@ export default {
       }
     },
     addToCart() {
-      // Logique pour ajouter au panier
+      this.$store.dispatch('addToPanier', {
+        id: this.produit.id,
+        name: this.produit.name,
+        price: this.produit.price,
+        image: this.produit.photos[0].src,
+        quantity: this.quantity
+      })
     },
     addComment() {
       const user = this.$store.state.user

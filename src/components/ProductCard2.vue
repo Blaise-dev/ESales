@@ -1,28 +1,34 @@
 <template>
   <div class="custom-container">
-    <RouterLink to="/products" class="link_product">
-    <div class="card h-100 text-center custom-card">
-      <div class="card-body d-flex justify-content-between align-items-start">
-        <div class="text-container">
-          <br>
-          <h3 class="card-title">{{ title }}</h3>
-          <p class="card-text">{{ description }}</p>
-          <br>
-          <RouterLink to="/paiement" class="btn custom-btn">Acheter maintenant <span class="arrow">→</span></RouterLink>
+    <RouterLink :to="{ name: 'products', params: { id: this.id } }" class="link_product">
+      <div class="card h-100 text-center custom-card">
+        <div class="card-body d-flex justify-content-between align-items-start">
+          <div class="text-container">
+            <br />
+            <h3 class="card-title">{{ title }}</h3>
+            <p class="card-text">{{ description }}</p>
+            <br />
+            <button @click.stop.prevent="goToPaymentPage" class="btn custom-btn">
+              Acheter maintenant <span class="arrow">→</span>
+            </button>
+          </div>
+          <img :src="imageSrc" class="custom-image" alt="Product image" />
         </div>
-        <img :src="imageSrc" class="custom-image" alt="Product image" />
       </div>
-    </div>
-  </RouterLink>
+    </RouterLink>
   </div>
 </template>
 
 <script>
-import { RouterLink } from 'vue-router';
+import { RouterLink } from 'vue-router'
 
 export default {
   name: 'ProductCard2',
   props: {
+    id: {
+      type: Number,
+      required: true
+    },
     title: {
       type: String,
       required: true
@@ -35,9 +41,19 @@ export default {
       type: String,
       required: true
     },
-    link: {
+    price: {
       type: String,
       required: true
+    }
+  },
+  methods: {
+    goToPaymentPage() {
+      this.$store.dispatch('updatePaymentData', {
+        id: this.id,
+        title: this.title,
+        price: this.price
+      })
+      this.$router.push('/paiement')
     }
   }
 }
@@ -92,6 +108,6 @@ export default {
   text-decoration: none;
 }
 .link_product {
-    text-decoration: none;
-  }
+  text-decoration: none;
+}
 </style>
