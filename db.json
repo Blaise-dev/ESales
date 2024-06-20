@@ -518,7 +518,7 @@
   "carousselProducts": [
     {
       "id": "1",
-      "imageSrc": "/src/assets/pay.png",
+      "imageSrc": "/src/assets/fusionage.png",
       "altText": "First slide",
       "isActive": true,
       "topText": "Starting at $274.00",
@@ -527,7 +527,7 @@
     },
     {
       "id": "2",
-      "imageSrc": "/src/assets/pay.png",
+      "imageSrc": "/src/assets/fusionage.png",
       "altText": "Second slide",
       "isActive": false,
       "topText": "Top Text for Slide 2",
@@ -536,7 +536,7 @@
     },
     {
       "id": "3",
-      "imageSrc": "/src/assets/pay.png",
+      "imageSrc": "/src/assets/fusionage.png",
       "altText": "Third slide",
       "isActive": false,
       "topText": "Top Text for Slide 3",
