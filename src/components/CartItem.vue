@@ -9,10 +9,10 @@
           <h5 class="card-title">{{ item.name }}</h5>
           <p class="card-text"><strong>{{ (item.price * item.quantity).toFixed(2) }} €</strong></p>
           <div class="quantity-controls">
-            <div class="oval-button-group">
-              <button @click="decrementQuantity" class="btn-simple oval-button">-</button>
-              <span class="mx-2">{{ item.quantity }}</span>
-              <button @click="incrementQuantity" class="btn-simple oval-button">+</button>
+            <div class="oval-group">
+              <button @click="decrementQuantity" class="oval-btn">-</button>
+              <span class="quantity-text">{{ item.quantity }}</span>
+              <button @click="incrementQuantity" class="oval-btn">+</button>
             </div>
           </div>
         </div>
@@ -71,7 +71,7 @@ export default {
       // Émettre un événement pour supprimer l'article du panier
       this.$emit('removeItem');
       // Fermer le modal après suppression
-      this.$store.dispatch('removeFromPanier', item.id);
+      this.$store.dispatch('removeFromPanier', this.item.id);
       $('#confirmDeleteModal').modal('hide');
 
     }
@@ -95,17 +95,31 @@ export default {
   margin-top: 10px;
 }
 
-.oval-button-group {
-  border-radius: 20px;
+.oval-group {
+  display: flex;
+  align-items: center;
   background-color: #f0f0f0;
-  margin: 0 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
   padding: 5px;
+  width: fit-content; /* Ajuste la largeur au contenu */
 }
 
-.oval-button {
-  width: 50px; /* Largeur du bouton */
-  height: 20px; /* Hauteur du bouton */
-  font-size: 1.2em; /* Taille du texte du bouton */
-  margin: 0 2px 0 5px; /* Réduit l'espace à droite du bouton */
+
+.oval-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 1px solid #ccc;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 0 5px;
+}
+
+.quantity-text {
+  font-size: 1.2em;
 }
 </style>
