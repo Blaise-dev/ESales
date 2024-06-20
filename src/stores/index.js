@@ -1,11 +1,12 @@
 import { createStore } from 'vuex'
 import createPersistedState from 'vuex-persistedstate'
 import Cookies from 'js-cookie'
+import apiClient from '@/api'
 
 // Hydrate the state from localStorage
 const userFromLocalStorage = JSON.parse(localStorage.getItem('user'))
 const tokenFromLocalStorage = localStorage.getItem('token')
-const panierFromLocalStorage = localStorage.getItem('panier')
+const panierFromLocalStorage = JSON.parse(localStorage.getItem('panier'))
 
 const store = createStore({
   state: {
@@ -33,11 +34,11 @@ const store = createStore({
     },
     addToPanier(state, produit) {
       state.panier.push(produit)
-      localStorage.setItem('panier', JSON.stringify(panier))
+      localStorage.setItem('panier', JSON.stringify(state.panier))
     },
     removeFromPanier(state, idProduit) {
       state.panier = state.panier.filter((item) => item.id !== idProduit)
-      localStorage.setItem('panier', JSON.stringify(panier))
+      localStorage.setItem('panier', JSON.stringify(state.panier))
     },
     clearPanier(state) {
       state.panier = null
@@ -72,14 +73,30 @@ const store = createStore({
     setPanier({ commit }, panier) {
       commit('setPanier', panier)
     },
-    addToPanier({ commit }, produit) {
-      commit('addToPanier', produit)
+
+    async addToPanier({ commit }, produit) {
+      try {
+        const response = await apiClient.post('/panier', produit)
+        commit('addToPanier', produit)
+      } catch (error) {
+        console.error("Erreur lors de l'ajout dans le panier:", error)
+      }
     },
-    removeFromPanier({ commit }, idProduit) {
-      commit('removeFromPanier', idProduit)
+    async removeFromPanier({ commit }, idProduit) {
+      try {
+        const response = await apiClient.delete('/panier/' + idProduit)
+        commit('removeFromPanier', idProduit)
+      } catch (error) {
+        console.error("Erreur lors de l'ajout dans le panier:", error)
+      }
     },
-    clearPanier({ commit }) {
-      commit('clearPanier')
+    async clearPanier({ commit }) {
+      try {
+        const response = await apiClient.delete('/panier/')
+        commit('clearPanier')
+      } catch (error) {
+        console.error("Erreur lors de l'ajout dans le panier:", error)
+      }
     },
     updatePaymentData({ commit }, data) {
       commit('setPaymentData', data)

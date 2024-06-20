@@ -74,10 +74,6 @@ import { mapGetters } from 'vuex'
 <script>
 export default {
   name: 'CheckoutPaiement',
-  created() {
-    alert(this.panier[1])
-  },
-
   computed: {
     getSubtotal() {
       return this.panier.reduce((total, item) => total + item.price * item.quantity, 0)
