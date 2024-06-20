@@ -1,17 +1,20 @@
-<!-- ShoppingCart.vue -->
-
 <template>
   <div class="container">
     <h1 class="mt-5">Panier d'achat</h1>
     <div class="row mt-3">
       <div class="col-lg-8 col-md-12">
-         <!-- Ajout du message d'erreur -->
+        <!-- Ajout du message d'erreur -->
         <div v-if="errorMessage" class="alert alert-danger" role="alert">
-            {{ errorMessage }}
+          {{ errorMessage }}
         </div>
         <div class="card-deck">
-          <cart-item v-for="(item, index) in cartItems" :key="index" :item="item" @updateQuantity="updateQuantity(index, $event)"></cart-item>
-        </div>
+          <cart-item 
+            v-for="(item, index) in cartItems" 
+            :key="item.id" 
+            :item="item" 
+             @updateQuantity="updateQuantity(index, $event)"
+          ></cart-item>
+      </div>
       </div>
       <div class="col-lg-4 col-md-12 mt-3 mt-lg-0">
         <div class="card custom-card">
@@ -41,68 +44,88 @@
         </div>
       </div>
     </div>
-    <!-- Passer les information au Checkout-->
+    <!-- Passer les informations au Checkout-->
   </div>
 </template>
 
 <script>
-import apiClient from '@/api'
+import { ref } from 'vue'; 
+
+import apiClient from '@/api';
 import CartItem from '@/components/CartItem.vue'; 
 
 export default {
   components: {
     CartItem
   },
-  data() {
-    return {
-      cartItems: [],
-      errorMessage:"",
-      taxRate: 0.20, // Taux de taxe (20%)
-      shippingCost: 5 // Coût de livraison
-    };
-  },
-  mounted() {
-    // Récupérer les articles du panier depuis le backend JSON 
-    this.fetchCartItems();
-  },
-  computed: {
-    getSubtotal() {
-      return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
-    },
-    getTax() {
-      return this.getSubtotal * 0.20; // Calcul de la taxe à 20%
-    },
-    getShipping() {
-      return 5; // Exemple de coût fixe de livraison
-    },
-    getTotalPrice() {
-      return this.getSubtotal + this.getTax + this.getShipping;
-    }
-  },
-  methods: {
-    async fetchCartItems() {
+  setup() {
+    const cartItems = ref([]); // Utiliser ref pour créer une référence réactive
+
+    const errorMessage = ref("");
+
+    // Méthode pour récupérer les articles du panier
+    const fetchCartItems = async () => {
       try {
-        // Effectuer une requête GET à l'URL de notre backend JSON pour récupérer les articles du panier
         const response = await apiClient.get('/panier');
-        this.cartItems = response.data;
+        cartItems.value = response.data; // Utiliser .value pour accéder à la valeur réelle
       } catch (error) {
-        this.errorMessage = 'Erreur lors de la récupération des articles du panier: ' + error.message;
+        errorMessage.value = 'Erreur lors de la récupération des articles du panier: ' + error.message;
         console.error('Erreur lors de la récupération des articles du panier:', error);
       }
-    },
-    updateQuantity(index, newQuantity) {
-      this.cartItems[index].quantity = newQuantity;
-    },
-    proceedToCheckout() {
+    };
+
+    // Méthode pour mettre à jour la quantité d'un article
+    const updateQuantity = async (index, newQuantity) => {
+      const item = cartItems.value[index];
+      const updatedItem = { ...item, quantity: newQuantity };
+
+      try {
+        // Envoyer une requête PUT à l'URL de notre backend JSON pour mettre à jour la quantité de l'article dans le panier
+        await apiClient.put(`/panier/${item.id}`, updatedItem);
+        cartItems.value[index] = updatedItem; // Mettre à jour l'article dans le tableau réactif
+      } catch (error) {
+        errorMessage.value = 'Erreur lors de la mise à jour de la quantité de l\'article: ' + error.message;
+        console.error('Erreur lors de la mise à jour de la quantité de l\'article:', error);
+      }
+    };
+
+    // Méthode pour supprimer un article du panier
+    const removeItem = async (index) => {
+      const item = cartItems.value[index];
+
+      try {
+        // Envoyer une requête DELETE à l'URL de notre backend JSON pour supprimer l'article du panier
+        await apiClient.delete(`/panier/${item.id}`);
+        cartItems.value.splice(index, 1); // Supprimer l'article du tableau réactif
+      } catch (error) {
+        errorMessage.value = 'Erreur lors de la suppression de l\'article du panier: ' + error.message;
+        console.error('Erreur lors de la suppression de l\'article du panier:', error);
+      }
+    };
+
+    // Méthode pour rediriger vers la page de paiement
+    const proceedToCheckout = () => {
       // rediriger l'utilisateur vers la page de paiement ou de commande
       this.$router.push('/checkout') 
       console.log('Procéder à la caisse')
-    },
-    continueShopping() {
-      //  rediriger l'utilisateur vers la page d'accueil ou de shopping
+    };
+
+    // Méthode pour rediriger vers la page d'accueil ou de shopping
+    const continueShopping = () => {
+      // rediriger l'utilisateur vers la page d'accueil ou de shopping
       this.$router.push('/') 
       console.log('Continuer vos achats');
-    }
+    };
+
+    return {
+      cartItems,
+      errorMessage,
+      fetchCartItems,
+      updateQuantity,
+      removeItem,
+      proceedToCheckout,
+      continueShopping
+    };
   }
 };
 </script>
