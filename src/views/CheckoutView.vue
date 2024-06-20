@@ -73,7 +73,6 @@
               <img :src="item.image" class="mr-3" alt="Image de l'article" style="max-width: 100px;">
               <div class="media-body">
                   <h5 class="mt-0">{{ item.name }}</h5>
-                  <p>{{ item.description }}</p>
                   <p>{{ item.price }} € x {{ item.quantity }}</p>
                 </div>
               </div>
@@ -154,20 +153,31 @@ export default {
 };
 </script>
 
+
 <style scoped>
+  label {
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+  }
 
-.summary-card {
-  max-width: 500px; /* Limite la largeur de la carte de récapitulatif */
-  margin-left: auto; 
-  margin-right: auto; 
-}
+  .media-body h5, 
+  .media-body p {
+    text-align: left;
+    margin-bottom: 0; 
+  }
 
-.total-price {
-  margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
-}
+  .summary-card {
+    max-width: 500px; /* Limite la largeur de la carte de récapitulatif */
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-.item-price {
-  margin-right: 10px; /* Ajuste la marge en haut du conteneur total-price */
-}
+  .total-price {
+    margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
+  }
 
+  .item-price {
+    margin-right: 10px; /* Ajuste la marge en haut du conteneur total-price */
+  }
 </style>
