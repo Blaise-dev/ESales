@@ -16,7 +16,7 @@
             ></span>
             <p>({{ productReviews }} commentaire(s))</p>
           </div>
-          <RouterLink to="/shoppingcart" class="btn btn-primary">Ajouter au panier</RouterLink>
+          <button @click.prevent="addToCart" class="btn btn-primary">Ajouter au panier</button>
         </div>
       </div>
     </RouterLink>
@@ -52,6 +52,17 @@ export default {
     productReviews: {
       type: Number,
       required: true
+    }
+  },
+  methods: {
+    addToCart() {
+      this.$store.dispatch('addToPanier', {
+        id: this.productId,
+        name: this.productTitle,
+        price: this.productPrice,
+        image: this.imageSrc,
+        quantity: 1
+      })
     }
   }
 }

@@ -180,9 +180,9 @@ import apiClient from '@/api'
             <v-card-title>Panier</v-card-title>
             <v-divider></v-divider>
 
-            <v-list v-if="this.cart != null">
+            <v-list v-if="this.panier != null">
               <v-list-item
-                v-for="item in this.cart"
+                v-for="item in this.panier"
                 :key="item.id"
                 :title="item.name"
                 :subtitle="item.price"
@@ -280,7 +280,6 @@ export default {
         }
         // Ajoutez autant de produits que nécessaire
       ],
-      cart: null,
       search: '',
       menu: false,
       categories: [
@@ -291,24 +290,7 @@ export default {
       ]
     }
   },
-
-  created() {
-    // Code à exécuter à la création de la page.
-
-    this.fetchShoppingCart()
-  },
   methods: {
-    async fetchShoppingCart() {
-      try {
-        const response = await apiClient.get('/panier')
-        this.cart = response.data
-      } catch (error) {
-        // Gérer les erreurs de requête
-        this.errorMessage = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
-        this.error = true
-        console.error('Erreur de connexion:', error)
-      }
-    },
     toggleFav(item) {
       item.fav = !item.fav
     },
@@ -320,7 +302,7 @@ export default {
     },
 
     removeFromCart(id) {
-      this.cart = this.cart.filter((item) => item.id !== id)
+      this.$store.dispatch('removeFromPanier', id)
     },
     viewCart() {
       // Logique pour voir le panier
@@ -355,13 +337,14 @@ export default {
   },
   computed: {
     ...mapGetters(['user']),
+    ...mapGetters(['panier']),
 
     wishesListItemsCount() {
       return this.wishesList ? this.wishesList.length : 0
     },
 
     cartItemsCount() {
-      return this.cart ? this.cart.length : 0
+      return this.panier ? this.panier.length : 0
     }
   }
 }
