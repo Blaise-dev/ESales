@@ -10,8 +10,13 @@
             {{ errorMessage }}
         </div>
         <div class="card-deck">
-          <cart-item v-for="(item, index) in cartItems" :key="index" :item="item" @updateQuantity="updateQuantity(index, $event)"></cart-item>
-        </div>
+          <cart-item 
+            v-for="(item, index) in cartItems" 
+            :key="index" 
+            :item="item" 
+            @updateQuantity="updateQuantity(index, $event)">
+          </cart-item>
+      </div>
       </div>
       <div class="col-lg-4 col-md-12 mt-3 mt-lg-0">
         <div class="card custom-card">
@@ -90,8 +95,17 @@ export default {
         console.error('Erreur lors de la récupération des articles du panier:', error);
       }
     },
-    updateQuantity(index, newQuantity) {
-      this.cartItems[index].quantity = newQuantity;
+    async updateQuantity(index, newQuantity) {
+      const item = this.cartItems[index];
+      item.quantity = newQuantity;
+
+      try {
+        // Envoie une requête PUT à l'URL de notre backend JSON pour mettre à jour la quantité de l'article dans le panier
+        await apiClient.put(`/panier/${item.id}`, { quantity: newQuantity });
+      } catch (error) {
+        this.errorMessage = 'Erreur lors de la mise à jour de la quantité de l\'article: ' + error.message;
+        console.error('Erreur lors de la mise à jour de la quantité de l\'article:', error);
+      }
     },
     proceedToCheckout() {
       // rediriger l'utilisateur vers la page de paiement ou de commande
