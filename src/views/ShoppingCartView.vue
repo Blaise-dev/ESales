@@ -138,6 +138,4 @@ export default {
 };
 </script>
 
-<style scoped>
-/* Styles CSS spécifiques au composant */
-</style>
+<style scoped></style>

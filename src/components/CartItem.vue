@@ -19,9 +19,31 @@
       </div>
     </div>
   </div>
+
+  <!-- Modal de confirmation -->
+  <div class="modal fade" id="confirmDeleteModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="confirmDeleteModalLabel">Confirmation de suppression</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Êtes-vous sûr de vouloir supprimer cet article du panier ?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" @click="closeModal">Annuler</button>
+          <button type="button" class="btn btn-danger" @click="confirmDelete">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script>
+
 export default {
   name: 'CartItem',
   props: {
@@ -37,7 +59,21 @@ export default {
     decrementQuantity() {
       if (this.item.quantity > 1) {
         this.$emit('updateQuantity', this.item.quantity - 1);
+      } else {
+        // Afficher le modal de confirmation si la quantité est 1
+        $('#confirmDeleteModal').modal('show');
       }
+    },
+    closeModal() {
+      $('#confirmDeleteModal').modal('hide'); // Ferme le modal
+    },
+    confirmDelete() {
+      // Émettre un événement pour supprimer l'article du panier
+      this.$emit('removeItem');
+      // Fermer le modal après suppression
+      this.$store.dispatch('removeFromPanier', item.id);
+      $('#confirmDeleteModal').modal('hide');
+
     }
   }
 };
