@@ -69,7 +69,7 @@ export default {
     },
     confirmDelete() {
       // Émettre un événement pour supprimer l'article du panier
-      this.$emit('removeItem');
+      this.$emit('removeItem', this.item.id);
       // Fermer le modal après suppression
       this.$store.dispatch('removeFromPanier', this.item.id);
       $('#confirmDeleteModal').modal('hide');

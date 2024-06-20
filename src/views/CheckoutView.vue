@@ -64,7 +64,11 @@
              <div v-if="errorMessage" class="alert alert-danger" role="alert">
                 {{ errorMessage }}
             </div>
-            <!-- Liste des articles du panier -->
+             <!-- Affichage des articles du panier -->
+             <div v-if="cartItems.length === 0" class="alert alert-info" role="alert">
+              Votre panier est vide.
+            </div>
+            <div v-else>
             <div v-for="(item, index) in cartItems" :key="index" class="media mb-3">
               <img :src="item.image" class="mr-3" alt="Image de l'article" style="max-width: 100px;">
               <div class="media-body">
@@ -85,6 +89,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -108,7 +113,9 @@ export default {
         comments: ''
       },
       cartItems: [] ,
-      errorMessage:""
+      errorMessage:"",
+      taxRate: 0.2, 
+      shippingCost: 0
     };
   },
   mounted() {
@@ -127,7 +134,17 @@ export default {
       }
     },
     getTotalPrice() {
-      return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+      // Calcul du sous-total
+      const subtotal = this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+      
+      // Calcul de la taxe
+      const tax = subtotal * this.taxRate;
+      
+      // Calcul du coût total avec taxe et livraison
+      const totalPrice = subtotal + tax + this.shippingCost;
+      
+      // Retourner le prix total arrondi à deux décimales
+      return totalPrice.toFixed(2);
     },
     proceedPaiement(){
       this.$router.push('/Cpaiement') 

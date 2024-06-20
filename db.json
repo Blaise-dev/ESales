@@ -46,11 +46,25 @@
   ],
   "panier": [
     {
-      "id": "1",
-      "name": "T-shirt à manches courtes et col en V dégradé pour l'été",
-      "price": 5.99,
-      "quantity": 1,
-      "image": "https://img.ltwebstatic.com/images3_pi/2024/04/12/3a/1712889276a136a33dda04c49933d4a8a01b886cf7_thumbnail_720x.webp"
+      "id": "9",
+      "name": "Montre classique en acier inoxydable",
+      "price": "59.99",
+      "image": "https://www.cdiscount.com/pdt2/1/1/0/3/700x700/cha6410687774110/rw/montre-classique-en-acier-inoxydable-pour-femme-a.jpg",
+      "quantity": 1
+    },
+    {
+      "id": "10",
+      "name": "Sandales en cuir pour femme",
+      "price": "29.99",
+      "image": "https://m.media-amazon.com/images/I/81KrghnMdGL._AC_UY900_.jpg",
+      "quantity": 1
+    },
+    {
+      "id": "12",
+      "name": "Jean Denim déchiré 3xl pour femme, Skinny, vente en gros",
+      "price": "8.13",
+      "image": "https://s.alicdn.com/@sc04/kf/Hdd38f5e36a7943c5bb758982a4ca7517W.jpg_720x720q50.jpg",
+      "quantity": 1
     }
   ],
   "produits": [
