@@ -64,12 +64,15 @@
              <div v-if="errorMessage" class="alert alert-danger" role="alert">
                 {{ errorMessage }}
             </div>
-            <!-- Liste des articles du panier -->
+             <!-- Affichage des articles du panier -->
+             <div v-if="cartItems.length === 0" class="alert alert-info" role="alert">
+              Votre panier est vide.
+            </div>
+            <div v-else>
             <div v-for="(item, index) in cartItems" :key="index" class="media mb-3">
               <img :src="item.image" class="mr-3" alt="Image de l'article" style="max-width: 100px;">
               <div class="media-body">
                   <h5 class="mt-0">{{ item.name }}</h5>
-                  <p>{{ item.description }}</p>
                   <p>{{ item.price }} € x {{ item.quantity }}</p>
                 </div>
               </div>
@@ -85,6 +88,7 @@
               </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>
@@ -108,7 +112,9 @@ export default {
         comments: ''
       },
       cartItems: [] ,
-      errorMessage:""
+      errorMessage:"",
+      taxRate: 0.2, 
+      shippingCost: 0
     };
   },
   mounted() {
@@ -127,7 +133,17 @@ export default {
       }
     },
     getTotalPrice() {
-      return this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+      // Calcul du sous-total
+      const subtotal = this.cartItems.reduce((total, item) => total + (item.price * item.quantity), 0);
+      
+      // Calcul de la taxe
+      const tax = subtotal * this.taxRate;
+      
+      // Calcul du coût total avec taxe et livraison
+      const totalPrice = subtotal + tax + this.shippingCost;
+      
+      // Retourner le prix total arrondi à deux décimales
+      return totalPrice.toFixed(2);
     },
     proceedPaiement(){
       this.$router.push('/Cpaiement') 
@@ -137,20 +153,31 @@ export default {
 };
 </script>
 
+
 <style scoped>
+  label {
+    text-align: left;
+    display: block;
+    margin-bottom: 5px;
+  }
 
-.summary-card {
-  max-width: 500px; /* Limite la largeur de la carte de récapitulatif */
-  margin-left: auto; 
-  margin-right: auto; 
-}
+  .media-body h5, 
+  .media-body p {
+    text-align: left;
+    margin-bottom: 0; 
+  }
 
-.total-price {
-  margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
-}
+  .summary-card {
+    max-width: 500px; /* Limite la largeur de la carte de récapitulatif */
+    margin-left: auto;
+    margin-right: auto;
+  }
 
-.item-price {
-  margin-right: 10px; /* Ajuste la marge en haut du conteneur total-price */
-}
+  .total-price {
+    margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
+  }
 
+  .item-price {
+    margin-right: 10px; /* Ajuste la marge en haut du conteneur total-price */
+  }
 </style>

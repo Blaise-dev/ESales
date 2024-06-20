@@ -90,6 +90,14 @@ const store = createStore({
         console.error("Erreur lors de l'ajout dans le panier:", error)
       }
     },
+    async fetchPanier({ commit }) {
+      try {
+        const response = await apiClient.get('/panier');
+        commit('setPanier', response.data);
+      } catch (error) {
+        console.error('Erreur lors de la récupération des articles du panier:', error);
+      }
+    },
     async clearPanier({ commit }) {
       try {
         const response = await apiClient.delete('/panier/')

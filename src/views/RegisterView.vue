@@ -199,7 +199,6 @@ export default {
     },
     handleSubmit() {
       this.isLoading = true
-
       setTimeout(() => {
         this.isLoading = false
         this.loaded = true
