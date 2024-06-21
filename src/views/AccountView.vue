@@ -148,7 +148,47 @@ import apiClient from '@/api'
 
         <v-card v-if="activeSection === 'change-password'" id="change-password">
           <v-card-title>Modifier le mot de passe</v-card-title>
-          <!-- Contenu pour changer le mot de passe -->
+          <v-form class="w-25 mx-auto p-3" @submit.prevent="validatePasswords">
+            <br />
+            <v-text-field
+              v-model="currentPassword"
+              label="Mot de passe actuel"
+              type="password"
+              required
+              outlined
+              :error="error"
+              :error-messages="errorMsgPass"
+            ></v-text-field>
+
+            <br />
+
+            <v-text-field
+              v-model="newPassword"
+              label="Nouveau mot de passe"
+              type="password"
+              required
+              outlined
+              dense
+              :error="errorNewPass"
+              :error-messages="errorMsgNewPass"
+            ></v-text-field>
+
+            <br />
+
+            <v-text-field
+              v-model="confirmPassword"
+              label="Confirmer mot de passe"
+              type="password"
+              required
+              outlined
+              dense
+              :error="errorNewPass"
+              :error-messages="errorMsgNewPass"
+            ></v-text-field>
+
+            <v-btn class="mr-4 mt-5" color="error" @click="annuler">Annuler</v-btn>
+            <v-btn class="mt-5" type="submit" color="primary">Modifier</v-btn>
+          </v-form>
         </v-card>
 
         <v-card v-if="activeSection === 'delete-account'" id="delete-account">
@@ -174,6 +214,9 @@ export default {
         city: '',
         address: ''
       },
+      currentPassword: '',
+      newPassword: '',
+      confirmPassword: '',
       activeSection: 'summary',
       addresses: [
         {
@@ -209,7 +252,11 @@ export default {
         { text: 'Statut', value: 'status' },
         { text: 'Action', value: 'action' }
       ],
-      orders: [] // Les commandes devraient être récupérées depuis une API ou une source de données
+      orders: [], // Les commandes devraient être récupérées depuis une API ou une source de données
+      error: false,
+      errorNewPass: false,
+      errorMsgPass: '',
+      errorMsgNewPass: ''
     }
   },
   methods: {
@@ -250,7 +297,32 @@ export default {
         }
       }
     },
-    removeAddress(address) {}
+    removeAddress(address) {},
+
+    validatePasswords() {
+      if (this.newPassword !== this.confirmPassword) {
+        this.errorNewPass = true
+        this.error = false
+        this.errorMsgNewPass = 'Les 2 mots de passe ne correspondent pas !'
+        this.errorMsgPass = ''
+        return
+      } else if (this.currentPassword != this.user.password) {
+        this.error = true
+        this.errorNewPass = false
+        this.errorMsgPass = 'Vous avez entré un mauvais mot de passe !'
+        this.errorMsgNewPass = ''
+      } else {
+        this.error = false
+        this.errorNewPass = false
+        this.errorMsgPass = ''
+        this.errorMsgNewPass = ''
+      }
+    },
+    annuler() {
+      this.currentPassword = ''
+      this.newPassword = ''
+      this.confirmPassword = ''
+    }
   },
   computed: {
     ...mapGetters(['user'])
