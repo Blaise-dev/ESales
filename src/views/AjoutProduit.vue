@@ -82,6 +82,7 @@
       },
       ajouter() {
         // Logic to handle adding the product
+        alert("Ceci est une alerte !");
         console.log('Nom:', this.name);
         console.log('Image:', this.image);
         console.log('Description:', this.description);
