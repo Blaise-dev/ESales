@@ -29,7 +29,34 @@ import apiClient from '@/api'
           <v-card-text>
             <v-row>
               <v-col cols="2">
-                <v-img :src="this.user.photo" aspect-ratio="1"></v-img>
+                <div class="position-relative">
+                  <v-img
+                    :src="user.photo"
+                    aspect-ratio="1"
+                    class="position-relative"
+                    :class="{ 'opacity-0': isLoading }"
+                  ></v-img>
+                  <v-file-input
+                    accept="image/*"
+                    ref="fileInput"
+                    style="display: none"
+                    @change="handleFileChange"
+                  ></v-file-input>
+                  <v-btn
+                    icon
+                    color="primary"
+                    class="position-absolute bottom-0 end-0 ml-5 mt-5"
+                    @click="openFileInput"
+                  >
+                    <v-icon>mdi-pencil</v-icon>
+                  </v-btn>
+                  <v-progress-circular
+                    v-if="isLoading"
+                    indeterminate
+                    color="primary"
+                    class="position-absolute top-50 start-50 translate-middle"
+                  ></v-progress-circular>
+                </div>
               </v-col>
               <v-col cols="8">
                 <v-card-title class="font-weight-bold"> Salut {{ this.user.prenom }} </v-card-title>
@@ -77,6 +104,37 @@ import apiClient from '@/api'
         <v-card v-if="activeSection === 'account-settings'" id="account-settings">
           <v-card-title>Paramètres de Compte</v-card-title>
           <!-- Contenu des paramètres de compte -->
+          <v-form ref="form" v-model="valid" @submit.prevent="submit">
+            <v-card>
+              <v-card-text>
+                <v-text-field
+                  v-model="form.nom"
+                  :rules="nameRules"
+                  label="Nom"
+                  required
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="form.prenom"
+                  :rules="nameRules"
+                  label="Prénom"
+                  required
+                ></v-text-field>
+
+                <v-text-field
+                  v-model="form.email"
+                  :rules="emailRules"
+                  label="Email"
+                  required
+                  type="email"
+                ></v-text-field>
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" type="submit">Mettre à jour mes coordonnées</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-form>
         </v-card>
 
         <v-card class="pb-5" v-if="activeSection === 'addresses'" id="addresses">
@@ -148,6 +206,7 @@ import apiClient from '@/api'
 
         <v-card v-if="activeSection === 'change-password'" id="change-password">
           <v-card-title>Modifier le mot de passe</v-card-title>
+          <v-divider></v-divider>
           <v-form class="w-25 mx-auto p-3" @submit.prevent="validatePasswords">
             <br />
             <v-text-field
@@ -193,7 +252,38 @@ import apiClient from '@/api'
 
         <v-card v-if="activeSection === 'delete-account'" id="delete-account">
           <v-card-title>Supprimer le compte</v-card-title>
+          <v-divider></v-divider>
           <!-- Contenu pour supprimer le compte -->
+
+          <br />
+          <v-form class="w-25 mx-auto p-3" @submit.prevent>
+            <v-text-field
+              v-model="confirmDeletePassword"
+              label="Mot de passe"
+              type="password"
+              required
+              outlined
+              :error="error"
+              :error-messages="errorMsgPass"
+            ></v-text-field>
+            <!-- Bouton de suppression du compte -->
+            <v-btn block color="red" @click="confirmDeleteAccount">Supprimer mon compte</v-btn>
+          </v-form>
+
+          <!-- Boîte de dialogue de confirmation -->
+          <v-dialog v-model="showConfirmDialog" max-width="500">
+            <v-card>
+              <v-card-title class="headline">Confirmation</v-card-title>
+              <v-card-text>
+                Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.
+              </v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="showConfirmDialog = false">Annuler</v-btn>
+                <v-btn color="red" text @click="deleteAccount">Confirmer</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
         </v-card>
       </v-col>
     </v-row>
@@ -205,7 +295,9 @@ export default {
   data() {
     return {
       showModal: false,
+      showConfirmDialog: false,
       isEditing: false,
+      isLoading: false, // State variable for loading,
       currentAddress: {
         id: null,
         fullName: '',
@@ -214,28 +306,26 @@ export default {
         city: '',
         address: ''
       },
+      valid: false,
+      form: {
+        nom: '',
+        prenom: '',
+        email: ''
+      },
+      nameRules: [
+        (v) => !!v || 'Le champ est requis',
+        (v) => v.length >= 2 || 'Le nom doit contenir au moins 2 caractères'
+      ],
+      emailRules: [
+        (v) => !!v || 'Le champ est requis',
+        (v) => /.+@.+\..+/.test(v) || 'E-mail doit être valide'
+      ],
       currentPassword: '',
       newPassword: '',
       confirmPassword: '',
+      confirmDeletePassword: '',
       activeSection: 'summary',
-      addresses: [
-        {
-          id: 1,
-          fullName: 'Théo backbwell',
-          phoneNumber: '0622715780',
-          email: 'theobackbwell@gmail.com',
-          city: 'Rennes',
-          address: '20 Avenue des Buttes de Coësmes, Rennes'
-        },
-        {
-          id: 2,
-          fullName: 'Naomie Capoela',
-          phoneNumber: '0636728790',
-          email: 'naomiecapoela@gmail.com',
-          city: 'Rennes',
-          address: '03 Square de Varsovie, Rennes'
-        }
-      ],
+      addresses: null,
       menuItems: [
         { title: 'Résumé', icon: 'mdi-home', id: 'summary' },
         { title: 'Commandes', icon: 'mdi-cart', id: 'orders' },
@@ -252,14 +342,110 @@ export default {
         { text: 'Statut', value: 'status' },
         { text: 'Action', value: 'action' }
       ],
-      orders: [], // Les commandes devraient être récupérées depuis une API ou une source de données
+      fileInput: null, // Pour stocker l'élément d'entrée de fichier
+      orders: [
+        {
+          number: 'ORD001',
+          createdAt: '01/01/2023',
+          total: '150.50 €',
+          paymentMethod: 'Credit Card',
+          status: 'Pending',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD002',
+          createdAt: '05/01/2023',
+          total: '200.00 €',
+          paymentMethod: 'Credit Card',
+          status: 'Shipped',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD003',
+          createdAt: '10/01/2023',
+          total: '75.99 €',
+          paymentMethod: 'Credit Card',
+          status: 'Delivered',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD004',
+          createdAt: '15/01/2023',
+          total: '300.49 €',
+          paymentMethod: 'Credit Card',
+          status: 'Cancelled',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD005',
+          createdAt: '20/01/2023',
+          total: '120.00 €',
+          paymentMethod: 'Credit Card',
+          status: 'Pending',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD006',
+          createdAt: '25/01/2023',
+          total: '250.75 €',
+          paymentMethod: 'Credit Card',
+          status: 'Shipped',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD007',
+          createdAt: '30/01/2023',
+          total: '175.00 €',
+          paymentMethod: 'Credit Card',
+          status: 'Delivered',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD008',
+          createdAt: '04/02/2023',
+          total: '95.20 €',
+          paymentMethod: 'Credit Card',
+          status: 'Cancelled',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD009',
+          createdAt: '08/02/2023',
+          total: '300.30 €',
+          paymentMethod: 'Credit Card',
+          status: 'Pending',
+          action: 'Voir'
+        },
+        {
+          number: 'ORD010',
+          createdAt: '12/02/2023',
+          total: '250.50 €',
+          paymentMethod: 'Credit Card',
+          status: 'Shipped',
+          action: 'Voir'
+        }
+      ], // Les commandes devraient être récupérées depuis une API ou une source de données
       error: false,
       errorNewPass: false,
       errorMsgPass: '',
       errorMsgNewPass: ''
     }
   },
+  created() {
+    this.fetchAddresses()
+    this.form = { ...this.user } // Pré-remplir le formulaire avec les valeurs de l'utilisateur
+  },
   methods: {
+    async fetchAddresses() {
+      try {
+        const response = await apiClient.get(`/addresses`)
+        const data = response.data
+        this.addresses = data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        console.error('Erreur de connexion:', error)
+      }
+    },
     setActiveSection(sectionId) {
       this.activeSection = sectionId
     },
@@ -300,13 +486,36 @@ export default {
     removeAddress(address) {},
 
     validatePasswords() {
-      if (this.newPassword !== this.confirmPassword) {
+      if (this.currentPassword == '') {
+        this.errorNewPass = false
+        this.error = true
+        this.errorMsgNewPass = ''
+        this.errorMsgPass = 'Veuillez renseigner un mot de passe !'
+      } else if (
+        this.newPassword != '' ||
+        this.confirmPassword != '' ||
+        this.newPassword !== this.confirmPassword
+      ) {
         this.errorNewPass = true
         this.error = false
-        this.errorMsgNewPass = 'Les 2 mots de passe ne correspondent pas !'
+        this.errorMsgNewPass = 'Veuillez renseigner 2 mots de passe identiques et non vides !'
         this.errorMsgPass = ''
         return
       } else if (this.currentPassword != this.user.password) {
+        this.error = true
+        this.errorNewPass = false
+        this.errorMsgPass = 'Vous avez entré un mauvais mot de passe !'
+        this.errorMsgNewPass = ''
+      } else {
+        this.error = false
+        this.errorNewPass = false
+        this.errorMsgPass = ''
+        this.errorMsgNewPass = ''
+      }
+    },
+
+    validatePasswordDelete() {
+      if (this.confirmDeletePassword != this.user.password) {
         this.error = true
         this.errorNewPass = false
         this.errorMsgPass = 'Vous avez entré un mauvais mot de passe !'
@@ -322,6 +531,54 @@ export default {
       this.currentPassword = ''
       this.newPassword = ''
       this.confirmPassword = ''
+    },
+    confirmDeleteAccount() {
+      this.validatePasswordDelete()
+      if (!this.error) this.showConfirmDialog = true
+    },
+    async deleteAccount() {
+      this.showConfirmDialog = false
+      try {
+        await this.$store.dispatch('deleteAccount', this.user.id)
+        this.$router.push('/') // Rediriger l'utilisateur après la suppression du compte
+      } catch (error) {
+        console.error('Erreur lors de la suppression du compte:', error)
+        // Gérer l'erreur (afficher un message d'erreur, etc.)
+      }
+    },
+    openFileInput() {
+      this.$refs.fileInput.click() // Ouvre le sélecteur de fichier
+    },
+    async handleFileChange(event) {
+      const file = event.target.files[0]
+      if (file) {
+        const formData = new FormData()
+        formData.append('file', file)
+        formData.append('user', JSON.stringify(this.user))
+
+        this.isLoading = true // Start loading
+        try {
+          await this.$store.dispatch('updateUser', formData)
+        } catch (error) {
+          console.error('Error updating user:', error)
+        } finally {
+          this.isLoading = false // Stop loading
+        }
+      }
+    },
+    async submit() {
+      if (this.$refs.form.validate()) {
+        // Handle form submission
+        const formData = new FormData()
+        this.form = { ...this.user, ...this.form }
+        formData.append('user', JSON.stringify(this.form))
+        try {
+          await this.$store.dispatch('updateUser', formData)
+        } catch (error) {
+          console.error('Error updating user:', error)
+        } finally {
+        }
+      }
     }
   },
   computed: {
@@ -368,5 +625,11 @@ export default {
 .v-list-item.active {
   background-color: rgba(0, 0, 0, 0.1); /* Change this to whatever color you prefer */
   border-left: 4px solid #42a5f5; /* Example: add a left border to the active item */
+}
+.translate-middle {
+  transform: translate(-50%, -50%);
+}
+.headline {
+  text-align: center;
 }
 </style>

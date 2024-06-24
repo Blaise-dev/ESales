@@ -33,11 +33,32 @@
       "token": "jgh7812IKHJ1H2782II1"
     },
     {
-      "nom": "asa",
-      "prenom": "aevc",
+      "nom": "asas",
+      "prenom": "aevcvv",
       "email": "aaccc@gmail.com",
       "password": "art",
-      "id": "lFvFsPZ"
+      "id": "lFvFsPZ",
+      "token": "GDYT7812--1u82==1",
+      "photo": "http://localhost:3000/uploads/1718988659683-back-view-couple-holding-shopping-bags.jpg"
+    }
+  ],
+
+  "addresses": [
+    {
+      "id": 1,
+      "fullName": "Théo backbwell",
+      "phoneNumber": "0622715780",
+      "email": "theobackbwell@gmail.com",
+      "city": "Rennes",
+      "address": "20 Avenue des Buttes de Coësmes, Rennes"
+    },
+    {
+      "id": 2,
+      "fullName": "Naomie Capoela",
+      "phoneNumber": "0636728790",
+      "email": "naomiecapoela@gmail.com",
+      "city": "Rennes",
+      "address": "03 Square de Varsovie, Rennes"
     }
   ],
   "panier": [

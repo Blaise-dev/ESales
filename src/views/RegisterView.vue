@@ -121,13 +121,39 @@
             ></v-text-field>
           </div>
 
+          <div class="mb-3">
+            <div class="mb-3 d-flex align-items-start flex-wrap">
+              <div class="flex-grow-1">
+                <div class="text-subtitle-1 text-medium-emphasis me-3">Photo de profil</div>
+                <v-file-input
+                  name="profilePhoto"
+                  id="profilePhoto"
+                  density="compact"
+                  placeholder="Importer une photo de profil"
+                  prepend-inner-icon="mdi-camera"
+                  variant="outlined"
+                  accept="image/*"
+                  required
+                  @change="onFileChange"
+                ></v-file-input>
+              </div>
+
+              <v-img
+                v-if="profilePhotoUrl"
+                :src="profilePhotoUrl"
+                alt="Photo de profil"
+                max-width="130"
+                class="ms-3"
+              ></v-img>
+            </div>
+          </div>
+
           <!-- Submit button -->
           <div class="d-flex flex-column align-items-center">
             <button
               data-mdb-button-init
               data-mdb-ripple-init
               class="mb-3 w-50 btn btn-primary btn-lg btn-block"
-              @click="registerUser"
             >
               <i class="bi bi-check-circle me-2"></i>
               S'inscrire
@@ -141,7 +167,7 @@
           </div>
 
           <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+            <p class="text-center fw-bold mx-3 mb-0 text-muted">AUTRE</p>
           </div>
 
           <div class="d-flex flex-column align-items-center">
@@ -172,7 +198,7 @@ export default {
       prenom: '',
       tel: '',
       password: '',
-      photo: null,
+      profilePhotoUrl: null,
       isLoading: false,
       loaded: false,
       visiblePassword: false,
@@ -188,7 +214,7 @@ export default {
           prenom: this.prenom,
           email: this.email,
           password: this.password,
-          photo: 'null',
+          photo: this.profilePhotoUrl,
           token: 'ADAFZEJHDJQSD111--'
         })
       } catch (error) {
@@ -202,9 +228,44 @@ export default {
       setTimeout(() => {
         this.isLoading = false
         this.loaded = true
+        this.registerUser()
         this.$router.push('/login')
       }, 2000)
+    },
+    onFileChange(event) {
+      const file = event.target.files[0]
+      if (file && file.size > 0) {
+        // Envoyer l'image au serveur
+        apiClient
+          .post(
+            '/upload',
+            { profilePhoto: file },
+            {
+              headers: {
+                'Content-Type': 'multipart/form-data'
+              }
+            }
+          )
+          .then((response) => {
+            this.profilePhotoUrl = response.data.filePath
+          })
+          .catch((error) => {
+            console.error("Erreur lors du téléchargement de l'image :", error)
+          })
+      } else {
+        this.profilePhotoUrl = null
+      }
     }
   }
 }
 </script>
+
+<style scoped>
+.divider:after,
+.divider:before {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: #eee;
+}
+</style>

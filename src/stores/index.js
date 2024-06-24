@@ -1,5 +1,4 @@
 import { createStore } from 'vuex'
-import createPersistedState from 'vuex-persistedstate'
 import Cookies from 'js-cookie'
 import apiClient from '@/api'
 
@@ -18,6 +17,10 @@ const store = createStore({
   },
   mutations: {
     setUser(state, user) {
+      state.user = user
+      localStorage.setItem('user', JSON.stringify(user))
+    },
+    updateUser(state, user) {
       state.user = user
       localStorage.setItem('user', JSON.stringify(user))
     },
@@ -63,6 +66,38 @@ const store = createStore({
     setUser({ commit }, user) {
       commit('setUser', user)
     },
+    async updateUser({ commit, state }, formData) {
+      const userString = formData.get('user') // Récupérer l'objet utilisateur sous forme de chaîne JSON
+      const user = JSON.parse(userString) // Parser la chaîne JSON en objet JavaScript
+      const file = formData.get('file')
+
+      try {
+        var profilePhotoUrl = null
+
+        if (file && file.size > 0) {
+          // Uploader le fichier
+          const uploadResponse = await apiClient.post(
+            '/upload',
+            { profilePhoto: file },
+            {
+              headers: { 'Content-Type': 'multipart/form-data' }
+            }
+          )
+
+          profilePhotoUrl = uploadResponse.data.filePath
+          user.photo = profilePhotoUrl
+        }
+
+        // Mettre à jour l'utilisateur avec la nouvelle photo
+        const updateUserResponse = await apiClient.put('/users/' + user.id, {
+          ...user
+        })
+
+        commit('updateUser', user) // Mettre à jour l'utilisateur dans le store Vuex
+      } catch (error) {
+        console.error('Erreur lors de la mise à jour du compte utilisateur :', error)
+      }
+    },
     setToken({ commit }, token) {
       commit('setToken', token)
       Cookies.set('token', token, { expires: 7 }) // Expire in 7 days
@@ -92,10 +127,10 @@ const store = createStore({
     },
     async fetchPanier({ commit }) {
       try {
-        const response = await apiClient.get('/panier');
-        commit('setPanier', response.data);
+        const response = await apiClient.get('/panier')
+        commit('setPanier', response.data)
       } catch (error) {
-        console.error('Erreur lors de la récupération des articles du panier:', error);
+        console.error('Erreur lors de la récupération des articles du panier:', error)
       }
     },
     async clearPanier({ commit }) {
@@ -115,6 +150,16 @@ const store = createStore({
     logout({ commit }) {
       commit('clearAuthData')
       Cookies.remove('token')
+    },
+    async deleteAccount({ commit }, idUser) {
+      try {
+        await apiClient.delete('/users/' + idUser) // Assurez-vous que l'URL est correcte
+        commit('clearAuthData')
+        Cookies.remove('token')
+      } catch (error) {
+        console.error('Erreur lors de la suppression du compte:', error)
+        throw error
+      }
     }
   },
   getters: {
