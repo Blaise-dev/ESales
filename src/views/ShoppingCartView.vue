@@ -8,13 +8,17 @@
           {{ errorMessage }}
         </div>
         <!-- Affichage des articles du panier avec CartItem -->
-        <div class="card-deck">
+        <div class="card-deck" v-if="cartItems.length > 0">
           <cart-item
             v-for="(item, index) in cartItems"
             :key="item.id"
             :item="item"
             @updateQuantity="updateQuantity(index, $event)"
+            @removeItem="removeItem(item.id)"
           ></cart-item>
+        </div>
+        <div v-else class="alert alert-info" role="alert">
+          Votre panier est vide.
         </div>
       </div>
       <div class="col-lg-4 col-md-12 mt-3 mt-lg-0">
@@ -53,6 +57,7 @@
 import { ref, onMounted } from 'vue'; 
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
 import apiClient from '@/api';
 import CartItem from '@/components/CartItem.vue';
 
@@ -62,14 +67,16 @@ export default {
   },
   setup() {
     const router = useRouter();
-    const cartItems = ref([]); // Référence réactive pour les articles du panier
+    const store = useStore();
+    const cartItems = computed(() => store.getters.panier);
+    console.log(cartItems)
+
     const errorMessage = ref(""); // Message d'erreur en cas de problème de chargement
 
     // Méthode pour récupérer les articles du panier depuis le backend
     const fetchCartItems = async () => {
       try {
-        const response = await apiClient.get('/panier'); // Remplacer par votre URL d'API pour récupérer les articles du panier
-        cartItems.value = response.data; // Mettre à jour les articles du panier dans la référence réactive
+        await store.dispatch('fetchPanier');
       } catch (error) {
         errorMessage.value = 'Erreur lors de la récupération des articles du panier: ' + error.message;
         console.error('Erreur lors de la récupération des articles du panier:', error);
@@ -82,11 +89,20 @@ export default {
       const updatedItem = { ...item, quantity: newQuantity };
 
       try {
-        await apiClient.put(`/panier/${item.id}`, updatedItem); // Envoyer une requête PUT pour mettre à jour la quantité dans le backend
-        cartItems.value[index] = updatedItem; // Mettre à jour localement dans la liste des articles du panier
+        await store.dispatch('updatePanierItem', updatedItem);
       } catch (error) {
         errorMessage.value = 'Erreur lors de la mise à jour de la quantité de l\'article: ' + error.message;
         console.error('Erreur lors de la mise à jour de la quantité de l\'article:', error);
+      }
+    };
+
+      // Méthode pour supprimer un article du panier
+    const removeItem = async (itemId) => {
+      try {
+        await store.dispatch('removeFromPanier', itemId);
+      } catch (error) {
+        errorMessage.value = 'Erreur lors de la suppression de l\'article du panier: ' + error.message;
+        console.error('Erreur lors de la suppression de l\'article du panier:', error);
       }
     };
 
@@ -116,15 +132,17 @@ export default {
     });
 
     // Coût fixe de la livraison
-    const getShipping = 5; // Exemple de coût fixe de la livraison
+    const getShipping = 0; 
 
     // Calcul du total
     const getTotalPrice = computed(() => {
-      return getSubtotal.value + getTax.value + getShipping;
+      let totalPrice = getSubtotal.value + getTax.value + getShipping;
+      return totalPrice.toFixed(2);
     });
 
     return {
       cartItems,
+      removeItem,
       errorMessage,
       updateQuantity,
       getSubtotal,

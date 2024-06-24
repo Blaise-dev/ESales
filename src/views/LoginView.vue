@@ -123,7 +123,7 @@
           </div>
 
           <div class="divider d-flex align-items-center my-4">
-            <p class="text-center fw-bold mx-3 mb-0 text-muted">OR</p>
+            <p class="text-center fw-bold mx-3 mb-0 text-muted">AUTRE</p>
           </div>
 
           <div class="d-flex flex-column align-items-center">

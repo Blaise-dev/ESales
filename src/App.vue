@@ -15,18 +15,18 @@ import Base from '@/components/Base.vue'
         </v-main>
       </Base>
     </v-app>
-  </div>npm install -g json-server
-  
+  </div>
+  npm install -g json-server
 </template>
 <script>
-import AjouterCategorie from '/src/views/AjoutCateg.vue';
+import AjouterCategorie from '/src/views/AjoutCateg.vue'
 
 export default {
   name: 'App',
   components: {
     AjouterCategorie
   }
-};
+}
 </script>
 <style scoped>
 html,
@@ -48,20 +48,5 @@ v-app {
 
 v-main {
   flex: 1;
-}
-
-footer {
-  flex-shrink: 0;
-}
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: #f0f2f5;
-  margin: 0;
-  padding: 0;
-}
-
-#app {
-  text-align: center;
-  padding: 20px;
 }
 </style>
