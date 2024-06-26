@@ -27,7 +27,6 @@ import store from './stores'
 // main.js
 import '@fortawesome/fontawesome-free/css/all.css'
 
-
 const app = createApp(App)
 
 const vuetify = createVuetify({

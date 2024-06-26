@@ -1,6 +1,7 @@
 <script setup>
 import { mapGetters } from 'vuex'
 import apiClient from '@/api'
+import Commands from '@/components/Commands.vue'
 </script>
 
 <template>
@@ -91,14 +92,7 @@ import apiClient from '@/api'
         </v-card>
 
         <v-card v-if="activeSection === 'orders'" id="orders">
-          <v-card-title>Commandes</v-card-title>
-          <v-data-table :headers="headers" :items="orders" class="elevation-1">
-            <template v-slot:no-data>
-              <v-alert :value="true" color="info" icon="mdi-alert-circle-outline">
-                Aucune commande pour le moment
-              </v-alert>
-            </template>
-          </v-data-table>
+          <Commands :orders="orders" title="Ma listes de commandes"></Commands>
         </v-card>
 
         <v-card v-if="activeSection === 'account-settings'" id="account-settings">
@@ -334,14 +328,6 @@ export default {
         { title: 'Modifier le mot de passe', icon: 'mdi-pencil', id: 'change-password' },
         { title: 'Supprimer le compte', icon: 'mdi-delete', id: 'delete-account' }
       ],
-      headers: [
-        { text: 'N°Com', value: 'number' },
-        { text: 'Created At', value: 'createdAt' },
-        { text: 'Total', value: 'total' },
-        { text: 'Méthode de paiement', value: 'paymentMethod' },
-        { text: 'Statut', value: 'status' },
-        { text: 'Action', value: 'action' }
-      ],
       fileInput: null, // Pour stocker l'élément d'entrée de fichier
       orders: [
         {
@@ -349,80 +335,70 @@ export default {
           createdAt: '01/01/2023',
           total: '150.50 €',
           paymentMethod: 'Credit Card',
-          status: 'Pending',
-          action: 'Voir'
+          statut: 'Pending'
         },
         {
           number: 'ORD002',
           createdAt: '05/01/2023',
           total: '200.00 €',
           paymentMethod: 'Credit Card',
-          status: 'Shipped',
-          action: 'Voir'
+          statut: 'Shipped'
         },
         {
           number: 'ORD003',
           createdAt: '10/01/2023',
           total: '75.99 €',
           paymentMethod: 'Credit Card',
-          status: 'Delivered',
-          action: 'Voir'
+          statut: 'Delivered'
         },
         {
           number: 'ORD004',
           createdAt: '15/01/2023',
           total: '300.49 €',
           paymentMethod: 'Credit Card',
-          status: 'Cancelled',
-          action: 'Voir'
+          statut: 'Cancelled'
         },
         {
           number: 'ORD005',
           createdAt: '20/01/2023',
           total: '120.00 €',
           paymentMethod: 'Credit Card',
-          status: 'Pending',
-          action: 'Voir'
+          statut: 'Pending'
         },
         {
           number: 'ORD006',
           createdAt: '25/01/2023',
           total: '250.75 €',
           paymentMethod: 'Credit Card',
-          status: 'Shipped',
-          action: 'Voir'
+          statut: 'Shipped'
         },
         {
           number: 'ORD007',
           createdAt: '30/01/2023',
           total: '175.00 €',
           paymentMethod: 'Credit Card',
-          status: 'Delivered',
-          action: 'Voir'
+          statut: 'Delivered'
         },
         {
           number: 'ORD008',
           createdAt: '04/02/2023',
           total: '95.20 €',
           paymentMethod: 'Credit Card',
-          status: 'Cancelled',
-          action: 'Voir'
+          statut: 'Cancelled'
         },
         {
           number: 'ORD009',
           createdAt: '08/02/2023',
           total: '300.30 €',
           paymentMethod: 'Credit Card',
-          status: 'Pending',
-          action: 'Voir'
+          statut: 'Pending'
         },
         {
           number: 'ORD010',
           createdAt: '12/02/2023',
           total: '250.50 €',
           paymentMethod: 'Credit Card',
-          status: 'Shipped',
-          action: 'Voir'
+          statut: 'Shipped'
         }
       ], // Les commandes devraient être récupérées depuis une API ou une source de données
       error: false,
@@ -433,6 +409,7 @@ export default {
   },
   created() {
     this.fetchAddresses()
+    this.fetchCommands()
     this.form = { ...this.user } // Pré-remplir le formulaire avec les valeurs de l'utilisateur
   },
   methods: {
@@ -443,6 +420,17 @@ export default {
         this.addresses = data
       } catch (error) {
         // Gérer les erreurs de requête
+        console.error('Erreur de connexion:', error)
+      }
+    },
+    async fetchCommands() {
+      try {
+        // On vérifie si l'email existe dans la base de données
+        const response = await apiClient.get('/commandes')
+        this.orders = response.data
+      } catch (error) {
+        // Gérer les erreurs de requête
+        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
         console.error('Erreur de connexion:', error)
       }
     },
