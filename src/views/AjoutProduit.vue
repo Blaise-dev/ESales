@@ -56,50 +56,52 @@
       </div>
     </div>
   </div>
-</template>
-
-<script>
-export default {
-  data() {
-    return {
-      name: '',
-      image: null,
-      description: '',
-      category: '',
-      quantity: '',
-      categories: ['Catégorie 1', 'Catégorie 2', 'Catégorie 3'],
-      quantities: ['1', '2', '3', '4', '5']
-    }
-  },
-  methods: {
-    handleImageUpload(event) {
-      this.image = event.target.files[0]
+  </template>
+  
+  <script>
+  export default {
+    data() {
+      return {
+        name: '',
+        image: null,
+        description: '',
+        category: '',
+        quantity: '',
+        categories: ['Catégorie 1', 'Catégorie 2', 'Catégorie 3'],
+        quantities: ['1', '2', '3', '4', '5']
+      };
     },
-    addImage() {
-      // Logic to handle adding an image
-      console.log('Ajouter image')
-    },
-    clearImage() {
-      this.image = null
-      document.getElementById('image').value = ''
-    },
-    annuler() {
-      this.name = ''
-      this.image = null
-      this.description = ''
-      this.category = ''
-      this.quantity = ''
-    },
-    ajouter() {
-      // Logic to handle adding the product
-      console.log('Nom:', this.name)
-      console.log('Image:', this.image)
-      console.log('Description:', this.description)
-      console.log('Catégorie:', this.category)
-      console.log('Quantité:', this.quantity)
+    methods: {
+      handleImageUpload(event) {
+        this.image = event.target.files[0];
+      },
+      addImage() {
+        // Logic to handle adding an image
+        console.log('Ajouter image');
+      },
+      clearImage() {
+        this.image = null;
+        document.getElementById('image').value = '';
+      },
+      annuler() {
+        this.name = '';
+        this.image = null;
+        this.description = '';
+        this.category = '';
+        this.quantity = '';
+      },
+      ajouter() {
+        // Logic to handle adding the product
+        alert("Ceci est une alerte !");
+        console.log('Nom:', this.name);
+        console.log('Image:', this.image);
+        console.log('Description:', this.description);
+        console.log('Catégorie:', this.category);
+        console.log('Quantité:', this.quantity);
+      }
     }
   }
-}
+
 </script>
 
 <style scoped>

@@ -3,10 +3,10 @@
       <div class="partie-grise">
         <div class="ajustement-enface">
           <div class="header">
-            <h1>Produit</h1>
-            <nav>Dashboard / <strong>Produit</strong> </nav>
+            <h1>Role</h1>
+            <nav>Dashboard / <strong>Role</strong> </nav>
           </div>
-          <button @click="addCategory" class="add-category">Ajouter Produit</button>
+          <button @click="addCategory" class="add-category">Ajouter Role</button>
         </div>
         <div class="partie-blanche">
           <div id="app">
@@ -19,22 +19,14 @@
                 <thead>
                   <tr>
                     <th class="ajustement-center">Id</th>
-                    <th class="ajustement-center">Image</th>
                     <th class="ajustement-center">Nom</th>
-                    <th class="ajustement-center">Description</th>
-                    <th class="ajustement-center">Quantité</th>
-                    <th class="ajustement-center">Catégorie</th>
                     <th class="ajustement-center">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr v-for="Produit in paginatedCategories" :key="Produit.id">
                     <td class="ajustement-center">{{ Produit.id }}</td>
-                    <td class="ajustement-center"><img :src="Produit.image" alt="Icone" class="icon taille-img" /></td>
                     <td class="ajustement-center">{{ Produit.nameproduit }}</td>
-                    <td class="ajustement-center">{{ Produit.description }}</td>
-                    <td class="ajustement-center">{{ Produit.quantite }}</td>
-                    <td class="ajustement-center">{{ Produit.namecategorie }}</td>
                     <td class="ajustement-center">
                       <button @click="editCategory(Produit.id)" class="edit-btn"><img class="taille-img" src="/src/assets/boutton_modifier.png"></button>
                       <button @click="deleteCategory(Produit.id)" class="delete-btn"><img class="taille-img" src="/src/assets/boutton_supprimer.png"></button>
@@ -63,14 +55,12 @@
     data() {
       return {
         Produits: [
-          { id: 7, image: '/src/assets/trico2.png', nameproduit: "T-shirt bleu", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 13, image: '/src/assets/pantalon2.png', nameproduit: "Pantalon-cargo", description: "cvvvvvv", quantite: "23", namecategorie: 'Pantalon' },
-          { id: 27, image: '/src/assets/robe2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'Robe' },
-          { id: 921, image: '/src/assets/lunette2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'Accessoire' },
-          { id: 14, image: 'path/to/robe.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 35, image: 'path/to/blouse.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 67, image: 'path/to/chemise.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 88, image: 'path/to/pull.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' }
+          { id: 7,  nameproduit: "Super Administrateur", quantite: "23",},
+          { id: 13,  nameproduit: "Administrateur",  quantite: "23",},
+          { id: 27, nameproduit: "Livreur", quantite: "23", },
+          { id: 921,  nameproduit: "Client",  quantite: "23", },
+        
+      
         ],
         searchQuery: '',
         currentPage: 1,
@@ -216,6 +206,9 @@
   .taille-img {
     width: 50px;
     height: 50px;
+  }
+  .ajustement-center1 {
+    text-align: left;
   }
   .ajustement-center {
     text-align: center;
