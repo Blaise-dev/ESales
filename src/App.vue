@@ -16,7 +16,6 @@ import Base from '@/components/Base.vue'
       </Base>
     </v-app>
   </div>
-  npm install -g json-server
 </template>
 <script>
 import AjouterCategorie from '/src/views/AjoutCateg.vue'

@@ -30,13 +30,13 @@ import Commands from '@/components/Commands.vue'
           <v-card-text>
             <v-row>
               <v-col cols="2">
+                <v-img
+                  :src="user.photo"
+                  aspect-ratio="2"
+                  class="position-relative w-100 h-100"
+                  :class="{ 'opacity-0': isLoading }"
+                ></v-img>
                 <div class="position-relative">
-                  <v-img
-                    :src="user.photo"
-                    aspect-ratio="1"
-                    class="position-relative"
-                    :class="{ 'opacity-0': isLoading }"
-                  ></v-img>
                   <v-file-input
                     accept="image/*"
                     ref="fileInput"
@@ -60,7 +60,7 @@ import Commands from '@/components/Commands.vue'
                 </div>
               </v-col>
               <v-col cols="8">
-                <v-card-title class="font-weight-bold"> Salut {{ this.user.prenom }} </v-card-title>
+                <v-card-title class="font-weight-bold"> Salut {{ user.prenom }} </v-card-title>
                 <p class="ml-4 text-grey">
                   Depuis ton tableau de bord, tu peux
                   <router-link @click="setActiveSection('orders')" to=""
@@ -329,78 +329,7 @@ export default {
         { title: 'Supprimer le compte', icon: 'mdi-delete', id: 'delete-account' }
       ],
       fileInput: null, // Pour stocker l'élément d'entrée de fichier
-      orders: [
-        {
-          number: 'ORD001',
-          createdAt: '01/01/2023',
-          total: '150.50 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Pending'
-        },
-        {
-          number: 'ORD002',
-          createdAt: '05/01/2023',
-          total: '200.00 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Shipped'
-        },
-        {
-          number: 'ORD003',
-          createdAt: '10/01/2023',
-          total: '75.99 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Delivered'
-        },
-        {
-          number: 'ORD004',
-          createdAt: '15/01/2023',
-          total: '300.49 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Cancelled'
-        },
-        {
-          number: 'ORD005',
-          createdAt: '20/01/2023',
-          total: '120.00 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Pending'
-        },
-        {
-          number: 'ORD006',
-          createdAt: '25/01/2023',
-          total: '250.75 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Shipped'
-        },
-        {
-          number: 'ORD007',
-          createdAt: '30/01/2023',
-          total: '175.00 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Delivered'
-        },
-        {
-          number: 'ORD008',
-          createdAt: '04/02/2023',
-          total: '95.20 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Cancelled'
-        },
-        {
-          number: 'ORD009',
-          createdAt: '08/02/2023',
-          total: '300.30 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Pending'
-        },
-        {
-          number: 'ORD010',
-          createdAt: '12/02/2023',
-          total: '250.50 €',
-          paymentMethod: 'Credit Card',
-          statut: 'Shipped'
-        }
-      ], // Les commandes devraient être récupérées depuis une API ou une source de données
+      orders: [], // Les commandes devraient être récupérées depuis une API ou une source de données
       error: false,
       errorNewPass: false,
       errorMsgPass: '',
@@ -408,6 +337,7 @@ export default {
     }
   },
   created() {
+    this.updateActiveSectionFromHash()
     this.fetchAddresses()
     this.fetchCommands()
     this.form = { ...this.user } // Pré-remplir le formulaire avec les valeurs de l'utilisateur
@@ -566,6 +496,14 @@ export default {
           console.error('Error updating user:', error)
         } finally {
         }
+      }
+    },
+    updateActiveSectionFromHash() {
+      const hash = window.location.hash.replace('#', '')
+      if (hash) {
+        this.activeSection = hash
+      } else {
+        this.activeSection = 'summary' // Valeur par défaut si aucun hashtag
       }
     }
   },

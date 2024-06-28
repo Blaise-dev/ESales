@@ -148,7 +148,7 @@ import { mapGetters } from 'vuex'
               </v-list>
             </v-col>
             <!-- Champ pour ajouter un commentaire -->
-            <v-col cols="12" class="my-4">
+            <v-col cols="12" class="my-4" v-if="$store.state.token">
               <v-card>
                 <v-card-title
                   ><v-icon class="mr-2" color="grey">mdi-comment</v-icon> Votre commentaire au
@@ -166,6 +166,20 @@ import { mapGetters } from 'vuex'
                 <v-card-actions>
                   <v-btn color="primary" @click="addComment">Soumettre</v-btn>
                 </v-card-actions>
+              </v-card>
+            </v-col>
+            <v-col cols="12" class="my-4" v-else>
+              <v-card class="p-5">
+                <p class="text-center text-grey">
+                  Pour laisser un commentaire, veuillez vous connecter !
+                </p>
+                <div class="d-flex flex-column align-items-center">
+                  <RouterLink to="/login" class="mb-3 w-50 btn btn-dark btn-lg btn-block">
+                    <i class="bi bi-box-arrow-in-right"></i>
+                    Se connecter
+                  </RouterLink>
+                  <br />
+                </div>
               </v-card>
             </v-col>
           </v-row>
@@ -277,7 +291,7 @@ export default {
       selectedSize: 'L',
       produit: {},
       newComment: {
-        author: this.$store.state.user.nom + ' ' + this.$store.state.user.prenom,
+        author: '',
         text: '',
         rating: 0
       },
@@ -287,12 +301,14 @@ export default {
     }
   },
   created() {
+    this.newComment.author = this.isAuthenticated ? this.user.nom + ' ' + this.user.prenom : ''
     this.fetchProductDetails()
   },
   computed: {
     productId() {
       return this.$route.params.id
-    }
+    },
+    ...mapGetters(['user', 'isAuthenticated'])
   },
   methods: {
     async fetchProductDetails() {

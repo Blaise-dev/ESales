@@ -42,7 +42,7 @@ import apiClient from '@/api'
               </RouterLink>
             </li>
             <li>
-              <RouterLink class="dropdown-item text-dark" to="/orders">
+              <RouterLink class="dropdown-item text-dark" to="/account#orders">
                 <v-icon class="me-2">mdi-package-variant-closed</v-icon>
                 Commandes
               </RouterLink>

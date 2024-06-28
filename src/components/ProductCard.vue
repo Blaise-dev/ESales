@@ -1,12 +1,12 @@
 <!-- ProductCard.vue -->
 <template>
-  <div class="col-md-3 size">
+  <div class="col-md-3">
     <RouterLink :to="{ name: 'products', params: { id: productId } }" class="link_product">
       <div class="card">
-        <img :src="imageSrc" class="card-img-top" :alt="productTitle" />
+        <img :src="imageSrc" class="card-img-top size" :alt="productTitle" />
         <div class="card-body">
           <h5 class="card-title">{{ productTitle }}</h5>
-          <p class="card-text">{{ productPrice }}</p>
+          <p class="card-text">{{ productPrice }} €</p>
           <div class="card-reviews">
             <span
               v-for="star in 5"
@@ -16,7 +16,9 @@
             ></span>
             <p>({{ productReviews }} commentaire(s))</p>
           </div>
-          <button @click.prevent="addToCart" class="btn btn-primary">Ajouter au panier</button>
+          <button @click.prevent="addToCart" class="btn btn-primary">
+            <v-icon left>mdi-cart-plus</v-icon> Ajouter au panier
+          </button>
         </div>
       </div>
     </RouterLink>
@@ -74,5 +76,18 @@ export default {
 }
 .link_product {
   text-decoration: none;
+}
+.size {
+  height: 350px;
+  width: 100%;
+}
+.card-title {
+  height: 60px;
+  font-size: 17px;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Nombre de lignes avant coupure */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 </style>
