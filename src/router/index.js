@@ -5,8 +5,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/login',
-      name: 'login',
+      path: '/',
+      name: 'home',
       component: HomeView
     },
     {
@@ -18,8 +18,8 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/',
-      name: 'home',
+      path: '/login',
+      name: 'login',
       component: () => import('../views/LoginView.vue')
     },
     {
@@ -116,6 +116,7 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = store.getters.isAuthenticated // Vérifiez si le token existe dans le store
 
+  if (!isAuthenticated && to.name === 'home') next({ name: 'login' })
   if (isAuthenticated && to.name === 'login') {
     // Si l'utilisateur est authentifié et essaie d'accéder à la page de connexion, redirigez-le vers la page d'accueil
     next({ name: 'home' })
