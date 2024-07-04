@@ -5,8 +5,8 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     {
-      path: '/',
-      name: 'home',
+      path: '/login',
+      name: 'login',
       component: HomeView
     },
     {
@@ -18,8 +18,8 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
-      path: '/login',
-      name: 'login',
+      path: '/',
+      name: 'home',
       component: () => import('../views/LoginView.vue')
     },
     {
@@ -68,56 +68,47 @@ const router = createRouter({
       name: 'search',
       component: () => import('../views/ProductSearchView.vue')
     },
-    
+
     {
       path: '/AjoutCateg',
       name: 'AjoutCateg',
       component: () => import('../views/AjoutCateg.vue')
-
     },
     {
       path: '/AjoutProduit',
       name: 'AjoutProduit',
       component: () => import('../views/AjoutProduit.vue')
-
     },
     {
       path: '/AjoutRole',
       name: 'AjoutRole',
       component: () => import('../views/AjouterRole.vue')
-
     },
     {
       path: '/ProfilPasswrd',
       name: 'ProfilPasswrd',
       component: () => import('../views/ProfilPasswrd.vue')
-
     },
     {
       path: '/Categorie',
       name: 'Categorie',
       component: () => import('../views/CategorieView.vue')
-
     },
     {
       path: '/Produit',
       name: 'Produit',
       component: () => import('../views/ProduitView.vue')
-
     },
     {
       path: '/Role',
       name: 'Role',
       component: () => import('../views/RoleView.vue')
-
     },
     {
       path: '/Profil',
       name: 'Profil',
       component: () => import('../views/ProfilView.vue')
-
-    },
-    
+    }
   ]
 })
 

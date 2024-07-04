@@ -83,8 +83,11 @@ import Commands from '@/components/Commands.vue'
                   >.
                 </p>
                 <v-alert type="info">
-                  <v-icon>mdi-check-circle-outline</v-icon>
-                  Aucune commande effectuée pour le moment.
+                  <span v-if="orders.length">
+                    <v-icon>mdi-check-circle-outline</v-icon>
+                    Vous avez {{ orders.length }} commandes effectuées.</span
+                  >
+                  <span v-else>Aucune commande effectuée pour le moment.</span>
                 </v-alert>
               </v-col>
             </v-row>
