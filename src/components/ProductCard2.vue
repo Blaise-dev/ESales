@@ -18,7 +18,7 @@
             <h3 class="card-title">{{ title }}</h3>
             <p class="card-text">{{ description }}</p>
             <br />
-            <button @click.stop.prevent="goToPaymentPage" class="btn custom-btn btn-modern">
+            <button @click.stop.prevent="buyNow" class="btn custom-btn btn-modern">
               Acheter maintenant <span class="arrow">→</span>
             </button>
           </div>
@@ -84,13 +84,15 @@ export default {
     handleWishlistToggle() {
       this.isWishlisted = toggleWishlist(this.id)
     },
-    goToPaymentPage() {
-      this.$store.dispatch('updatePaymentData', {
+    buyNow() {
+      this.$store.dispatch('addToPanier', {
         id: this.id,
-        title: this.title,
-        price: this.price
+        name: this.title,
+        price: this.price,
+        image: this.imageSrc,
+        quantity: 1
       })
-      this.$router.push('/paiement')
+      this.$router.push('/checkout')
     }
   }
 }
