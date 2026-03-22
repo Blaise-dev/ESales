@@ -108,10 +108,10 @@
             </div>
 
             <div class="d-flex justify-content-center">
-              <RouterLink class="btn btn-light btn-lg social-btn" href="#" role="button">
+              <button type="button" class="btn btn-light btn-lg social-btn" disabled aria-disabled="true">
                 <img src="@/assets/google-logo.png" class="social-logo" alt="Google" />
                 Connectez-vous avec Google
-              </RouterLink>
+              </button>
             </div>
           </form>
         </div>
@@ -158,7 +158,8 @@ export default {
           this.$store.dispatch('setUser', user)
           this.$store.dispatch('setToken', user.token || `token-${user.id}`)
           this.fetchPanier()
-          this.$router.push('/')
+          const redirectTarget = (this.$route.query.redirect || '').toString().trim()
+          this.$router.push(redirectTarget || '/')
         }
       } catch (error) {
         this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."

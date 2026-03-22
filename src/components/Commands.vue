@@ -16,6 +16,7 @@
         :headers="headers"
         :items="orders"
         :sort-by="[{ key: 'createdAt', order: 'desc' }]"
+        :theme="vuetifyThemeName"
         class="orders-table"
       >
         <template #item.number="{ item }">
@@ -226,6 +227,8 @@ export default {
     dialogDelete: false,
     dialogView: false,
     isMobile: false,
+    isDarkTheme: false,
+    themeObserver: null,
     headers: [
       { title: 'Commande', align: 'start', sortable: false, key: 'number' },
       { title: 'Date', key: 'createdAt' },
@@ -272,6 +275,9 @@ export default {
     },
     productCount() {
       return this.normalizedProducts.length
+    },
+    vuetifyThemeName() {
+      return this.isDarkTheme ? 'dark' : 'light'
     },
     timelineSteps() {
       const orderTime = this.editedItem?.createdAt || 'Aujourd’hui'
@@ -332,13 +338,25 @@ export default {
     }
   },
   mounted() {
+    this.syncThemeMode()
     this.updateViewportMode()
     window.addEventListener('resize', this.updateViewportMode)
+    this.themeObserver = new MutationObserver(() => {
+      this.syncThemeMode()
+    })
+    this.themeObserver.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    })
   },
   beforeUnmount() {
     window.removeEventListener('resize', this.updateViewportMode)
+    this.themeObserver?.disconnect()
   },
   methods: {
+    syncThemeMode() {
+      this.isDarkTheme = document.body.classList.contains('theme-dark')
+    },
     updateViewportMode() {
       this.isMobile = window.innerWidth < 960
     },
@@ -471,9 +489,17 @@ export default {
   animation: fade-slide-up 520ms var(--ease) both;
 }
 
+.orders-table-wrap,
+.orders-table {
+  background: var(--surface);
+}
+
 .orders-table :deep(.v-table),
 .orders-table :deep(.v-data-table),
+.orders-table :deep(.v-table__wrapper),
 .orders-table :deep(.v-data-table__wrapper),
+.orders-table :deep(thead),
+.orders-table :deep(tbody),
 .orders-table :deep(table) {
   background: transparent !important;
   color: var(--text) !important;
@@ -495,11 +521,16 @@ export default {
 .orders-table :deep(td) {
   color: var(--text) !important;
   border-bottom: 1px solid color-mix(in srgb, var(--border) 88%, transparent) !important;
-  background: transparent !important;
+  background: inherit !important;
 }
 
 .orders-table :deep(tbody tr) {
+  background: var(--surface) !important;
   transition: background-color var(--ease), transform var(--ease);
+}
+
+.orders-table :deep(tbody tr:nth-child(even)) {
+  background: color-mix(in srgb, var(--surface-muted) 78%, var(--surface)) !important;
 }
 
 .orders-table :deep(tbody tr:hover) {
@@ -514,6 +545,61 @@ export default {
   background: transparent !important;
   color: var(--text-soft) !important;
   border-top: 1px solid var(--border) !important;
+}
+
+.orders-table :deep(.v-data-table-footer__items-per-page),
+.orders-table :deep(.v-data-table-footer__info),
+.orders-table :deep(.v-data-table-footer__pagination) {
+  color: var(--text-soft) !important;
+}
+
+.orders-table :deep(.v-data-table-footer .v-field) {
+  background: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+:global(body.theme-dark) .orders-table-wrap,
+:global(body.theme-dark) .orders-table,
+:global(body.theme-dark) .orders-table :deep(.v-table),
+:global(body.theme-dark) .orders-table :deep(.v-data-table),
+:global(body.theme-dark) .orders-table :deep(.v-table__wrapper),
+:global(body.theme-dark) .orders-table :deep(.v-data-table__wrapper),
+:global(body.theme-dark) .orders-table :deep(table),
+:global(body.theme-dark) .orders-table :deep(thead),
+:global(body.theme-dark) .orders-table :deep(tbody),
+:global(body.theme-dark) .orders-table :deep(tr),
+:global(body.theme-dark) .orders-table :deep(th),
+:global(body.theme-dark) .orders-table :deep(td),
+:global(body.theme-dark) .orders-table :deep(.v-data-table-footer) {
+  background: var(--surface) !important;
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
+}
+
+:global(body.theme-dark) .orders-table :deep(thead tr) {
+  background: color-mix(in srgb, var(--surface-muted) 86%, var(--primary) 6%) !important;
+}
+
+:global(body.theme-dark) .orders-table :deep(tbody tr),
+:global(body.theme-dark) .orders-table :deep(tbody tr td) {
+  background: var(--surface) !important;
+  background-color: var(--surface) !important;
+}
+
+:global(body.theme-dark) .orders-table :deep(tbody tr:nth-child(even)) {
+  background: color-mix(in srgb, var(--surface-muted) 72%, var(--surface)) !important;
+}
+
+:global(body.theme-dark) .orders-table :deep(tbody tr:hover) {
+  background: color-mix(in srgb, var(--surface-muted) 68%, var(--primary) 10%) !important;
+}
+
+:global(body.theme-dark) .orders-table :deep(.v-data-table-footer .v-field),
+:global(body.theme-dark) .orders-table :deep(.v-data-table-footer .v-field__field),
+:global(body.theme-dark) .orders-table :deep(.v-data-table-footer .v-field__input) {
+  background: var(--surface) !important;
+  background-color: var(--surface) !important;
+  color: var(--text) !important;
 }
 
 .order-ref-badge {

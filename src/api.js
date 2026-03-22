@@ -14,7 +14,15 @@ const resolveBaseURL = () => {
 
 const baseURL = resolveBaseURL();
 const isStaticFallbackMode = !baseURL;
-const DB_CACHE_KEY = 'esales-db-cache-v2';
+const DB_CACHE_KEY = 'esales-db-cache-v3';
+const DEFAULT_FALLBACK_IMAGE = '/uploads/1719579105590-vuejs_original_wordmark_logo_icon_146305.png';
+
+const KEYWORD_IMAGE_FALLBACKS = [
+  { keywords: ['smartphone', 'mobile', 'phone', 'earbuds', 'headphone', 'keyboard', 'tech', 'watch'], image: '/uploads/fusionage2.png' },
+  { keywords: ['skincare', 'cosmetic', 'lipstick', 'perfume', 'shampoo', 'beauty', 'makeup', 'serum'], image: '/uploads/A.png' },
+  { keywords: ['granola', 'coffee', 'tea', 'food', 'breakfast', 'snack', 'chocolate'], image: '/uploads/fusionage.png' },
+  { keywords: ['blazer', 'sneakers', 'bag', 'fashion', 'tote', 'beige', 'denim', 'shirt', 'dress'], image: '/uploads/robe2.png' }
+];
 
 const httpClient = axios.create({
   baseURL: baseURL || undefined,
@@ -71,6 +79,34 @@ const writeDbToStorage = (db) => {
   localStorage.setItem(DB_CACHE_KEY, JSON.stringify(db));
 };
 
+const pickFallbackImage = (value) => {
+  const lowered = value.toLowerCase();
+  const match = KEYWORD_IMAGE_FALLBACKS.find(({ keywords }) =>
+    keywords.some((keyword) => lowered.includes(keyword))
+  );
+
+  return match?.image || DEFAULT_FALLBACK_IMAGE;
+};
+
+const normalizeSingleMediaPath = (value) => {
+  if (typeof value !== 'string') return value;
+
+  if (value.startsWith('/src/assets/')) {
+    const fileName = value.split('/').pop();
+    return `/uploads/${fileName}`;
+  }
+
+  if (value.includes('http://localhost:3000/uploads/')) {
+    return value.replace('http://localhost:3000/uploads/', '/uploads/');
+  }
+
+  if (/^https?:\/\/source\.unsplash\.com\//i.test(value)) {
+    return pickFallbackImage(value);
+  }
+
+  return value;
+};
+
 const normalizeMediaPaths = (value) => {
   if (Array.isArray(value)) {
     return value.map((item) => normalizeMediaPaths(item));
@@ -83,14 +119,7 @@ const normalizeMediaPaths = (value) => {
   }
 
   if (typeof value === 'string') {
-    if (value.startsWith('/src/assets/')) {
-      const fileName = value.split('/').pop();
-      return `/uploads/${fileName}`;
-    }
-
-    if (value.includes('http://localhost:3000/uploads/')) {
-      return value.replace('http://localhost:3000/uploads/', '/uploads/');
-    }
+    return normalizeSingleMediaPath(value);
   }
 
   return value;

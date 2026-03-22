@@ -1,12 +1,12 @@
 <template>
   <div class="col-md-2 mb-4">
-    <div class="product-category-card surface-card">
-      <RouterLink :to="resolvedLink">
+    <RouterLink :to="resolvedLink" class="category-link-shell">
+      <div class="product-category-card surface-card">
         <img :src="imageSrc" :alt="categoryTitle" class="category-image" />
-      </RouterLink>
-      <h4>{{ categoryTitle }}</h4>
-      <p>{{ productCount }} produits</p>
-    </div>
+        <h4>{{ categoryTitle }}</h4>
+        <p>{{ productCount }} produits</p>
+      </div>
+    </RouterLink>
   </div>
 </template>
 
@@ -34,16 +34,36 @@ export default {
   computed: {
     resolvedLink() {
       const value = (this.linkUrl || '').toString().trim()
-      return value || '/search'
+      if (!value) {
+        return { path: '/search' }
+      }
+
+      try {
+        const parsed = new URL(value, 'http://localhost')
+        const query = Object.fromEntries(parsed.searchParams.entries())
+
+        return {
+          path: parsed.pathname || '/search',
+          query
+        }
+      } catch {
+        return { path: value }
+      }
     }
   }
 }
 </script>
 
 <style scoped>
+.category-link-shell {
+  display: block;
+  text-decoration: none;
+}
+
 .product-category-card {
   text-align: center;
   padding: 16px 10px;
+  cursor: pointer;
 }
 
 .category-image {

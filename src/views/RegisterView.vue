@@ -157,10 +157,10 @@
             </div>
 
             <div class="d-flex justify-content-center">
-              <RouterLink class="btn btn-light btn-lg social-btn" href="#" role="button">
+              <button type="button" class="btn btn-light btn-lg social-btn" disabled aria-disabled="true">
                 <img src="@/assets/google-logo.png" class="social-logo" alt="Google" />
                 Connectez-vous avec Google
-              </RouterLink>
+              </button>
             </div>
           </form>
         </div>

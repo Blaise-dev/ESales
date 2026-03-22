@@ -14,15 +14,15 @@ import Logo from '@/components/Logo.vue'
           </div>
           <p class="footer-tagline">Expérience shopping moderne et fluide.</p>
           <div class="footer-socials">
-            <a href="#" aria-label="Facebook" class="social-btn">
+            <button type="button" aria-label="Facebook" class="social-btn" title="Bientôt disponible">
               <v-icon size="18">mdi-facebook</v-icon>
-            </a>
-            <a href="#" aria-label="Instagram" class="social-btn">
+            </button>
+            <button type="button" aria-label="Instagram" class="social-btn" title="Bientôt disponible">
               <v-icon size="18">mdi-instagram</v-icon>
-            </a>
-            <a href="#" aria-label="Twitter" class="social-btn">
+            </button>
+            <button type="button" aria-label="Twitter" class="social-btn" title="Bientôt disponible">
               <v-icon size="18">mdi-twitter</v-icon>
-            </a>
+            </button>
           </div>
         </div>
 
@@ -44,7 +44,7 @@ import Logo from '@/components/Logo.vue'
             <li><RouterLink to="/account">Paramètres</RouterLink></li>
             <li><RouterLink to="/Profil">Profil</RouterLink></li>
             <li><RouterLink to="/shoppingcart">Panier</RouterLink></li>
-            <li><RouterLink to="/account#orders">Commandes</RouterLink></li>
+            <li><RouterLink :to="{ path: '/account', hash: '#orders' }">Commandes</RouterLink></li>
           </ul>
         </div>
 
@@ -75,9 +75,9 @@ import Logo from '@/components/Logo.vue'
       <div class="container-fluid px-4 px-md-5 footer-bar-inner">
         <span>&copy; 2026 E‑Sales — Tous droits réservés</span>
         <span class="footer-bar-links">
-          <a href="#">Confidentialité</a>
+          <button type="button">Confidentialité</button>
           <span class="footer-dot">·</span>
-          <a href="#">CGU</a>
+          <button type="button">CGU</button>
         </span>
       </div>
     </div>
@@ -162,6 +162,12 @@ import Logo from '@/components/Logo.vue'
   transition: background var(--ease), color var(--ease), border-color var(--ease), transform var(--ease);
 }
 
+.social-btn,
+.footer-bar-links button {
+  padding: 0;
+  cursor: pointer;
+}
+
 .social-btn:hover {
   background: var(--primary);
   border-color: var(--primary);
@@ -233,13 +239,17 @@ import Logo from '@/components/Logo.vue'
   gap: 0.5rem;
 }
 
-.footer-bar-links a {
+.footer-bar-links a,
+.footer-bar-links button {
   color: var(--text-soft);
   text-decoration: none;
   transition: color var(--ease);
+  background: transparent;
+  border: none;
 }
 
-.footer-bar-links a:hover {
+.footer-bar-links a:hover,
+.footer-bar-links button:hover {
   color: var(--primary);
 }
 

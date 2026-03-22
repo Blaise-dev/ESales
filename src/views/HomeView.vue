@@ -68,7 +68,7 @@
           :imageSrc="category.imageSrc"
           :categoryTitle="category.categoryTitle"
           :productCount="category.productCount"
-          :linkUrl="category.linkUrl"
+          :linkUrl="category.linkUrl || buildCategorySearchLink(category?.categoryTitle)"
         />
       </div>
     </div>

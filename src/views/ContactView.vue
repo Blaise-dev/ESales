@@ -52,7 +52,7 @@
           </div>
 
           <div class="quick-links">
-            <RouterLink to="/account#orders" class="quick-link">Suivre mes commandes</RouterLink>
+            <RouterLink :to="{ path: '/account', hash: '#orders' }" class="quick-link">Suivre mes commandes</RouterLink>
             <RouterLink to="/shoppingcart" class="quick-link">Voir mon panier</RouterLink>
           </div>
         </article>

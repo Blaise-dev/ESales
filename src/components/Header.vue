@@ -9,7 +9,7 @@
         </button>
 
         <div class="dropdown text-end">
-          <a href="#" @click.prevent class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+          <button type="button" class="d-block text-white text-decoration-none dropdown-toggle header-profile-trigger" data-bs-toggle="dropdown" aria-expanded="false">
             <img
               :src="
                 user && user.photo
@@ -21,7 +21,7 @@
               height="32"
               class="rounded-circle profile-avatar"
             />
-          </a>
+          </button>
 
           <ul v-if="user" class="dropdown-menu dropdown-menu-end text-small">
             <li>
@@ -31,7 +31,7 @@
               </RouterLink>
             </li>
             <li>
-              <RouterLink class="dropdown-item" to="/account#orders">
+              <RouterLink class="dropdown-item" :to="{ path: '/account', hash: '#orders' }">
                 <v-icon class="me-2">mdi-package-variant-closed</v-icon>
                 Commandes
               </RouterLink>
@@ -636,6 +636,12 @@ export default {
 
 .profile-avatar:hover {
   transform: scale(1.06);
+}
+
+.header-profile-trigger {
+  background: transparent;
+  border: none;
+  padding: 0;
 }
 
 .search-form {

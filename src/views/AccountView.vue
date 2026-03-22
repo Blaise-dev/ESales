@@ -63,23 +63,23 @@ import Commands from '@/components/Commands.vue'
                 <v-card-title class="font-weight-bold"> Salut {{ user.prenom }} </v-card-title>
                 <p class="ml-4 text-grey">
                   Depuis ton tableau de bord, tu peux
-                  <router-link @click="setActiveSection('orders')" to=""
-                    >voir tes commandes</router-link
+                  <button type="button" class="account-inline-link" @click="setActiveSection('orders')"
+                    >voir tes commandes</button
                   >, gérer ton
-                  <router-link @click="setActiveSection('addresses')" to=""
-                    >adresse de facturation</router-link
+                  <button type="button" class="account-inline-link" @click="setActiveSection('addresses')"
+                    >adresse de facturation</button
                   >
                   et ton
-                  <router-link @click="setActiveSection('addresses')" to=""
-                    >adresse de livraison</router-link
+                  <button type="button" class="account-inline-link" @click="setActiveSection('addresses')"
+                    >adresse de livraison</button
                   >
                   et
-                  <router-link @click="setActiveSection('change-password')" to=""
-                    >modifier ton mot de passe</router-link
+                  <button type="button" class="account-inline-link" @click="setActiveSection('change-password')"
+                    >modifier ton mot de passe</button
                   >
                   et les
-                  <router-link @click="setActiveSection('account-settings')" to=""
-                    >détails de ton compte</router-link
+                  <button type="button" class="account-inline-link" @click="setActiveSection('account-settings')"
+                    >détails de ton compte</button
                   >.
                 </p>
                 <v-alert type="info">
@@ -415,6 +415,19 @@ export default {
     },
     setActiveSection(sectionId) {
       this.activeSection = sectionId
+
+      const targetHash = sectionId && sectionId !== 'summary' ? `#${sectionId}` : ''
+      const currentHash = this.$route.hash || ''
+
+      if (currentHash !== targetHash) {
+        this.$router
+          .replace({
+            path: this.$route.path,
+            query: this.$route.query,
+            hash: targetHash
+          })
+          .catch(() => {})
+      }
     },
     closeModal() {
       this.showModal = false
@@ -569,16 +582,23 @@ export default {
       }
     },
     updateActiveSectionFromHash() {
-      const hash = window.location.hash.replace('#', '')
-      if (hash) {
+      const availableSections = new Set(this.menuItems.map((item) => item.id))
+      const hash = (this.$route.hash || '').replace('#', '')
+
+      if (hash && availableSections.has(hash)) {
         this.activeSection = hash
       } else {
-        this.activeSection = 'summary' // Valeur par défaut si aucun hashtag
+        this.activeSection = 'summary'
       }
     }
   },
   computed: {
     ...mapGetters(['user'])
+  },
+  watch: {
+    '$route.hash'() {
+      this.updateActiveSectionFromHash()
+    }
   }
 }
 </script>
@@ -616,6 +636,16 @@ export default {
   background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 14%, var(--surface)), color-mix(in srgb, var(--accent) 8%, var(--surface)));
   border-color: color-mix(in srgb, var(--primary) 34%, var(--border));
   box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+}
+
+.account-inline-link {
+  border: none;
+  padding: 0;
+  background: transparent;
+  color: var(--primary);
+  font-weight: 600;
+  text-decoration: underline;
+  cursor: pointer;
 }
 
 .account-section-card {
