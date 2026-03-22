@@ -89,7 +89,7 @@ const router = createRouter({
       path: '/checkout',
       name: 'checkout',
       component: () => import('../views/CheckoutView.vue'),
-      meta: { public: true }
+      meta: { requiresAuth: true }
     },
     {
       path: '/search',
@@ -101,42 +101,50 @@ const router = createRouter({
     {
       path: '/AjoutCateg',
       name: 'AjoutCateg',
-      component: () => import('../views/AjoutCateg.vue')
+      component: () => import('../views/AjoutCateg.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/AjoutProduit',
       name: 'AjoutProduit',
-      component: () => import('../views/AjoutProduit.vue')
+      component: () => import('../views/AjoutProduit.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/AjoutRole',
       name: 'AjoutRole',
-      component: () => import('../views/AjouterRole.vue')
+      component: () => import('../views/AjouterRole.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/ProfilPasswrd',
       name: 'ProfilPasswrd',
-      component: () => import('../views/ProfilPasswrd.vue')
+      component: () => import('../views/ProfilPasswrd.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/Categorie',
       name: 'Categorie',
-      component: () => import('../views/CategorieView.vue')
+      component: () => import('../views/CategorieView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/Produit',
       name: 'Produit',
-      component: () => import('../views/ProduitView.vue')
+      component: () => import('../views/ProduitView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/Role',
       name: 'Role',
-      component: () => import('../views/RoleView.vue')
+      component: () => import('../views/RoleView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/Profil',
       name: 'Profil',
-      component: () => import('../views/ProfilView.vue')
+      component: () => import('../views/ProfilView.vue'),
+      meta: { requiresAuth: true }
     },
     {
       path: '/:pathMatch(.*)*',
@@ -144,6 +152,15 @@ const router = createRouter({
     }
   ]
 })
+
+const CHUNK_RELOAD_GUARD_KEY = 'esales-chunk-reload-target'
+
+const isChunkLoadError = (error) => {
+  const message = String(error?.message || '')
+  return /Failed to fetch dynamically imported module|Importing a module script failed|error loading dynamically imported module/i.test(
+    message
+  )
+}
 
 // Guard de navigation global
 router.beforeEach((to, from, next) => {
@@ -165,6 +182,30 @@ router.beforeEach((to, from, next) => {
   }
 
   return next()
+})
+
+router.afterEach(() => {
+  if (typeof window === 'undefined') return
+  sessionStorage.removeItem(CHUNK_RELOAD_GUARD_KEY)
+})
+
+router.onError((error, to) => {
+  if (typeof window === 'undefined' || !isChunkLoadError(error)) {
+    console.error('Erreur de navigation:', error)
+    return
+  }
+
+  const target = to?.fullPath || window.location.pathname + window.location.search + window.location.hash
+  const alreadyRetriedTarget = sessionStorage.getItem(CHUNK_RELOAD_GUARD_KEY)
+
+  if (alreadyRetriedTarget === target) {
+    sessionStorage.removeItem(CHUNK_RELOAD_GUARD_KEY)
+    console.error('Erreur de chargement de chunk persistante après rechargement:', error)
+    return
+  }
+
+  sessionStorage.setItem(CHUNK_RELOAD_GUARD_KEY, target)
+  window.location.assign(target)
 })
 
 export default router

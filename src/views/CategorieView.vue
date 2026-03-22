@@ -117,7 +117,6 @@
   };
   </script>
   
-  <style>
   <style scoped>
   .admin-page {
     max-width: 900px;

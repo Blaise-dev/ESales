@@ -244,12 +244,11 @@ body.theme-dark [style*='background:#fff'] {
 
 .page-enter-active,
 .page-leave-active {
-  transition: opacity var(--ease), transform var(--ease);
+  transition: transform var(--ease);
 }
 
 .page-enter-from,
 .page-leave-to {
-  opacity: 0;
   transform: translateY(14px) scale(0.992);
 }
 

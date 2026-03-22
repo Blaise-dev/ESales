@@ -384,9 +384,7 @@ export default {
 }
 
 .reveal-item {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: revealIn .5s var(--ease) forwards;
+  animation: revealIn .5s var(--ease) both;
 }
 
 .reveal-2 { animation-delay: .06s; }
@@ -395,8 +393,10 @@ export default {
 .reveal-5 { animation-delay: .22s; }
 
 @keyframes revealIn {
+  from {
+    transform: translateY(10px);
+  }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }

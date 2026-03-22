@@ -1,10 +1,7 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import { useRoute } from 'vue-router'
 
 import Base from '@/components/Base.vue'
-
-const route = useRoute()
 </script>
 
 <template>
@@ -13,9 +10,7 @@ const route = useRoute()
       <Base>
         <v-main>
           <RouterView v-slot="{ Component }">
-            <Transition name="page" mode="out-in">
-              <component :is="Component" :key="route.fullPath" />
-            </Transition>
+            <component :is="Component" />
           </RouterView>
         </v-main>
       </Base>

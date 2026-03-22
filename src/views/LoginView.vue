@@ -122,6 +122,7 @@
 
 <script>
 import apiClient from '@/api'
+import { mergeGuestWishlistIntoUser } from '@/utils/wishlist'
 
 export default {
   name: 'LoginView',
@@ -155,9 +156,12 @@ export default {
         } else {
           localStorage.setItem('token', user.token || `token-${user.id}`)
 
-          this.$store.dispatch('setUser', user)
-          this.$store.dispatch('setToken', user.token || `token-${user.id}`)
-          this.fetchPanier()
+          await this.$store.dispatch('setUser', user)
+          await this.$store.dispatch('setToken', user.token || `token-${user.id}`)
+
+          mergeGuestWishlistIntoUser(user.id)
+          await this.$store.dispatch('migrateGuestCartOnLogin', user.id)
+
           const redirectTarget = (this.$route.query.redirect || '').toString().trim()
           this.$router.push(redirectTarget || '/')
         }
@@ -197,28 +201,6 @@ export default {
           user.email?.toLowerCase() === email.toLowerCase() && user.password === password
       ) || null
     },
-    async fetchPanier() {
-      try {
-        const response = await apiClient.get(`/panier`)
-        let panier = Array.isArray(response.data) ? response.data : null
-
-        if (!panier) {
-          const dbResponse = await fetch('/db.json', { cache: 'no-store' })
-          const contentType = dbResponse.headers.get('content-type') || ''
-          if (dbResponse.ok && contentType.includes('application/json')) {
-            const db = await dbResponse.json()
-            panier = Array.isArray(db.panier) ? db.panier : []
-          } else {
-            panier = []
-          }
-        }
-
-        this.$store.dispatch('setPanier', panier)
-      } catch (error) {
-        this.$store.dispatch('setPanier', [])
-        console.error('Erreur de récupération panier:', error)
-      }
-    }
   }
 }
 </script>
@@ -445,25 +427,13 @@ export default {
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { transform: translateY(20px); }
+  to   { transform: translateY(0); }
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { transform: translateY(16px); }
+  to   { transform: translateY(0); }
 }
 
 @keyframes pulseGlow {

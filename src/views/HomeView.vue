@@ -1,4 +1,27 @@
 <template>
+  <div v-if="!isAuthenticated" class="container mt-3">
+    <div class="guest-banner surface-card">
+      <div>
+        <p class="guest-kicker">Mode invité</p>
+        <h2 class="guest-title">Vous pouvez parcourir la boutique sans connexion.</h2>
+        <p class="guest-subtitle">
+          Pour commander, gérer vos adresses et suivre vos commandes, connectez-vous.
+        </p>
+      </div>
+      <div class="guest-actions">
+        <RouterLink class="btn btn-modern" to="/login">Se connecter</RouterLink>
+        <RouterLink class="btn btn-outline-primary" to="/register">Créer un compte</RouterLink>
+      </div>
+    </div>
+  </div>
+
+  <div v-else class="container mt-3">
+    <div class="member-banner surface-card">
+      <p class="member-kicker">Espace membre</p>
+      <p class="member-text">Bienvenue {{ user?.prenom || '' }}. Votre expérience complète est active.</p>
+    </div>
+  </div>
+
   <!-- Carousel Section -->
   <!-- Bannière masquée sur mobile -->
   <div id="carouselExampleSlidesOnly" class="carousel slide home-hero d-none d-md-block" data-ride="carousel">
@@ -46,7 +69,7 @@
           :id="product2.id"
           :title="product2.title"
           :description="product2.description"
-          :imageSrc="product2.photos[0].src"
+          :imageSrc="product2.imageSrc"
           :price="product2.price"
         />
       </div>
@@ -85,12 +108,12 @@
         <ProductCard
           v-for="(product, index) in products"
           :key="index"
-          :imageSrc="product.photos[0].src"
+          :imageSrc="product.imageSrc"
           :productId="product.id"
           :productTitle="product.name"
           :productPrice="product.price"
           :productRating="4"
-          :productReviews="product.comments.length"
+          :productReviews="product.commentsCount"
         />
       </div>
 
@@ -114,6 +137,7 @@ import ProductCategoryCard from '@/components/ProductCategoryCard.vue'
 import ProductCard2 from '@/components/ProductCard2.vue'
 import CarouselItem from '@/components/CarouselItem.vue'
 import apiClient from '@/api'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -133,6 +157,7 @@ export default {
     }
   },
   computed: {
+    ...mapGetters(['user', 'isAuthenticated']),
     categoryChunks() {
       return this.chunkArray(this.categories, 5)
     },
@@ -150,10 +175,60 @@ export default {
     this.fetchProducts2()
   },
   methods: {
+    resolveMediaSource(value) {
+      const fallback = '/uploads/1719579105590-vuejs_original_wordmark_logo_icon_146305.png'
+
+      const dig = (entry) => {
+        if (!entry) return ''
+        if (typeof entry === 'string') return entry
+        if (Array.isArray(entry)) {
+          for (const item of entry) {
+            const candidate = dig(item)
+            if (candidate) return candidate
+          }
+          return ''
+        }
+        if (typeof entry === 'object') {
+          return dig(entry.src) || dig(entry.image) || dig(entry.url) || ''
+        }
+        return ''
+      }
+
+      const raw = dig(value)
+      if (!raw) return fallback
+
+      if (/^(https?:\/\/|data:|blob:|\/)/i.test(raw)) return raw
+      return `/${raw}`
+    },
+    normalizeFeaturedProduct(item) {
+      return {
+        ...item,
+        imageSrc: this.resolveMediaSource(item?.photos || item?.image || item?.imageSrc)
+      }
+    },
+    normalizeNewProduct(item) {
+      return {
+        ...item,
+        imageSrc: this.resolveMediaSource(item?.photos || item?.image || item?.imageSrc),
+        commentsCount: Array.isArray(item?.comments) ? item.comments.length : 0
+      }
+    },
+    normalizeCategory(category) {
+      return {
+        ...category,
+        imageSrc: this.resolveMediaSource(category?.imageSrc || category?.image || category?.photos),
+        productCount: Number(category?.productCount) || 0,
+        linkUrl: category?.linkUrl || this.buildCategorySearchLink(category?.categoryTitle)
+      }
+    },
     async fetchCarousselProducts() {
       try {
         const response = await apiClient.get('/carousselProducts')
-        this.carousselProducts = Array.isArray(response.data) ? response.data : []
+        const raw = Array.isArray(response.data) ? response.data : []
+        this.carousselProducts = raw.map((entry) => ({
+          ...entry,
+          imageSrc: this.resolveMediaSource(entry?.imageSrc || entry?.image || entry?.photos)
+        }))
       } catch (error) {
         this.error = "Une erreur s'est produite lors du chargement du carrousel."
         console.error('Erreur de connexion:', error)
@@ -162,7 +237,8 @@ export default {
     async fetchProducts2() {
       try {
         const response = await apiClient.get('/products2')
-        this.products2 = Array.isArray(response.data) ? response.data : []
+        const raw = Array.isArray(response.data) ? response.data : []
+        this.products2 = raw.map((item) => this.normalizeFeaturedProduct(item))
       } catch (error) {
         this.error = "Une erreur s'est produite lors du chargement des produits vedettes."
         console.error('Erreur de connexion:', error)
@@ -171,7 +247,8 @@ export default {
     async fetchNewProducts() {
       try {
         const response = await apiClient.get('/products4')
-        this.products = Array.isArray(response.data) ? response.data : []
+        const raw = Array.isArray(response.data) ? response.data : []
+        this.products = raw.map((item) => this.normalizeNewProduct(item))
       } catch (error) {
         this.error = "Une erreur s'est produite lors du chargement des nouveautés."
         console.error('Erreur de connexion:', error)
@@ -181,10 +258,7 @@ export default {
       try {
         const response = await apiClient.get('/categories3')
         const rawCategories = Array.isArray(response.data) ? response.data : []
-        this.categories = rawCategories.map((category) => ({
-          ...category,
-          linkUrl: this.buildCategorySearchLink(category?.categoryTitle)
-        }))
+        this.categories = rawCategories.map((category) => this.normalizeCategory(category))
       } catch (error) {
         this.error = "Une erreur s'est produite lors du chargement des catégories."
         console.error('Erreur de connexion:', error)
@@ -243,6 +317,7 @@ export default {
           const moreProducts = allProducts
             .filter((product) => !existingIds.has(String(product.id)))
             .slice(0, 6)
+            .map((item) => this.normalizeNewProduct(item))
 
           if (moreProducts.length) {
             this.products.push(...moreProducts)
@@ -276,6 +351,44 @@ export default {
   overflow: hidden;
   margin: 1rem;
   box-shadow: var(--shadow-md);
+}
+
+.guest-banner,
+.member-banner {
+  padding: 1rem 1.1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.guest-kicker,
+.member-kicker {
+  margin: 0 0 .2rem;
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.guest-title {
+  margin: 0;
+  font-size: clamp(1rem, 2vw, 1.35rem);
+  color: var(--text);
+}
+
+.guest-subtitle,
+.member-text {
+  margin: .35rem 0 0;
+  color: var(--text-soft);
+}
+
+.guest-actions {
+  display: inline-flex;
+  gap: .55rem;
+  flex-wrap: wrap;
 }
 
 /* ── Bande vedettes ── */

@@ -598,9 +598,7 @@ export default {
 }
 
 .reveal-stagger .reveal-item {
-  opacity: 0;
-  transform: translateY(14px) scale(.99);
-  animation: revealUp .55s var(--ease) forwards;
+  animation: revealUp .55s var(--ease) both;
 }
 
 .reveal-item-1 { animation-delay: .03s; }
@@ -1215,8 +1213,10 @@ export default {
 }
 
 @keyframes revealUp {
+  from {
+    transform: translateY(14px) scale(.99);
+  }
   to {
-    opacity: 1;
     transform: translateY(0) scale(1);
   }
 }

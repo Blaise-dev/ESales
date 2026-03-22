@@ -114,8 +114,6 @@
 </template>
 
 <script>
-import apiClient from '@/api';
-
 export default {
   data() {
     return {
@@ -146,12 +144,12 @@ export default {
   methods: {
     async fetchCartItems() {
       try {
-        // Effectuez une requête GET à l'URL de votre backend JSON pour récupérer les articles du panier
-        const response = await apiClient.get('/panier');
-        this.cartItems = Array.isArray(response.data) ? response.data : [];
+        await this.$store.dispatch('fetchPanier')
+        const items = this.$store.getters.panier
+        this.cartItems = Array.isArray(items) ? items : []
       } catch (error) {
-        this.errorMessage = 'Erreur lors de la récupération des articles du panier: ' + error.message;
-        console.error('Erreur lors de la récupération des articles du panier:', error);
+        this.errorMessage = 'Erreur lors de la récupération des articles du panier: ' + error.message
+        console.error('Erreur lors de la récupération des articles du panier:', error)
       }
     },
     getTotalPrice() {
@@ -222,8 +220,10 @@ export default {
       const payload = {
         deliveryInfo: { ...this.deliveryInfo },
         items: this.cartItems,
-        price: this.getTotalPrice(),
-        subtotal: this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)
+        price: Number(this.getTotalPrice()),
+        subtotal: Number(this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)),
+        tax: Number((this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0) * this.taxRate).toFixed(2)),
+        shippingCost: Number(this.shippingCost)
       }
 
       this.$store.dispatch('updatePaymentData', payload)

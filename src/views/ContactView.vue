@@ -364,9 +364,7 @@ export default {
 }
 
 .reveal-item {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: sectionIn .5s var(--ease) forwards;
+  animation: sectionIn .5s var(--ease) both;
 }
 
 .reveal-1 { animation-delay: .05s; }
@@ -375,11 +373,9 @@ export default {
 
 @keyframes sectionIn {
   from {
-    opacity: 0;
     transform: translateY(10px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }

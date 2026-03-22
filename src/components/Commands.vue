@@ -931,14 +931,8 @@ export default {
 }
 
 @keyframes fade-slide-up {
-  from {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { transform: translateY(10px); }
+  to   { transform: translateY(0); }
 }
 
 @media (max-width: 959.98px) {

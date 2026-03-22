@@ -424,6 +424,7 @@ export default {
       this.isLoading = true
       this.error = false
       this.errorMessage = ''
+      this.rawResults = []
 
       try {
         const response = await apiClient.get('/produits')
@@ -738,11 +739,9 @@ export default {
 
 @keyframes searchCardIn {
   from {
-    opacity: 0;
     transform: translateY(12px) scale(.988);
   }
   to {
-    opacity: 1;
     transform: translateY(0) scale(1);
   }
 }
@@ -761,11 +760,9 @@ export default {
 
 @keyframes sectionIn {
   from {
-    opacity: 0;
     transform: translateY(8px);
   }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }

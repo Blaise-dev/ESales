@@ -171,6 +171,7 @@
 
 <script>
 import apiClient from '@/api'
+import { copyGuestWishlistToUser } from '@/utils/wishlist'
 
 export default {
   data() {
@@ -190,7 +191,7 @@ export default {
   methods: {
     async registerUser() {
       try {
-        await apiClient.post('/users', {
+        const response = await apiClient.post('/users', {
           nom: this.nom,
           prenom: this.prenom,
           email: this.email,
@@ -198,17 +199,29 @@ export default {
           photo: this.profilePhotoUrl,
           token: 'ADAFZEJHDJQSD111--'
         })
+
+        return response?.data || null
       } catch (error) {
         this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
         console.error('Erreur de connexion:', error)
+        return null
       }
     },
-    handleSubmit() {
+    async handleSubmit() {
       this.isLoading = true
-      setTimeout(() => {
+
+      setTimeout(async () => {
         this.isLoading = false
         this.loaded = true
-        this.registerUser()
+
+        const createdUser = await this.registerUser()
+        const createdUserId = createdUser?.id
+
+        if (createdUserId) {
+          copyGuestWishlistToUser(createdUserId)
+          this.$store.dispatch('copyGuestCartOnRegister', createdUserId)
+        }
+
         this.$router.push('/login')
       }, 2000)
     },
@@ -488,25 +501,13 @@ export default {
 }
 
 @keyframes slideUp {
-  from {
-    opacity: 0;
-    transform: translateY(18px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { transform: translateY(18px); }
+  to   { transform: translateY(0); }
 }
 
 @keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { transform: translateY(16px); }
+  to   { transform: translateY(0); }
 }
 
 @media (max-width: 1199.98px) {

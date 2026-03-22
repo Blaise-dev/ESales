@@ -1,11 +1,22 @@
 import { createStore } from 'vuex'
 import Cookies from 'js-cookie'
 import apiClient from '@/api'
+import {
+  addToCurrentCart,
+  clearCurrentCart,
+  copyGuestCartToUser,
+  getCartForUser,
+  getCurrentCart,
+  mergeGuestCartIntoUser,
+  removeFromCurrentCart,
+  setCartForUser,
+  updateCurrentCartItem
+} from '@/utils/cartStorage'
 
 // Hydrate the state from localStorage
 const userFromLocalStorage = JSON.parse(localStorage.getItem('user'))
 const tokenFromLocalStorage = localStorage.getItem('token')
-const panierFromLocalStorage = JSON.parse(localStorage.getItem('panier'))
+const panierFromLocalStorage = getCartForUser(userFromLocalStorage?.id || null)
 
 const store = createStore({
   state: {
@@ -33,14 +44,14 @@ const store = createStore({
     },
     setPanier(state, panier) {
       state.panier = Array.isArray(panier) ? panier : []
-      localStorage.setItem('panier', JSON.stringify(state.panier))
+      setCartForUser(state.user?.id || null, state.panier)
     },
     addToPanier(state, produit) {
       if (!Array.isArray(state.panier)) {
         state.panier = []
       }
       state.panier.push(produit)
-      localStorage.setItem('panier', JSON.stringify(state.panier))
+      setCartForUser(state.user?.id || null, state.panier)
     },
     updatePanierItem(state, produit) {
       if (!Array.isArray(state.panier)) {
@@ -51,15 +62,15 @@ const store = createStore({
       if (index !== -1) {
         state.panier[index] = produit
       }
-      localStorage.setItem('panier', JSON.stringify(state.panier))
+      setCartForUser(state.user?.id || null, state.panier)
     },
     removeFromPanier(state, idProduit) {
       state.panier = state.panier.filter((item) => item.id !== idProduit)
-      localStorage.setItem('panier', JSON.stringify(state.panier))
+      setCartForUser(state.user?.id || null, state.panier)
     },
     clearPanier(state) {
       state.panier = []
-      localStorage.removeItem('panier')
+      setCartForUser(state.user?.id || null, state.panier)
     },
     setPaymentData(state, data) {
       state.paymentData = data
@@ -70,15 +81,15 @@ const store = createStore({
     clearAuthData(state) {
       state.user = null
       state.token = null
-      state.panier = null
+      state.panier = getCartForUser(null)
       localStorage.removeItem('user')
       localStorage.removeItem('token')
-      localStorage.removeItem('panier')
     }
   },
   actions: {
     setUser({ commit }, user) {
       commit('setUser', user)
+      commit('setPanier', getCartForUser(user?.id || null))
     },
     async updateUser({ commit, state }, formData) {
       const userString = formData.get('user') // Récupérer l'objet utilisateur sous forme de chaîne JSON
@@ -123,34 +134,45 @@ const store = createStore({
       commit('setPanier', panier)
     },
 
+    migrateGuestCartOnLogin({ commit }, userId) {
+      const merged = mergeGuestCartIntoUser(userId)
+      commit('setPanier', merged)
+      return merged
+    },
+
+    copyGuestCartOnRegister({ commit }, userId) {
+      const copied = copyGuestCartToUser(userId)
+      commit('setPanier', copied)
+      return copied
+    },
+
     async addToPanier({ commit }, produit) {
       try {
-        const response = await apiClient.post('/panier', produit)
-        commit('addToPanier', response.data || produit)
+        const updated = addToCurrentCart(produit)
+        commit('setPanier', updated)
       } catch (error) {
         console.error("Erreur lors de l'ajout dans le panier:", error)
       }
     },
     async updatePanierItem({ commit }, produit) {
       try {
-        const response = await apiClient.put('/panier/' + produit.id, produit)
-        commit('updatePanierItem', response.data || produit)
+        const updated = updateCurrentCartItem(produit)
+        commit('setPanier', updated)
       } catch (error) {
         console.error("Erreur lors de la mise à jour de l'article du panier:", error)
       }
     },
     async removeFromPanier({ commit }, idProduit) {
       try {
-        await apiClient.delete('/panier/' + idProduit)
-        commit('removeFromPanier', idProduit)
+        const updated = removeFromCurrentCart(idProduit)
+        commit('setPanier', updated)
       } catch (error) {
         console.error("Erreur lors de l'ajout dans le panier:", error)
       }
     },
     async fetchPanier({ commit }) {
       try {
-        const response = await apiClient.get('/panier')
-        commit('setPanier', Array.isArray(response.data) ? response.data : [])
+        commit('setPanier', getCurrentCart())
       } catch (error) {
         console.error('Erreur lors de la récupération des articles du panier:', error)
         commit('setPanier', [])
@@ -158,8 +180,8 @@ const store = createStore({
     },
     async clearPanier({ commit }) {
       try {
-        await apiClient.delete('/panier/')
-        commit('clearPanier')
+        const cleared = clearCurrentCart()
+        commit('setPanier', cleared)
       } catch (error) {
         console.error("Erreur lors de l'ajout dans le panier:", error)
       }

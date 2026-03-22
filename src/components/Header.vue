@@ -318,7 +318,7 @@ export default {
   },
   methods: {
     handleStorageUpdate(event) {
-      if (!event?.key || event.key === 'esales-wishlist') {
+      if (!event?.key || event.key.startsWith('esales-wishlist')) {
         this.initializeWishesList()
       }
     },
@@ -478,7 +478,7 @@ export default {
     },
     handleLogout() {
       this.$store.dispatch('logout')
-      this.$router.push('/login')
+      window.location.href = '/'
     }
   },
   computed: {

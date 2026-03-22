@@ -6,8 +6,8 @@
           <v-icon size="28" class="mr-2">mdi-cart-outline</v-icon>
           Panier d'achat
         </h1>
-        <span class="cart-count" v-if="cartItems.length">
-          {{ cartItems.length }} article{{ cartItems.length > 1 ? 's' : '' }}
+        <span class="cart-count" v-if="safeCartItems.length">
+          {{ safeCartItems.length }} article{{ safeCartItems.length > 1 ? 's' : '' }}
         </span>
       </div>
 
@@ -18,9 +18,9 @@
 
       <div class="cart-layout">
         <div class="cart-items-col">
-          <div v-if="cartItems.length > 0">
+          <div v-if="safeCartItems.length > 0">
             <cart-item
-              v-for="(item, index) in cartItems"
+              v-for="(item, index) in safeCartItems"
               :key="item.id"
               :item="item"
               @updateQuantity="updateQuantity(index, $event)"
@@ -35,7 +35,7 @@
           </div>
         </div>
 
-        <div class="cart-summary-col" v-if="cartItems.length > 0">
+        <div class="cart-summary-col" v-if="safeCartItems.length > 0">
           <div class="cart-summary-card">
             <h2 class="summary-title">Récapitulatif</h2>
             <div class="summary-row">
@@ -83,7 +83,6 @@ import { ref, onMounted } from 'vue';
 import { computed } from 'vue';
 import { useRouter } from 'vue-router';
 import { useStore } from 'vuex';
-import apiClient from '@/api';
 import CartItem from '@/components/CartItem.vue';
 
 export default {
@@ -93,8 +92,10 @@ export default {
   setup() {
     const router = useRouter();
     const store = useStore();
-    const cartItems = computed(() => store.getters.panier);
-    console.log(cartItems)
+    const safeCartItems = computed(() => {
+      const items = store.getters.panier
+      return Array.isArray(items) ? items : []
+    })
 
     const errorMessage = ref(""); // Message d'erreur en cas de problème de chargement
 
@@ -110,7 +111,8 @@ export default {
 
     // Méthode pour mettre à jour la quantité d'un article dans le panier
     const updateQuantity = async (index, newQuantity) => {
-      const item = cartItems.value[index];
+      const item = safeCartItems.value[index];
+      if (!item) return
       const updatedItem = { ...item, quantity: newQuantity };
 
       try {
@@ -148,7 +150,7 @@ export default {
 
     // Calcul du sous-total du panier
     const getSubtotal = computed(() => {
-      return cartItems.value.reduce((total, item) => total + (item.price * item.quantity), 0);
+      return safeCartItems.value.reduce((total, item) => total + (Number(item.price || 0) * Number(item.quantity || 0)), 0);
     });
 
     // Calcul de la taxe (20%)
@@ -166,7 +168,7 @@ export default {
     });
 
     return {
-      cartItems,
+      safeCartItems,
       removeItem,
       errorMessage,
       updateQuantity,

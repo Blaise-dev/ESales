@@ -49,8 +49,8 @@
             Récapitulatif de votre commande
           </h2>
 
-          <ul class="items-list" v-if="panier.length">
-            <li v-for="produit in panier" :key="produit.id" class="item-row">
+          <ul class="items-list" v-if="orderItems.length">
+            <li v-for="produit in orderItems" :key="produit.id" class="item-row">
               <span class="item-name">{{ produit.name }}</span>
               <span class="item-meta">x{{ produit.quantity }}</span>
               <strong class="item-price">{{ (produit.price * produit.quantity).toFixed(2) }} €</strong>
@@ -61,7 +61,7 @@
           <div class="summary-totals">
             <div class="total-line"><span>Sous-total</span><strong>{{ getSubtotal.toFixed(2) }} €</strong></div>
             <div class="total-line"><span>Taxe (20%)</span><strong>{{ getTax.toFixed(2) }} €</strong></div>
-            <div class="total-line"><span>Livraison</span><strong>5,00 €</strong></div>
+            <div class="total-line"><span>Livraison</span><strong>{{ shippingCost.toFixed(2) }} €</strong></div>
             <div class="total-line grand-total"><span>Total TTC</span><strong>{{ getTotalPrice.toFixed(2) }} €</strong></div>
           </div>
         </article>
@@ -119,17 +119,32 @@ export default {
   name: 'CheckoutPaiement',
   computed: {
     ...mapGetters(['panier', 'paymentData']),
+    orderItems() {
+      const fromPayment = this.paymentData?.items
+      if (Array.isArray(fromPayment) && fromPayment.length) return fromPayment
+      return Array.isArray(this.panier) ? this.panier : []
+    },
     getSubtotal() {
-      return this.panier.reduce((total, item) => total + item.price * item.quantity, 0)
+      const fromPayment = Number(this.paymentData?.subtotal)
+      if (Number.isFinite(fromPayment)) return fromPayment
+      return this.orderItems.reduce((total, item) => total + Number(item.price || 0) * Number(item.quantity || 0), 0)
     },
     getTax() {
+      const fromPayment = Number(this.paymentData?.tax)
+      if (Number.isFinite(fromPayment)) return fromPayment
       return this.getSubtotal * 0.2
     },
+    shippingCost() {
+      const fromPayment = Number(this.paymentData?.shippingCost)
+      return Number.isFinite(fromPayment) ? fromPayment : 0
+    },
     getTotalPrice() {
-      return this.getSubtotal + this.getTax + 5
+      const fromPayment = Number(this.paymentData?.price)
+      if (Number.isFinite(fromPayment)) return fromPayment
+      return this.getSubtotal + this.getTax + this.shippingCost
     },
     totalItems() {
-      return this.panier.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0)
+      return this.orderItems.reduce((sum, item) => sum + (Number(item.quantity) || 0), 0)
     },
     deliverySummary() {
       const info = this.paymentData?.deliveryInfo || {}
@@ -440,9 +455,7 @@ export default {
 }
 
 .reveal-item {
-  opacity: 0;
-  transform: translateY(10px);
-  animation: revealIn .52s var(--ease) forwards;
+  animation: revealIn .52s var(--ease) both;
 }
 
 .reveal-2 {
@@ -458,8 +471,10 @@ export default {
 }
 
 @keyframes revealIn {
+  from {
+    transform: translateY(10px);
+  }
   to {
-    opacity: 1;
     transform: translateY(0);
   }
 }
