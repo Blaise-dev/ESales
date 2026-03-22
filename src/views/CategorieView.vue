@@ -31,8 +31,12 @@
                 <td><img :src="category.icon" alt="icone" class="row-img" /></td>
                 <td>{{ category.name }}</td>
                 <td>
-                  <button @click="editCategory(category.id)" class="icon-btn"><img src="@/assets/boutton_modifier.png" alt="Modifier" /></button>
-                  <button @click="deleteCategory(category.id)" class="icon-btn"><img src="@/assets/boutton_supprimer.png" alt="Supprimer" /></button>
+                  <button @click="editCategory(category.id)" class="icon-btn icon-btn--edit" title="Modifier">
+                    <v-icon size="18">mdi-pencil</v-icon>
+                  </button>
+                  <button @click="deleteCategory(category.id)" class="icon-btn icon-btn--del" title="Supprimer">
+                    <v-icon size="18">mdi-trash-can-outline</v-icon>
+                  </button>
                 </td>
               </tr>
             </tbody>

@@ -28,8 +28,12 @@
                     <td class="ajustement-center">{{ Produit.id }}</td>
                     <td class="ajustement-center">{{ Produit.nameproduit }}</td>
                     <td class="ajustement-center">
-                      <button @click="editCategory(Produit.id)" class="edit-btn"><img class="taille-img" src="@/assets/boutton_modifier.png"></button>
-                      <button @click="deleteCategory(Produit.id)" class="delete-btn"><img class="taille-img" src="@/assets/boutton_supprimer.png"></button>
+                      <button @click="editCategory(Produit.id)" class="edit-btn" title="Modifier">
+                        <v-icon size="18">mdi-pencil</v-icon>
+                      </button>
+                      <button @click="deleteCategory(Produit.id)" class="delete-btn" title="Supprimer">
+                        <v-icon size="18">mdi-trash-can-outline</v-icon>
+                      </button>
                     </td>
                   </tr>
                 </tbody>
