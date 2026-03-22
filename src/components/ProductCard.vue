@@ -1,12 +1,12 @@
 <!-- ProductCard.vue -->
 <template>
-  <div class="col-md-3">
+  <div class="col-md-3 mb-4">
     <RouterLink :to="{ name: 'products', params: { id: productId } }" class="link_product">
-      <div class="card">
+      <div class="card product-card surface-card h-100">
         <img :src="imageSrc" class="card-img-top size" :alt="productTitle" />
         <div class="card-body">
           <h5 class="card-title">{{ productTitle }}</h5>
-          <p class="card-text">{{ productPrice }} €</p>
+          <p class="card-text product-price">{{ productPrice }} €</p>
           <div class="card-reviews">
             <span
               v-for="star in 5"
@@ -16,7 +16,7 @@
             ></span>
             <p>({{ productReviews }} commentaire(s))</p>
           </div>
-          <button @click.prevent="addToCart" class="btn btn-primary">
+          <button @click.prevent="addToCart" class="btn btn-modern mt-2 w-100">
             <v-icon left>mdi-cart-plus</v-icon> Ajouter au panier
           </button>
         </div>
@@ -72,15 +72,30 @@ export default {
 
 <style scoped>
 .checked {
-  color: orange;
+  color: #f59e0b;
 }
+
 .link_product {
   text-decoration: none;
 }
+
 .size {
-  height: 350px;
+  height: 300px;
   width: 100%;
+  object-fit: cover;
 }
+
+.product-card {
+  overflow: hidden;
+}
+
+.product-card .card-body {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 10px;
+}
+
 .card-title {
   height: 60px;
   font-size: 17px;
@@ -89,5 +104,16 @@ export default {
   -webkit-box-orient: vertical;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.product-price {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.card-reviews {
+  color: #64748b;
+  font-size: 0.9rem;
 }
 </style>

@@ -1,14 +1,14 @@
 <template>
   <div class="custom-container">
     <RouterLink :to="{ name: 'products', params: { id: this.id } }" class="link_product">
-      <div class="card h-100 text-center custom-card">
+      <div class="card h-100 text-center custom-card surface-card">
         <div class="card-body d-flex justify-content-between align-items-start">
           <div class="text-container">
             <br />
             <h3 class="card-title">{{ title }}</h3>
             <p class="card-text">{{ description }}</p>
             <br />
-            <button @click.stop.prevent="goToPaymentPage" class="btn custom-btn">
+            <button @click.stop.prevent="goToPaymentPage" class="btn custom-btn btn-modern">
               Acheter maintenant <span class="arrow">→</span>
             </button>
           </div>
@@ -61,41 +61,41 @@ export default {
 
 <style scoped>
 .custom-container {
-  padding: 5px; /* Espacement autour de chaque carte */
+  padding: 10px;
   flex: 1 1 0;
 }
 
 .custom-card {
-  background-color: #f0f0f0; /* Gris clair */
-  border: none; /* Suppression des bordures */
+  background-color: transparent;
+  border: none;
   width: 100%;
-  border-radius: 0;
-  margin: 10 10px; /* Marges latérales réduites pour espacer les cartes */
+  border-radius: var(--radius-md);
+  margin: 0;
 }
 
 .card-body {
   display: flex;
   justify-content: space-between;
   align-items: start;
-  height: 100%; /* Prendre toute la hauteur disponible */
+  height: 100%;
+  gap: 14px;
 }
 
 .custom-image {
-  width: 125px; /* Ajustez la taille de l'image selon vos besoins */
+  width: 125px;
   height: 200px;
-  max-height: 100%; /* S'assure que l'image ne dépasse pas la hauteur du cadre */
-  margin-left: 20px; /* Espacement entre l'image et le texte */
+  max-height: 100%;
+  margin-left: 12px;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  transition: transform var(--ease);
 }
 
 .custom-btn {
-  background-color: #333333; /* Gris très foncé */
-  border: none;
-  color: #fff; /* Texte en blanc pour contraste */
-  padding: 10px 20px;
   text-decoration: none;
   display: inline-flex;
   align-items: center;
-  white-space: nowrap; /* Empêche le texte de s'étendre sur plusieurs lignes */
+  white-space: nowrap;
 }
 
 .custom-btn .arrow {
@@ -104,10 +104,27 @@ export default {
 }
 
 .custom-btn:hover {
-  background-color: #000000; /* Noir au survol */
   text-decoration: none;
 }
+
 .link_product {
   text-decoration: none;
+}
+
+.text-container {
+  text-align: left;
+}
+
+.text-container .card-title {
+  font-weight: 800;
+  color: #0f172a;
+}
+
+.text-container .card-text {
+  color: #475569;
+}
+
+.custom-card:hover .custom-image {
+  transform: translateY(-4px) scale(1.02);
 }
 </style>

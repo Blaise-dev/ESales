@@ -40,3 +40,13 @@ npm run test:unit
 npm run lint
 ```
 # ESales
+
+## Comptes de test
+
+- Client test
+	- Email: `test.client@esales.local`
+	- Mot de passe: `test1234`
+
+- Vendeur test
+	- Email: `test.vendeur@esales.local`
+	- Mot de passe: `vendeur123`

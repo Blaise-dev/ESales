@@ -1,10 +1,10 @@
 <script setup></script>
 
 <template>
-  <div class="container-fluid vh-100">
+  <div class="container-fluid vh-100 register-page">
     <div class="row flex-grow-1 w-100 h-100 m-0">
       <!-- Partie gauche: Slider -->
-      <div class="col-md-6 p-0 mb-2">
+      <div class="col-md-6 p-0 mb-2 register-left">
         <div class="d-flex justify-content-md-start justify-content-sm-around align-items-end mt-5">
           <img src="@/assets/logo.png" class="d-block w-25 h-25 m-5" />
 
@@ -19,9 +19,10 @@
 
       <!-- Colonne de droite avec le formulaire -->
       <div
-        class="col-md-6 d-flex flex-column align-items-center justify-content-center bg-light custom-animation-form"
+        class="col-md-6 d-flex flex-column align-items-center justify-content-center register-right custom-animation-form"
       >
-        <form @submit.prevent="handleSubmit" class="w-100">
+        <div class="register-card surface-card">
+          <form @submit.prevent="handleSubmit" class="w-100">
           <h2 class="mb-4">Créer un compte</h2>
           <div class="mb-3">
             <div class="text-subtitle-1 text-medium-emphasis">
@@ -153,7 +154,7 @@
             <button
               data-mdb-button-init
               data-mdb-ripple-init
-              class="mb-3 w-50 btn btn-primary btn-lg btn-block"
+              class="mb-3 w-50 btn btn-modern btn-lg btn-block"
             >
               <i class="bi bi-check-circle me-2"></i>
               S'inscrire
@@ -173,7 +174,7 @@
           <div class="d-flex flex-column align-items-center">
             <RouterLink
               data-mdb-ripple-init
-              class="btn btn-light btn-lg btn-block h-75 w-75 m-0"
+              class="btn btn-light btn-lg btn-block h-75 w-75 m-0 social-btn"
               href="#!"
               role="button"
             >
@@ -181,7 +182,8 @@
               Google</RouterLink
             >
           </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -261,6 +263,28 @@ export default {
 </script>
 
 <style scoped>
+.register-page {
+  background: transparent;
+}
+
+.register-left {
+  background: linear-gradient(145deg, #eaf1ff 0%, #f6f9ff 100%);
+}
+
+.register-right {
+  background: transparent;
+  padding: 24px;
+}
+
+.register-card {
+  width: min(640px, 100%);
+  padding: 28px 24px;
+}
+
+.social-btn {
+  border-radius: 999px !important;
+}
+
 .divider:after,
 .divider:before {
   content: '';

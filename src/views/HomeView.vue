@@ -1,6 +1,6 @@
 <template>
   <!-- Carousel Section -->
-  <div id="carouselExampleSlidesOnly" class="carousel slide" data-ride="carousel">
+  <div id="carouselExampleSlidesOnly" class="carousel slide home-hero" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="1"></li>
@@ -39,7 +39,7 @@
 
   <br />
   <!--première partie -->
-  <div class="container-fluid">
+  <div class="container-fluid featured-strips">
     <div class="row no-gutters">
       <div v-for="product2 in products2" class="col-12 col-md-4">
         <ProductCard2
@@ -56,7 +56,8 @@
   <br />
   <br />
   <!-- New Product Category Section with Carousel -->
-  <h2 class="text-center"><strong>Nouvelles catégories</strong></h2>
+  <h2 class="text-center section-title">Nouvelles catégories</h2>
+  <p class="text-center section-subtitle">Explore les tendances du moment par univers.</p>
 
   <div id="product-category-section" class="container mt-5">
     <div id="productCarousel" class="carousel slide" data-ride="carousel">
@@ -102,7 +103,8 @@
   <br />
   <!-- New Arrivals Section -->
   <div id="new-arrivals-section" class="container mt-5">
-    <h2 class="text-center"><strong>Nouvelles arrivées</strong></h2>
+    <h2 class="text-center section-title">Nouvelles arrivées</h2>
+    <p class="text-center section-subtitle">Sélection fraîchement ajoutée, prête à shopper.</p>
     <div class="row">
       <ProductCard
         v-for="(product, index) in products"
@@ -117,7 +119,7 @@
     </div>
 
     <div class="text-center mt-4">
-      <a href="#" class="btn btn-link" @click="loadMoreProducts" v-if="!isLoading">Voir plus</a>
+      <a href="#" class="btn btn-modern" @click="loadMoreProducts" v-if="!isLoading">Voir plus</a>
     </div>
     <div v-if="isLoading" class="text-center mt-4">
       <div class="spinner-border" role="status">
@@ -263,6 +265,17 @@ export default {
 </script>
 
 <style scoped>
+.home-hero {
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 16px;
+  box-shadow: var(--shadow-md);
+}
+
+.featured-strips {
+  animation: fade-slide-up 560ms var(--ease) both;
+}
+
 #product-category-section {
   margin-top: 50px;
 }
@@ -295,10 +308,12 @@ export default {
   max-height: 500px;
   object-fit: cover;
 }
+
 /* New CSS for Carousel Controls */
 .custom-carousel-control-icon {
-  filter: invert(1); /* Change the color of the icon to black */
+  filter: invert(1);
 }
+
 .container-fluid {
   padding: 5;
 }
@@ -309,7 +324,7 @@ export default {
 }
 product-card-container {
   display: flex;
-  flex-wrap: wrap; /* Permet de passer à la ligne suivante si nécessaire */
-  gap: 10px; /* Espacement entre les cartes */
+  flex-wrap: wrap;
+  gap: 10px;
 }
 </style>

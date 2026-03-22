@@ -5,22 +5,17 @@ import apiClient from '@/api'
 </script>
 
 <template>
-  <header class="p-3 mb-3 border-bottom bg-dark text-white">
+  <header class="header-top p-3 mb-3 border-bottom text-white">
     <div class="container">
       <div
         class="d-flex flex-wrap align-items-around justify-content-around justify-content-lg-around"
       >
-        <button @click="toggleTheme" class="btn btn-outline-light theme-toggle me-4">
+        <button @click="toggleTheme" class="btn btn-outline-light theme-toggle me-4 elevate-hover">
           <v-icon>{{ darkTheme ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
         </button>
 
         <div class="dropdown text-end">
-          <a
-            href="#"
-            class="d-block text-white text-decoration-none dropdown-toggle"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
+          <a href="#" class="d-block text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <img
               :src="
                 user && user.photo
@@ -30,7 +25,7 @@ import apiClient from '@/api'
               alt="mdo"
               width="32"
               height="32"
-              class="rounded-circle"
+              class="rounded-circle profile-avatar"
             />
           </a>
 
@@ -76,12 +71,12 @@ import apiClient from '@/api'
       </div>
     </div>
   </header>
-  <div class="py-3 border-bottom">
+  <div class="header-middle py-3 border-bottom">
     <div class="container d-flex flex-wrap justify-content-between align-items-center">
       <RouterLink to="/" class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto">
-        <Logo style="height: 50px; width: 50px" />
+        <Logo class="site-logo" style="height: 50px; width: 50px" />
       </RouterLink>
-      <form @submit.prevent="handleSubmit" class="w-50 col-lg-auto mb-3 mb-lg-0" role="search">
+      <form @submit.prevent="handleSubmit" class="w-50 col-lg-auto mb-3 mb-lg-0 search-form" role="search">
         <v-text-field
           v-model="search"
           label="Recherche"
@@ -103,7 +98,7 @@ import apiClient from '@/api'
         <v-menu v-model="showWishesList" :close-on-content-click="false" location="end">
           <template v-slot:activator="{ props }">
             <button
-              class="btn position-relative me-2"
+              class="btn position-relative me-2 action-icon-btn"
               @click="showWishesList = !showWishesList"
               v-bind="props"
             >
@@ -166,7 +161,7 @@ import apiClient from '@/api'
 
         <v-menu v-model="showCart" :close-on-content-click="false" location="end">
           <template v-slot:activator="{ props }">
-            <button class="btn position-relative me-2" @click="showCart = !showCart" v-bind="props">
+            <button class="btn position-relative me-2 action-icon-btn" @click="showCart = !showCart" v-bind="props">
               <v-icon class="display-6 text-secondary">mdi-cart-outline</v-icon>
               <span
                 v-if="cartItemsCount > 0"
@@ -227,13 +222,13 @@ import apiClient from '@/api'
       </div>
     </div>
   </div>
-  <div class="d-flex justify-center align-center" style="height: 64px; background-color: white">
+  <div class="header-bottom d-flex justify-center align-center" style="height: 64px">
     <v-spacer></v-spacer>
     <v-menu offset-y>
       <template v-slot:activator="{ props }">
         <v-btn
           color="blue"
-          class="mx-auto text-white"
+          class="mx-auto text-white category-btn"
           v-bind="props"
           style="white-space: nowrap; height: 100%"
         >
@@ -291,6 +286,10 @@ export default {
     }
   },
   methods: {
+    toggleTheme() {
+      this.darkTheme = !this.darkTheme
+      document.body.classList.toggle('theme-dark', this.darkTheme)
+    },
     toggleFav(item) {
       item.fav = !item.fav
     },
@@ -351,8 +350,10 @@ export default {
 </script>
 
 <style scoped>
-.header {
-  background-color: #343a40; /* Dark background color */
+.header-top {
+  background: linear-gradient(115deg, #0f172a 0%, #1e293b 52%, #334155 100%);
+  border-color: rgba(148, 163, 184, 0.28) !important;
+  box-shadow: 0 14px 30px rgba(2, 6, 23, 0.28);
 }
 
 .text-white a {
@@ -360,22 +361,81 @@ export default {
 }
 
 .btn-outline-light {
-  border-color: white;
+  border-color: rgba(255, 255, 255, 0.7);
   color: white;
+  border-radius: 999px;
+  transition:
+    transform var(--ease),
+    background-color var(--ease);
 }
 
 .theme-toggle i {
   font-size: 1rem;
 }
+
 .theme-toggle:hover {
-  /* Ajoutez ici les styles que vous souhaitez désactiver lors du survol */
-  /* Par exemple, si vous voulez désactiver le changement de couleur du texte, vous pouvez spécifier 'color' à 'inherit' */
-  color: black; /* Cela maintiendra la couleur du texte inchangée lors du survol */
+  color: #fff;
+  background-color: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
 }
 
 .dropdown-menu .dropdown-item {
   color: black !important;
 }
+
+.header-middle {
+  background: rgba(255, 255, 255, 0.88);
+  border-color: var(--border) !important;
+  backdrop-filter: blur(12px);
+}
+
+.header-bottom {
+  background: rgba(255, 255, 255, 0.94);
+  border-bottom: 1px solid var(--border);
+}
+
+.site-logo {
+  filter: drop-shadow(0 8px 20px rgba(37, 99, 235, 0.26));
+}
+
+.profile-avatar {
+  width: 36px;
+  height: 36px;
+  border: 2px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 6px 16px rgba(15, 23, 42, 0.22);
+  transition: transform var(--ease);
+}
+
+.profile-avatar:hover {
+  transform: scale(1.06);
+}
+
+.search-form {
+  max-width: 560px;
+}
+
+.action-icon-btn {
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  transition:
+    transform var(--ease),
+    box-shadow var(--ease);
+}
+
+.action-icon-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-sm);
+}
+
+.category-btn {
+  min-width: 220px;
+  border-radius: 0 !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: linear-gradient(120deg, var(--primary) 0%, #60a5fa 100%) !important;
+}
+
 .v-application--is-ltr .v-application--wrap {
   padding-left: 0;
 }
@@ -383,6 +443,7 @@ export default {
 .v-btn {
   white-space: nowrap;
 }
+
 .v-app-bar .v-btn {
   height: 100%;
 }

@@ -44,6 +44,24 @@
       "photo": "http://localhost:3000/uploads/1719579105590-vuejs_original_wordmark_logo_icon_146305.png",
       "token": "ADAFZEJHDJQSD111--",
       "id": "buBeUHq"
+    },
+    {
+      "id": "test-user-1",
+      "nom": "Test",
+      "prenom": "Client",
+      "email": "test.client@esales.local",
+      "password": "test1234",
+      "photo": "https://randomuser.me/api/portraits/men/77.jpg",
+      "token": "TOKEN_TEST_CLIENT_123"
+    },
+    {
+      "id": "test-user-2",
+      "nom": "Test",
+      "prenom": "Vendeur",
+      "email": "test.vendeur@esales.local",
+      "password": "vendeur123",
+      "photo": "https://randomuser.me/api/portraits/women/77.jpg",
+      "token": "TOKEN_TEST_VENDEUR_456"
     }
   ],
   "addresses": [

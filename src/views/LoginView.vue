@@ -1,8 +1,8 @@
 <template>
-  <div class="container-fluid vh-100">
+  <div class="container-fluid vh-100 auth-page">
     <div class="row flex-grow-1 w-100 h-100 m-0">
       <!-- Partie gauche: Slider -->
-      <div class="col-md-7 p-0">
+      <div class="col-md-7 p-0 auth-visual">
         <div
           id="carouselExample"
           class="carousel slide h-100"
@@ -37,16 +37,18 @@
           </div>
           <div class="position-absolute bottom-0 start-0 m-3">
             <span class="badge bg-dark fw-normal"
-              ><span class="fw-bold fs-6">E-Sales</span><br /><br />Copyright 2024 © E-Sales.
+              ><span class="fw-bold fs-6">E-Sales</span><br /><br />Créé par Blaise ·
+              <span class="text-info fw-bold">Blaise.dev</span>
             </span>
           </div>
         </div>
       </div>
 
       <!-- Colonne de droite avec le formulaire -->
-      <div class="col-md-5 d-flex flex-column align-items-center justify-content-center bg-light">
-        <img src="@/assets/logo.png" class="d-block w-25 h-25" />
-        <form class="w-100" @submit.prevent="login">
+      <div class="col-md-5 d-flex flex-column align-items-center justify-content-center auth-panel custom-animation-form">
+        <div class="auth-card surface-card">
+          <img src="@/assets/logo.png" class="d-block w-25 h-25 auth-logo" />
+          <form class="w-100" @submit.prevent="login">
           <h2 class="mb-4">S'authentifier</h2>
 
           <div class="mb-3">
@@ -106,7 +108,7 @@
             <button
               data-mdb-button-init
               data-mdb-ripple-init
-              class="mb-3 w-50 btn btn-primary btn-lg btn-block"
+              class="mb-3 w-50 btn btn-modern btn-lg btn-block"
             >
               <i class="bi bi-box-arrow-in-right"></i>
               Se connecter
@@ -117,7 +119,7 @@
               to="/register"
               data-mdb-button-init
               data-mdb-ripple-init
-              class="w-50 btn btn-primary btn-lg btn-block"
+              class="w-50 btn btn-modern btn-lg btn-block"
               ><i class="bi bi-person-fill"></i> Créer un compte</RouterLink
             >
           </div>
@@ -129,7 +131,7 @@
           <div class="d-flex flex-column align-items-center">
             <RouterLink
               data-mdb-ripple-init
-              class="btn btn-light btn-lg btn-block h-75 w-75 m-0"
+              class="btn btn-light btn-lg btn-block h-75 w-75 m-0 social-btn"
               href="#!"
               role="button"
             >
@@ -137,7 +139,8 @@
               Google</RouterLink
             >
           </div>
-        </form>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -201,6 +204,33 @@ export default {
 </script>
 
 <style>
+.auth-page {
+  background: transparent;
+}
+
+.auth-visual {
+  border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+  overflow: hidden;
+}
+
+.auth-panel {
+  background: transparent;
+  padding: 24px;
+}
+
+.auth-card {
+  width: min(560px, 100%);
+  padding: 26px 24px;
+}
+
+.auth-logo {
+  margin: 0 auto 8px;
+}
+
+.social-btn {
+  border-radius: 999px !important;
+}
+
 @media (min-width: 1024px) {
   .login {
     min-height: 100vh;

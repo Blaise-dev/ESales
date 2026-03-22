@@ -1,13 +1,11 @@
 <template>
   <div class="carousel-item" :class="{ active: isActive }">
-    <img class="d-block w-100 custom-carousel-img" :src="imageSrc" :alt="altText">
+    <img class="d-block w-100 custom-carousel-img" :src="imageSrc" :alt="altText" />
     <div class="carousel-caption d-none d-md-block custom-caption">
-     
-        <p class="custom-caption-top">{{ topText }}</p>
-        <h5>{{ mainText }}</h5>
-        <p>{{ bottomText }}</p>
-    
-   </div>
+      <p class="custom-caption-top">{{ topText }}</p>
+      <h5>{{ mainText }}</h5>
+      <p>{{ bottomText }}</p>
+    </div>
   </div>
 </template>
 
@@ -50,15 +48,22 @@ export default {
   left: 30%;
   transform: translate(-50%, -50%);
   color: white;
-  text-align: center;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-  
+  text-align: left;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+  max-width: 420px;
+  background: rgba(2, 6, 23, 0.42);
+  padding: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: var(--radius-md);
+  backdrop-filter: blur(8px);
+  animation: fade-slide-up 700ms var(--ease) both;
 }
 
 .custom-caption-top {
   font-size: 2rem;
-  margin-right: 10px
-  
+  margin-right: 10px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
 
 }
 .custom-caption-container {
