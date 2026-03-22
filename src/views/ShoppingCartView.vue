@@ -1,50 +1,75 @@
 <template>
-  <div class="container">
-    <h1 class="mt-5">Panier d'achat</h1>
-    <div class="row mt-3">
-      <div class="col-lg-8 col-md-12">
-        <!-- Message d'erreur en cas de problème -->
-        <div v-if="errorMessage" class="alert alert-danger" role="alert">
-          {{ errorMessage }}
-        </div>
-        <!-- Affichage des articles du panier avec CartItem -->
-        <div class="card-deck" v-if="cartItems.length > 0">
-          <cart-item
-            v-for="(item, index) in cartItems"
-            :key="item.id"
-            :item="item"
-            @updateQuantity="updateQuantity(index, $event)"
-            @removeItem="removeItem(item.id)"
-          ></cart-item>
-        </div>
-        <div v-else class="alert alert-info" role="alert">
-          Votre panier est vide.
-        </div>
+  <div class="cart-page">
+    <div class="container py-5">
+      <div class="cart-header mb-4">
+        <h1 class="cart-title">
+          <v-icon size="28" class="mr-2">mdi-cart-outline</v-icon>
+          Panier d'achat
+        </h1>
+        <span class="cart-count" v-if="cartItems.length">
+          {{ cartItems.length }} article{{ cartItems.length > 1 ? 's' : '' }}
+        </span>
       </div>
-      <div class="col-lg-4 col-md-12 mt-3 mt-lg-0">
-        <!-- Résumé du panier -->
-        <div class="card custom-card">
-          <div class="card-body">
-            <div class="d-flex justify-content-between price-item my-2">
-              <strong>Sous-total</strong>
-              <strong>{{ getSubtotal }} €</strong>
+
+      <div v-if="errorMessage" class="alert-modern alert-danger-modern mb-4">
+        <v-icon size="18" class="mr-2">mdi-alert-circle-outline</v-icon>
+        {{ errorMessage }}
+      </div>
+
+      <div class="cart-layout">
+        <div class="cart-items-col">
+          <div v-if="cartItems.length > 0">
+            <cart-item
+              v-for="(item, index) in cartItems"
+              :key="item.id"
+              :item="item"
+              @updateQuantity="updateQuantity(index, $event)"
+              @removeItem="removeItem"
+            />
+          </div>
+          <div v-else class="cart-empty">
+            <v-icon size="64" class="cart-empty-icon">mdi-cart-off</v-icon>
+            <h3>Votre panier est vide</h3>
+            <p>Ajoutez des articles pour continuer.</p>
+            <RouterLink to="/" class="btn btn-modern mt-3">Parcourir la boutique</RouterLink>
+          </div>
+        </div>
+
+        <div class="cart-summary-col" v-if="cartItems.length > 0">
+          <div class="cart-summary-card">
+            <h2 class="summary-title">Récapitulatif</h2>
+            <div class="summary-row">
+              <span>Sous-total</span>
+              <strong>{{ getSubtotal.toFixed(2) }} €</strong>
             </div>
-            <div class="d-flex justify-content-between price-item my-2">
+            <div class="summary-row">
               <span>Taxe (20%)</span>
-              <span>{{ getTax }} €</span>
+              <span>{{ getTax.toFixed(2) }} €</span>
             </div>
-            <div class="d-flex justify-content-between price-item my-2">
+            <div class="summary-row">
               <span>Livraison</span>
-              <span>{{ getShipping }} €</span>
+              <span class="text-success-green">Standard</span>
             </div>
-            <hr>
-            <div class="d-flex justify-content-between price-item my-2">
+            <div class="summary-divider"></div>
+            <div class="summary-row summary-total">
               <strong>Total</strong>
-              <strong>{{ getTotalPrice }} €</strong>
+              <strong class="total-amount">{{ getTotalPrice }} €</strong>
             </div>
-            <div class="d-flex flex-column align-items-center mt-3">
-              <button class="btn btn-primary btn-block mb-2 custom-btn" @click="proceedToCheckout">Procéder à la caisse</button>
-              <button class="btn btn-secondary btn-block custom-btn" @click="continueShopping">Continuer vos achats</button>
+            <button class="btn btn-modern w-100 mt-4" @click="proceedToCheckout">
+              <v-icon left size="18" class="mr-1">mdi-lock-outline</v-icon>
+              Passer la commande
+            </button>
+            <button class="btn btn-outline-cart w-100 mt-2" @click="continueShopping">
+              Continuer mes achats
+            </button>
+            <div class="trust-badges">
+              <span><v-icon size="14">mdi-shield-check-outline</v-icon> Sécurisé</span>
+              <span><v-icon size="14">mdi-truck-fast-outline</v-icon> Livraison rapide</span>
+              <span><v-icon size="14">mdi-refresh</v-icon> Retours faciles</span>
+            </div>
+
+            <div class="summary-note">
+              Paiement protégé et confirmation instantanée après validation.
             </div>
           </div>
         </div>
@@ -156,4 +181,34 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.cart-page { min-height: 60vh; background: var(--bg); color: var(--text); }
+.cart-header { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.cart-title { font-size: clamp(1.4rem, 3vw, 2rem); font-weight: 800; color: var(--text); display: flex; align-items: center; margin: 0; }
+.cart-count { background: var(--primary); color: #fff; border-radius: 999px; padding: 3px 14px; font-size: 0.82rem; font-weight: 700; }
+.alert-modern { display: flex; align-items: center; padding: 1rem 1.25rem; border-radius: var(--radius-sm); font-size: 0.9rem; }
+.alert-danger-modern { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); color: #dc2626; }
+.cart-layout { display: grid; grid-template-columns: 1fr 340px; gap: 2rem; align-items: start; }
+@media (max-width: 991px) { .cart-layout { grid-template-columns: 1fr; } }
+.cart-empty { text-align: center; padding: 4rem 2rem; background: var(--surface); border-radius: var(--radius-lg); border: 1px solid var(--border); }
+.cart-empty-icon { color: var(--text-soft); opacity: 0.4; margin-bottom: 1rem; }
+.cart-empty h3 { color: var(--text); font-weight: 700; margin-bottom: 0.5rem; }
+.cart-empty p { color: var(--text-soft); }
+.cart-summary-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 1.75rem; box-shadow: var(--shadow-sm); position: sticky; top: 90px; }
+.summary-title { font-size: 1.1rem; font-weight: 800; color: var(--text); margin-bottom: 1.25rem; }
+.summary-row { display: flex; justify-content: space-between; align-items: center; padding: 0.55rem 0; font-size: 0.92rem; color: var(--text-soft); }
+.summary-divider { height: 1px; background: var(--border); margin: 0.75rem 0; }
+.summary-total { font-size: 1rem; color: var(--text); }
+.total-amount { font-size: 1.4rem; color: var(--primary); font-weight: 800; }
+.text-success-green { color: #10b981; font-weight: 600; }
+.btn-outline-cart { background: transparent; border: 1.5px solid var(--border); border-radius: 999px; padding: 0.55rem 1.2rem; color: var(--text-soft); font-weight: 600; transition: border-color var(--ease), color var(--ease); }
+.btn-outline-cart:hover { border-color: var(--primary); color: var(--primary); }
+.trust-badges { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.25rem; padding-top: 1rem; border-top: 1px solid var(--border); font-size: 0.75rem; color: var(--text-soft); }
+.trust-badges span { display: flex; align-items: center; gap: 4px; }
+.summary-note {
+  margin-top: .75rem;
+  font-size: .78rem;
+  color: var(--text-soft);
+  text-align: center;
+}
+</style>

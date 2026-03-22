@@ -12,7 +12,7 @@ const store = createStore({
     user: userFromLocalStorage || null,
     token: tokenFromLocalStorage || null,
     productSearch: null,
-    panier: panierFromLocalStorage || null,
+    panier: panierFromLocalStorage || [],
     paymentData: null
   },
   mutations: {
@@ -32,11 +32,25 @@ const store = createStore({
       state.productSearch = search
     },
     setPanier(state, panier) {
-      state.panier = panier
-      localStorage.setItem('panier', JSON.stringify(panier))
+      state.panier = Array.isArray(panier) ? panier : []
+      localStorage.setItem('panier', JSON.stringify(state.panier))
     },
     addToPanier(state, produit) {
+      if (!Array.isArray(state.panier)) {
+        state.panier = []
+      }
       state.panier.push(produit)
+      localStorage.setItem('panier', JSON.stringify(state.panier))
+    },
+    updatePanierItem(state, produit) {
+      if (!Array.isArray(state.panier)) {
+        state.panier = []
+      }
+
+      const index = state.panier.findIndex((item) => item.id === produit.id)
+      if (index !== -1) {
+        state.panier[index] = produit
+      }
       localStorage.setItem('panier', JSON.stringify(state.panier))
     },
     removeFromPanier(state, idProduit) {
@@ -44,7 +58,7 @@ const store = createStore({
       localStorage.setItem('panier', JSON.stringify(state.panier))
     },
     clearPanier(state) {
-      state.panier = null
+      state.panier = []
       localStorage.removeItem('panier')
     },
     setPaymentData(state, data) {
@@ -112,14 +126,22 @@ const store = createStore({
     async addToPanier({ commit }, produit) {
       try {
         const response = await apiClient.post('/panier', produit)
-        commit('addToPanier', produit)
+        commit('addToPanier', response.data || produit)
       } catch (error) {
         console.error("Erreur lors de l'ajout dans le panier:", error)
       }
     },
+    async updatePanierItem({ commit }, produit) {
+      try {
+        const response = await apiClient.put('/panier/' + produit.id, produit)
+        commit('updatePanierItem', response.data || produit)
+      } catch (error) {
+        console.error("Erreur lors de la mise à jour de l'article du panier:", error)
+      }
+    },
     async removeFromPanier({ commit }, idProduit) {
       try {
-        const response = await apiClient.delete('/panier/' + idProduit)
+        await apiClient.delete('/panier/' + idProduit)
         commit('removeFromPanier', idProduit)
       } catch (error) {
         console.error("Erreur lors de l'ajout dans le panier:", error)
@@ -128,14 +150,15 @@ const store = createStore({
     async fetchPanier({ commit }) {
       try {
         const response = await apiClient.get('/panier')
-        commit('setPanier', response.data)
+        commit('setPanier', Array.isArray(response.data) ? response.data : [])
       } catch (error) {
         console.error('Erreur lors de la récupération des articles du panier:', error)
+        commit('setPanier', [])
       }
     },
     async clearPanier({ commit }) {
       try {
-        const response = await apiClient.delete('/panier/')
+        await apiClient.delete('/panier/')
         commit('clearPanier')
       } catch (error) {
         console.error("Erreur lors de l'ajout dans le panier:", error)

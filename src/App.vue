@@ -1,7 +1,10 @@
 <script setup>
 import { RouterView } from 'vue-router'
+import { useRoute } from 'vue-router'
 
 import Base from '@/components/Base.vue'
+
+const route = useRoute()
 </script>
 
 <template>
@@ -11,7 +14,7 @@ import Base from '@/components/Base.vue'
         <v-main>
           <RouterView v-slot="{ Component }">
             <Transition name="page" mode="out-in">
-              <component :is="Component" />
+              <component :is="Component" :key="route.fullPath" />
             </Transition>
           </RouterView>
         </v-main>
@@ -66,7 +69,7 @@ import Base from '@/components/Base.vue'
   position: fixed;
   right: 14px;
   bottom: 14px;
-  background: rgba(255, 255, 255, 0.94);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 6px 10px;
@@ -85,14 +88,20 @@ import Base from '@/components/Base.vue'
 }
 
 .floating-signature a:first-of-type {
-  color: #2563eb;
+  color: var(--primary);
 }
 
 .floating-signature a:last-of-type {
-  color: #0f172a;
+  color: var(--text);
 }
 
 .floating-signature span {
-  color: #64748b;
+  color: var(--text-soft);
+}
+
+@media (max-width: 991.98px) {
+  .floating-signature {
+    display: none;
+  }
 }
 </style>

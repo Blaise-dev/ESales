@@ -1,41 +1,41 @@
 <template>
-    <div class="categorie-form">
-      <div class="partie-grise">
-        <div class="header">
-          <h1>Profil</h1>
-          <nav>Dashboard / Profil / <strong>Ajouter Profil</strong></nav>
+  <div class="admin-page">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <h1>Profil</h1>
+        <nav>Dashboard / Profil / <strong>Modifier le profil</strong></nav>
+      </div>
+      <div class="admin-card">
+        <div class="fields-row">
+          <div class="field-group">
+            <label for="lastName" class="custom-label">Nom</label>
+            <input type="text" class="field-input" v-model="lastName" id="lastName" placeholder="Entrez le nom" />
+          </div>
+          <div class="field-group">
+            <label for="firstName" class="custom-label">Prénom</label>
+            <input type="text" class="field-input" v-model="firstName" id="firstName" placeholder="Entrez le prénom" />
+          </div>
         </div>
-        <div class="partie-blanche">
-          <div class="form-actions">
-            <div class="form-group2">
-              <label for="lastName" class="custom-label">Nom</label>
-              <input type="text" class="taille-case" v-model="lastName" id="lastName" placeholder="Entrez le nom" />
-            </div>
-            <div class="form-group2">
-              <label for="firstName" class="custom-label">Prénom</label>
-              <input type="text" class="taille-case" v-model="firstName" id="firstName" placeholder="Entrez le prénom" />
-            </div>
+        <div class="field-group">
+          <label for="email" class="custom-label">Email</label>
+          <input type="email" class="field-input" v-model="email" id="email" placeholder="Entrez l'email" />
+        </div>
+        <div class="field-group">
+          <label for="image" class="custom-label">Photo de profil</label>
+          <input type="file" accept="image/*" @change="handleImageUpload" id="image" />
+          <div class="image-actions">
+            <a href="#" @click.prevent="clearImage" class="link-red">Vider</a>
           </div>
-          <div class="form-group2">
-            <label for="email" class="custom-label">Email</label>
-            <input type="email" class="taille-case" v-model="email" id="email" placeholder="Entrez l'émail" />
-          </div>
-          <div class="form-group">
-            <label for="image" class="custom-label">Photo</label>
-            <input type="file" class="color" @change="handleImageUpload" id="image" />
-            <div class="image-actions">
-              <a href="#" @click.prevent="clearImage" class="red">Vider</a>
-            </div>
-          </div>
-          <div class="form-actions">
-            <button class="cancel" @click="changerMotDePasse">Changer le mot de passe</button>
-            <button class="submit" @click="annuler">Annuler</button>
-            <button class="submit" @click="modifier">Modifier</button>
-          </div>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" @click="changerMotDePasse">Changer le mot de passe</button>
+          <button class="btn-ghost" @click="annuler">Annuler</button>
+          <button class="btn-submit" @click="modifier">Enregistrer</button>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   import axios from 'axios';
@@ -96,100 +96,118 @@
   </script>
   
   <style scoped>
-  .categorie-form {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 40px;
+  .admin-page {
+    max-width: 860px;
+    margin: 2.5rem auto;
+    padding: 0 1rem;
   }
-  
-  .partie-grise {
-    background-color: #f0f0f0;
-    padding: 30px;
-    border-radius: 35px;
-    width: 100%;
-    height: 700px;
+
+  .admin-shell {
+    background: var(--surface-muted);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--border);
   }
-  
-  .partie-blanche {
-    background-color: white;
-    padding: 40px;
-    border-radius: 25px;
-    height: 550px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+
+  .admin-header { margin-bottom: 1.5rem; }
+  .admin-header h1 { margin: 0 0 .25rem; font-size: 1.6rem; color: var(--text); }
+  .admin-header nav { font-size: .85rem; color: var(--text-soft); }
+
+  .admin-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
   }
-  
-  .header {
-    margin-bottom: 20px;
-    text-align: left;
-    padding-left: 36px;
+
+  .fields-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
   }
-  
-  .taille-case {
-    width: 20%;
+
+  .field-group {
+    margin-bottom: 1.25rem;
   }
-  
+
   .custom-label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: normal;
-    font-size: 14px;
-    color: #333;
+    margin-bottom: .45rem;
+    font-size: .875rem;
+    font-weight: 500;
+    color: var(--text-soft);
   }
-  
-  .form-group2 {
-    margin-bottom: 20px;
-    text-align: left;
-    width: 400px;
-  }
-  
-  .form-group input,
-  .form-group2 input {
+
+  .field-input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
+    padding: .6rem .9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-alt);
+    color: var(--text);
+    font-size: .95rem;
+    transition: border-color var(--ease), box-shadow var(--ease);
+    outline: none;
   }
-  
-  .image-actions {
-    margin-top: 10px;
+  .field-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
   }
-  
-  .color {
-    color: #007bff;
-  }
-  
-  .image-actions a {
-    margin-right: 10px;
-    text-decoration: none;
-    color: #007bff;
-  }
-  
-  .image-actions .red {
-    color: red;
-  }
-  
+
+  .image-actions { margin-top: .5rem; }
+  .link-red { color: #e05252; font-size: .85rem; text-decoration: none; }
+  .link-red:hover { text-decoration: underline; }
+
   .form-actions {
     display: flex;
     justify-content: flex-end;
-    gap: 50px;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    flex-wrap: wrap;
   }
-  
-  .form-actions button {
-    padding: 10px 20px;
+
+  .btn-cancel {
+    padding: .6rem 1.4rem;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--radius-sm);
     cursor: pointer;
+    background: rgba(224,82,82,.12);
+    color: #c0392b;
+    font-size: .9rem;
   }
-  
-  .form-actions .cancel {
-    background-color: #f8d7da;
-    color: #a1222e;
+  .btn-cancel:hover { background: rgba(224,82,82,.22); }
+
+  .btn-ghost {
+    padding: .6rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-soft);
+    cursor: pointer;
+    font-size: .9rem;
   }
-  
-  .form-actions .submit {
-    background-color: #e2e3e5;
-    color: #495057;
+  .btn-ghost:hover { background: var(--surface-muted); }
+
+  .btn-submit {
+    padding: .6rem 1.6rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: #fff;
+    cursor: pointer;
+    font-size: .9rem;
+    font-weight: 600;
+  }
+  .btn-submit:hover { background: var(--primary-strong); }
+
+  @media (max-width: 640px) {
+    .admin-page { margin: 1rem auto; }
+    .admin-shell { padding: 1rem; border-radius: var(--radius-md); }
+    .admin-card  { padding: 1rem; border-radius: var(--radius-sm); }
+    .fields-row  { grid-template-columns: 1fr; }
+    .form-actions { justify-content: stretch; }
+    .form-actions button { flex: 1 1 100%; }
   }
   </style>
   

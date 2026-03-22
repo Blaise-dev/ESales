@@ -5,14 +5,14 @@ import Commands from '@/components/Commands.vue'
 </script>
 
 <template>
-  <v-container>
-    <v-row>
-      <v-col cols="3">
-        <v-list>
+  <v-container class="account-page">
+    <v-row class="account-layout">
+      <v-col cols="12" md="3">
+        <v-list class="account-nav surface-card">
           <v-list-item
             v-for="item in menuItems"
             :key="item.title"
-            :class="{ active: activeSection === item.id }"
+            :class="['account-nav-item', { active: activeSection === item.id }]"
             @click="setActiveSection(item.id)"
             class="my-2"
           >
@@ -25,11 +25,11 @@ import Commands from '@/components/Commands.vue'
         </v-list>
       </v-col>
 
-      <v-col cols="9">
+      <v-col cols="12" md="9">
         <v-card v-if="activeSection === 'summary'" id="summary">
           <v-card-text>
-            <v-row>
-              <v-col cols="2">
+            <v-row class="account-summary-row">
+              <v-col cols="12" md="3" class="account-avatar-col">
                 <v-img
                   :src="user.photo"
                   aspect-ratio="2"
@@ -59,7 +59,7 @@ import Commands from '@/components/Commands.vue'
                   ></v-progress-circular>
                 </div>
               </v-col>
-              <v-col cols="8">
+              <v-col cols="12" md="9">
                 <v-card-title class="font-weight-bold"> Salut {{ user.prenom }} </v-card-title>
                 <p class="ml-4 text-grey">
                   Depuis ton tableau de bord, tu peux
@@ -94,7 +94,7 @@ import Commands from '@/components/Commands.vue'
           </v-card-text>
         </v-card>
 
-        <v-card v-if="activeSection === 'orders'" id="orders">
+        <v-card v-if="activeSection === 'orders'" id="orders" class="account-section-card orders-section surface-card" flat>
           <Commands :orders="orders" title="Ma listes de commandes"></Commands>
         </v-card>
 
@@ -134,33 +134,50 @@ import Commands from '@/components/Commands.vue'
           </v-form>
         </v-card>
 
-        <v-card class="pb-5" v-if="activeSection === 'addresses'" id="addresses">
-          <div class="d-flex justify-content-around">
-            <v-card-title class="w-50">Adresses </v-card-title
-            ><v-btn class="mt-2" color="primary" @click="openModal()">Ajouter une adresse</v-btn>
+        <v-card class="pb-5 account-section-card addresses-section surface-card" v-if="activeSection === 'addresses'" id="addresses" flat>
+          <div class="addresses-header">
+            <div class="addresses-heading-block">
+              <p class="section-kicker">Carnet d'adresses</p>
+              <v-card-title class="addresses-title">Adresses enregistrées</v-card-title>
+              <p class="addresses-subtitle">Gérez vos adresses de livraison et de facturation dans une interface plus claire, adaptée au thème.</p>
+            </div>
+            <v-btn class="addresses-add-btn mt-2" color="primary" variant="flat" @click="openModal()">Ajouter une adresse</v-btn>
           </div>
 
-          <!-- Card d'adresse -->
-          <v-card class="my-2" v-for="address in addresses" :key="address.id">
-            <v-card-title
-              >{{ address.fullName }}
-              <v-icon class="ml-5 w-50" color="blue">mdi-truck-delivery</v-icon></v-card-title
-            >
-            <v-card-subtitle>{{ address.phoneNumber }}</v-card-subtitle>
-            <v-card-text>
-              <p>Email: {{ address.email }}</p>
-              <p>Ville: {{ address.city }}</p>
-              <p>Adresse: {{ address.address }}</p>
-            </v-card-text>
-            <v-card-actions>
-              <v-btn text @click="openModal(address)">Edit</v-btn>
-              <v-btn text @click="removeAddress(address.id)" color="red">Remove</v-btn>
-            </v-card-actions>
-          </v-card>
+          <div v-if="!addresses.length" class="addresses-empty surface-card">
+            <v-icon size="22" class="me-2">mdi-map-marker-off-outline</v-icon>
+            Aucune adresse enregistrée pour le moment.
+          </div>
+
+          <div v-else class="addresses-grid">
+            <article class="address-card surface-card" v-for="address in addresses" :key="address.id">
+              <div class="address-card-head">
+                <div>
+                  <h3 class="address-name">{{ address.fullName }}</h3>
+                  <p class="address-phone">{{ address.phoneNumber }}</p>
+                </div>
+                <span class="address-badge">
+                  <v-icon size="16">mdi-truck-delivery-outline</v-icon>
+                  Livraison
+                </span>
+              </div>
+
+              <div class="address-details">
+                <p><strong>Email</strong><span>{{ address.email }}</span></p>
+                <p><strong>Ville</strong><span>{{ address.city }}</span></p>
+                <p><strong>Adresse</strong><span>{{ address.address }}</span></p>
+              </div>
+
+              <div class="address-actions">
+                <v-btn variant="text" color="primary" @click="openModal(address)">Modifier</v-btn>
+                <v-btn variant="text" color="error" @click="removeAddress(address.id)">Supprimer</v-btn>
+              </div>
+            </article>
+          </div>
 
           <!-- Modale -->
           <v-dialog v-model="showModal" persistent max-width="500px">
-            <v-card>
+            <v-card class="address-modal surface-card">
               <v-card-title class="headline">
                 {{ isEditing ? 'Modifier une adresse' : 'Ajouter une adresse' }}
               </v-card-title>
@@ -170,22 +187,26 @@ import Commands from '@/components/Commands.vue'
                   <v-text-field
                     v-model="currentAddress.fullName"
                     label="Nom complet"
+                    variant="outlined"
                     required
                   ></v-text-field>
                   <v-text-field
                     v-model="currentAddress.phoneNumber"
                     label="Numéro de téléphone"
+                    variant="outlined"
                     required
                   ></v-text-field>
                   <v-text-field
                     v-model="currentAddress.email"
                     label="Email"
+                    variant="outlined"
                     required
                   ></v-text-field>
-                  <v-text-field v-model="currentAddress.city" label="Ville" required></v-text-field>
+                  <v-text-field v-model="currentAddress.city" label="Ville" variant="outlined" required></v-text-field>
                   <v-text-field
                     v-model="currentAddress.address"
                     label="Adresse"
+                    variant="outlined"
                     required
                   ></v-text-field>
                 </v-form>
@@ -204,7 +225,7 @@ import Commands from '@/components/Commands.vue'
         <v-card v-if="activeSection === 'change-password'" id="change-password">
           <v-card-title>Modifier le mot de passe</v-card-title>
           <v-divider></v-divider>
-          <v-form class="w-25 mx-auto p-3" @submit.prevent="validatePasswords">
+          <v-form class="account-password-form mx-auto p-3" @submit.prevent="validatePasswords">
             <br />
             <v-text-field
               v-model="currentPassword"
@@ -253,7 +274,7 @@ import Commands from '@/components/Commands.vue'
           <!-- Contenu pour supprimer le compte -->
 
           <br />
-          <v-form class="w-25 mx-auto p-3" @submit.prevent>
+          <v-form class="account-password-form mx-auto p-3" @submit.prevent>
             <v-text-field
               v-model="confirmDeletePassword"
               label="Mot de passe"
@@ -322,7 +343,7 @@ export default {
       confirmPassword: '',
       confirmDeletePassword: '',
       activeSection: 'summary',
-      addresses: null,
+      addresses: [],
       menuItems: [
         { title: 'Résumé', icon: 'mdi-home', id: 'summary' },
         { title: 'Commandes', icon: 'mdi-cart', id: 'orders' },
@@ -344,16 +365,41 @@ export default {
     this.fetchAddresses()
     this.fetchCommands()
     this.form = { ...this.user } // Pré-remplir le formulaire avec les valeurs de l'utilisateur
+    this.addresses = Array.isArray(this.user?.addresses) ? [...this.user.addresses] : []
   },
   methods: {
+    syncAddressesToUser() {
+      if (!this.user) return
+      const updatedUser = {
+        ...this.user,
+        addresses: [...this.addresses]
+      }
+      this.$store.dispatch('setUser', updatedUser)
+    },
     async fetchAddresses() {
       try {
         const response = await apiClient.get(`/addresses`)
         const data = response.data
-        this.addresses = data
+        const allAddresses = Array.isArray(data) ? data : []
+
+        const byUserId = allAddresses.filter(
+          (address) => String(address.userId ?? '') === String(this.user?.id ?? '')
+        )
+
+        const byEmail = allAddresses.filter(
+          (address) =>
+            !address.userId &&
+            String(address.email ?? '').toLowerCase() === String(this.user?.email ?? '').toLowerCase()
+        )
+
+        const fallbackLegacy = !byUserId.length && !byEmail.length ? allAddresses.slice(0, 1) : []
+
+        this.addresses = [...byUserId, ...byEmail, ...fallbackLegacy]
+        this.syncAddressesToUser()
       } catch (error) {
         // Gérer les erreurs de requête
         console.error('Erreur de connexion:', error)
+        this.addresses = Array.isArray(this.user?.addresses) ? [...this.user.addresses] : []
       }
     },
     async fetchCommands() {
@@ -373,19 +419,31 @@ export default {
     closeModal() {
       this.showModal = false
     },
-    saveAddress() {
-      if (this.isEditing) {
-        // Update existing address
-        const index = this.addresses.findIndex((addr) => addr.id === this.currentAddress.id)
-        if (index !== -1) {
-          this.$set(this.addresses, index, this.currentAddress)
+    async saveAddress() {
+      try {
+        const payload = {
+          ...this.currentAddress,
+          userId: this.user?.id ?? null
         }
-      } else {
-        // Add new address
-        this.currentAddress.id = this.addresses.length + 1 // Simulate an ID
-        this.addresses.push(this.currentAddress)
+
+        if (this.isEditing) {
+          const response = await apiClient.put(`/addresses/${this.currentAddress.id}`, payload)
+          const updated = response?.data || payload
+          const index = this.addresses.findIndex((addr) => String(addr.id) === String(updated.id))
+          if (index !== -1) {
+            this.addresses.splice(index, 1, updated)
+          }
+        } else {
+          const response = await apiClient.post('/addresses', payload)
+          const created = response?.data || payload
+          this.addresses.push(created)
+        }
+
+        this.syncAddressesToUser()
+        this.closeModal()
+      } catch (error) {
+        console.error('Erreur lors de la sauvegarde de l\'adresse:', error)
       }
-      this.closeModal()
     },
     openModal(address = null) {
       this.showModal = true
@@ -404,7 +462,16 @@ export default {
         }
       }
     },
-    removeAddress(address) {},
+    async removeAddress(addressId) {
+      try {
+        await apiClient.delete(`/addresses/${addressId}`)
+      } catch (error) {
+        console.error('Erreur lors de la suppression de l\'adresse:', error)
+      } finally {
+        this.addresses = this.addresses.filter((address) => String(address.id) !== String(addressId))
+        this.syncAddressesToUser()
+      }
+    },
 
     validatePasswords() {
       if (this.currentPassword == '') {
@@ -517,6 +584,61 @@ export default {
 </script>
 
 <style scoped>
+.account-page {
+  padding-top: 1rem;
+  padding-bottom: 1.5rem;
+}
+
+.account-layout {
+  align-items: flex-start;
+}
+
+.account-nav {
+  padding: .6rem;
+  border: 1px solid var(--border);
+  animation: fade-slide-up 420ms var(--ease) both;
+}
+
+.account-nav-item {
+  border-radius: 14px;
+  border: 1px solid transparent;
+  color: var(--text);
+  transition: transform var(--ease), border-color var(--ease), background-color var(--ease);
+}
+
+.account-nav-item:hover {
+  transform: translateY(-1px);
+  border-color: color-mix(in srgb, var(--primary) 20%, var(--border));
+  background: color-mix(in srgb, var(--surface-muted) 82%, var(--primary) 5%);
+}
+
+.account-nav-item.active {
+  background: linear-gradient(135deg, color-mix(in srgb, var(--primary) 14%, var(--surface)), color-mix(in srgb, var(--accent) 8%, var(--surface)));
+  border-color: color-mix(in srgb, var(--primary) 34%, var(--border));
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.12);
+}
+
+.account-section-card {
+  border: 1px solid var(--border) !important;
+  background: linear-gradient(160deg, var(--surface), color-mix(in srgb, var(--surface-muted) 80%, var(--primary) 5%)) !important;
+  box-shadow: var(--shadow-sm) !important;
+  animation: fade-slide-up 460ms var(--ease) both;
+}
+
+.orders-section,
+.addresses-section {
+  overflow: hidden;
+}
+
+.section-kicker {
+  margin: 0 0 .2rem;
+  font-size: .74rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--primary);
+}
+
 .modal-backdrop {
   position: fixed;
   top: 0;
@@ -533,8 +655,8 @@ export default {
 }
 
 .modal-content {
-  background-color: #343a40;
-  color: white;
+  background-color: var(--surface);
+  color: var(--text);
 }
 
 .btn-close-white {
@@ -560,5 +682,211 @@ export default {
 }
 .headline {
   text-align: center;
+  color: var(--text);
+}
+
+.account-password-form {
+  width: min(520px, 100%);
+}
+
+.addresses-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 1rem 1rem .5rem;
+}
+
+.addresses-title {
+  width: auto !important;
+  padding: 0 !important;
+  margin: 0;
+  color: var(--text);
+}
+
+.addresses-icon {
+  width: auto !important;
+}
+
+.addresses-heading-block {
+  max-width: 720px;
+}
+
+.addresses-subtitle {
+  margin: .35rem 0 0;
+  color: var(--text-soft);
+}
+
+.addresses-add-btn {
+  border-radius: 999px;
+  min-height: 42px;
+  box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
+}
+
+.addresses-empty {
+  margin: .5rem 1rem 0;
+  padding: 1rem;
+  display: flex;
+  align-items: center;
+  color: var(--text-soft);
+}
+
+.addresses-grid {
+  padding: .5rem 1rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.address-card {
+  padding: 1rem;
+  border: 1px solid var(--border);
+  display: grid;
+  gap: .9rem;
+  animation: fade-slide-up 520ms var(--ease) both;
+}
+
+.address-card-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: .8rem;
+}
+
+.address-name {
+  margin: 0;
+  color: var(--text);
+  font-size: 1rem;
+  font-weight: 800;
+}
+
+.address-phone {
+  margin: .25rem 0 0;
+  color: var(--text-soft);
+  font-size: .84rem;
+}
+
+.address-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: .35rem;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--primary) 18%, var(--border));
+  background: color-mix(in srgb, var(--primary) 10%, var(--surface));
+  color: var(--primary);
+  padding: .34rem .65rem;
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.address-details {
+  display: grid;
+  gap: .55rem;
+}
+
+.address-details p {
+  margin: 0;
+  display: grid;
+  gap: .12rem;
+}
+
+.address-details strong {
+  color: var(--text-soft);
+  font-size: .76rem;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+}
+
+.address-details span {
+  color: var(--text);
+  line-height: 1.5;
+}
+
+.address-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: .35rem;
+  flex-wrap: wrap;
+}
+
+.address-modal {
+  border: 1px solid var(--border) !important;
+}
+
+.account-avatar-col {
+  max-width: 220px;
+}
+
+@media (max-width: 991.98px) {
+  .account-summary-row {
+    gap: 8px;
+  }
+
+  .account-avatar-col {
+    max-width: 140px;
+    margin: 0 auto;
+  }
+
+  .v-list-item-title {
+    font-size: 0.95rem;
+    line-height: 1.35;
+  }
+
+  .v-list-item-title .v-icon {
+    margin-right: 10px !important;
+  }
+
+  .addresses-title,
+  .addresses-icon {
+    width: auto !important;
+    margin-left: 0 !important;
+  }
+
+  .addresses-header {
+    justify-content: flex-start !important;
+  }
+
+  .addresses-header .v-btn {
+    width: 100%;
+  }
+
+  .addresses-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .account-password-form {
+    width: 100%;
+    padding: 12px !important;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .account-page {
+    padding-top: .75rem;
+  }
+
+  .addresses-header,
+  .addresses-grid {
+    padding-left: .85rem;
+    padding-right: .85rem;
+  }
+
+  .addresses-empty {
+    margin-left: .85rem;
+    margin-right: .85rem;
+  }
+
+  .address-card {
+    padding: .9rem;
+  }
+
+  .address-card-head {
+    flex-direction: column;
+  }
+
+  .address-actions .v-btn {
+    flex: 1 1 100%;
+  }
 }
 </style>

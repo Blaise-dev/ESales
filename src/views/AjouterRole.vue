@@ -73,7 +73,7 @@
     margin-bottom: 8px;
     font-weight: normal;
     font-size: 14px;
-    color: #333;
+    color: var(--text);
   }
   
   .form-group input,
@@ -146,8 +146,8 @@
   }
   
   .form-actions .submit {
-    background-color: #e2e3e5;
-    color: #495057;
+    background-color: var(--surface-muted);
+    color: var(--text-soft);
   }
   .partie-grise {
   background-color: #f0f0f0;
@@ -176,6 +176,37 @@
   margin: 50px auto;
   padding: 40px;
  
+}
+
+@media (max-width: 991.98px) {
+  .categorie-form {
+    margin: 16px auto;
+    padding: 14px;
+  }
+
+  .header {
+    padding-left: 0;
+  }
+
+  .partie-grise,
+  .partie-blanche {
+    height: auto;
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .form-group,
+  .form-group2,
+  .form-group3 {
+    width: 100%;
+  }
+
+  .form-actions,
+  .form-actions2 {
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
 }
   </style>
   

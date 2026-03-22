@@ -28,8 +28,8 @@
                     <td class="ajustement-center">{{ Produit.id }}</td>
                     <td class="ajustement-center">{{ Produit.nameproduit }}</td>
                     <td class="ajustement-center">
-                      <button @click="editCategory(Produit.id)" class="edit-btn"><img class="taille-img" src="/src/assets/boutton_modifier.png"></button>
-                      <button @click="deleteCategory(Produit.id)" class="delete-btn"><img class="taille-img" src="/src/assets/boutton_supprimer.png"></button>
+                      <button @click="editCategory(Produit.id)" class="edit-btn"><img class="taille-img" src="@/assets/boutton_modifier.png"></button>
+                      <button @click="deleteCategory(Produit.id)" class="delete-btn"><img class="taille-img" src="@/assets/boutton_supprimer.png"></button>
                     </td>
                   </tr>
                 </tbody>
@@ -212,6 +212,48 @@
   }
   .ajustement-center {
     text-align: center;
+  }
+
+  @media (max-width: 991.98px) {
+    .role-form,
+    .categorie-form {
+      margin: 16px auto;
+      padding: 14px;
+    }
+
+    .partie-grise,
+    .partie-blanche {
+      height: auto;
+      padding: 14px;
+      border-radius: 14px;
+    }
+
+    .header {
+      padding-left: 0;
+    }
+
+    .ajustement-enface {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .search-bar {
+      float: none;
+      width: 100%;
+      margin-bottom: 12px;
+    }
+
+    .controle-table {
+      overflow-x: auto;
+    }
+
+    .pagination {
+      margin-left: 0;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
   }
   </style>
   

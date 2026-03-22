@@ -1,7 +1,17 @@
 <template>
   <div class="custom-container">
-    <RouterLink :to="{ name: 'products', params: { id: this.id } }" class="link_product">
-      <div class="card h-100 text-center custom-card surface-card">
+    <div class="card-shell">
+      <button
+        type="button"
+        class="wishlist-btn"
+        :class="{ active: isWishlisted }"
+        :aria-label="isWishlisted ? 'Retirer des favoris' : 'Ajouter aux favoris'"
+        @click.stop="handleWishlistToggle"
+      >
+        <v-icon size="18">{{ isWishlisted ? 'mdi-heart' : 'mdi-heart-outline' }}</v-icon>
+      </button>
+      <RouterLink :to="{ name: 'products', params: { id: this.id } }" class="link_product">
+        <div class="card h-100 text-center custom-card surface-card">
         <div class="card-body d-flex justify-content-between align-items-start">
           <div class="text-container">
             <br />
@@ -14,19 +24,21 @@
           </div>
           <img :src="imageSrc" class="custom-image" alt="Product image" />
         </div>
-      </div>
-    </RouterLink>
+        </div>
+      </RouterLink>
+    </div>
   </div>
 </template>
 
 <script>
 import { RouterLink } from 'vue-router'
+import { WISHLIST_EVENT, isInWishlist, toggleWishlist } from '@/utils/wishlist'
 
 export default {
   name: 'ProductCard2',
   props: {
     id: {
-      type: Number,
+      type: [Number, String],
       required: true
     },
     title: {
@@ -42,11 +54,36 @@ export default {
       required: true
     },
     price: {
-      type: String,
+      type: [String, Number],
       required: true
     }
   },
+  data() {
+    return {
+      isWishlisted: false
+    }
+  },
+  mounted() {
+    this.syncWishlistState()
+    window.addEventListener(WISHLIST_EVENT, this.syncWishlistState)
+    window.addEventListener('storage', this.syncWishlistState)
+  },
+  beforeUnmount() {
+    window.removeEventListener(WISHLIST_EVENT, this.syncWishlistState)
+    window.removeEventListener('storage', this.syncWishlistState)
+  },
+  watch: {
+    id() {
+      this.syncWishlistState()
+    }
+  },
   methods: {
+    syncWishlistState() {
+      this.isWishlisted = isInWishlist(this.id)
+    },
+    handleWishlistToggle() {
+      this.isWishlisted = toggleWishlist(this.id)
+    },
     goToPaymentPage() {
       this.$store.dispatch('updatePaymentData', {
         id: this.id,
@@ -63,6 +100,10 @@ export default {
 .custom-container {
   padding: 10px;
   flex: 1 1 0;
+}
+
+.card-shell {
+  position: relative;
 }
 
 .custom-card {
@@ -117,14 +158,47 @@ export default {
 
 .text-container .card-title {
   font-weight: 800;
-  color: #0f172a;
+  color: var(--text);
 }
 
 .text-container .card-text {
-  color: #475569;
+  color: var(--text-soft);
+}
+
+:global(body.theme-dark) .custom-card,
+:global(body.theme-dark) .custom-card .card-body {
+  background-color: var(--surface) !important;
 }
 
 .custom-card:hover .custom-image {
   transform: translateY(-4px) scale(1.02);
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in srgb, var(--border) 72%, transparent);
+  background: color-mix(in srgb, var(--surface) 84%, transparent);
+  color: var(--text-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  transition: transform var(--ease), color var(--ease), background-color var(--ease), border-color var(--ease);
+}
+
+.wishlist-btn:hover {
+  transform: translateY(-2px);
+  color: #dc2626;
+}
+
+.wishlist-btn.active {
+  color: #dc2626;
+  background: color-mix(in srgb, #dc2626 12%, var(--surface));
+  border-color: color-mix(in srgb, #dc2626 40%, var(--border));
 }
 </style>

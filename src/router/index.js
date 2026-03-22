@@ -18,6 +18,11 @@ const router = createRouter({
       component: () => import('../views/AboutView.vue')
     },
     {
+      path: '/contact',
+      name: 'contact',
+      component: () => import('../views/ContactView.vue')
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('../views/LoginView.vue')
@@ -108,6 +113,10 @@ const router = createRouter({
       path: '/Profil',
       name: 'Profil',
       component: () => import('../views/ProfilView.vue')
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      redirect: '/'
     }
   ]
 })
@@ -116,16 +125,21 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const isAuthenticated = store.getters.isAuthenticated // Vérifiez si le token existe dans le store
 
-  if (!isAuthenticated && to.name === 'home') next({ name: 'login' })
+  if (!isAuthenticated && to.name === 'home') {
+    return next({ name: 'login' })
+  }
+
   if (isAuthenticated && to.name === 'login') {
     // Si l'utilisateur est authentifié et essaie d'accéder à la page de connexion, redirigez-le vers la page d'accueil
-    next({ name: 'home' })
-  } else if (isAuthenticated && to.name === 'register') {
-    // Si l'utilisateur est authentifié et essaie d'accéder à la page de connexion, redirigez-le vers la page d'accueil
-    next({ name: 'home' })
-  } else {
-    next() // Continue la navigation
+    return next({ name: 'home' })
   }
+
+  if (isAuthenticated && to.name === 'register') {
+    // Si l'utilisateur est authentifié et essaie d'accéder à la page de connexion, redirigez-le vers la page d'accueil
+    return next({ name: 'home' })
+  }
+
+  return next() // Continue la navigation
 })
 
 export default router

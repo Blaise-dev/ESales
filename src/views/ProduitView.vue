@@ -1,61 +1,63 @@
 <template>
-    <div class="categorie-form">
-      <div class="partie-grise">
-        <div class="ajustement-enface">
-          <div class="header">
-            <h1>Produit</h1>
-            <nav>Dashboard / <strong>Produit</strong> </nav>
-          </div>
-          <button @click="addCategory" class="add-category">Ajouter Produit</button>
+  <div class="admin-page">
+    <div class="admin-shell">
+      <div class="admin-topbar">
+        <div class="admin-header">
+          <h1>Produits</h1>
+          <nav>Dashboard / <strong>Produit</strong></nav>
         </div>
-        <div class="partie-blanche">
-          <div id="app">
-            <div class="search-bar">
-              <input type="text" v-model="searchQuery" @input="handleSearch" placeholder="Rechercher" />
-              <span class="search-icon">🔍</span>
-            </div>
-            <div class="controle-table">
-              <table>
-                <thead>
-                  <tr>
-                    <th class="ajustement-center">Id</th>
-                    <th class="ajustement-center">Image</th>
-                    <th class="ajustement-center">Nom</th>
-                    <th class="ajustement-center">Description</th>
-                    <th class="ajustement-center">Quantité</th>
-                    <th class="ajustement-center">Catégorie</th>
-                    <th class="ajustement-center">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr v-for="Produit in paginatedCategories" :key="Produit.id">
-                    <td class="ajustement-center">{{ Produit.id }}</td>
-                    <td class="ajustement-center"><img :src="Produit.image" alt="Icone" class="icon taille-img" /></td>
-                    <td class="ajustement-center">{{ Produit.nameproduit }}</td>
-                    <td class="ajustement-center">{{ Produit.description }}</td>
-                    <td class="ajustement-center">{{ Produit.quantite }}</td>
-                    <td class="ajustement-center">{{ Produit.namecategorie }}</td>
-                    <td class="ajustement-center">
-                      <button @click="editCategory(Produit.id)" class="edit-btn"><img class="taille-img" src="/src/assets/boutton_modifier.png"></button>
-                      <button @click="deleteCategory(Produit.id)" class="delete-btn"><img class="taille-img" src="/src/assets/boutton_supprimer.png"></button>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-  
-            <div class="pagination">
-              <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">«</button>
-              <button v-for="page in totalPages" :key="page" @click="changePage(page)">
-                {{ page }}
-              </button>
-              <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">»</button>
-            </div>
+        <button @click="addCategory" class="btn-add">+ Ajouter un produit</button>
+      </div>
+      <div class="admin-card">
+        <div class="table-toolbar">
+          <div class="search-bar">
+            <span class="search-icon">🔍</span>
+            <input type="text" v-model="searchQuery" @input="handleSearch" placeholder="Rechercher un produit…" />
           </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Id</th>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Description</th>
+                <th>Qté</th>
+                <th>Catégorie</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="produit in paginatedCategories" :key="produit.id">
+                <td>{{ produit.id }}</td>
+                <td><img :src="produit.image" alt="produit" class="row-img" /></td>
+                <td>{{ produit.nameproduit }}</td>
+                <td class="td-desc">{{ produit.description }}</td>
+                <td>{{ produit.quantite }}</td>
+                <td>{{ produit.namecategorie }}</td>
+                <td>
+                  <button @click="editCategory(produit.id)" class="icon-btn"><img src="@/assets/boutton_modifier.png" alt="Modifier" /></button>
+                  <button @click="deleteCategory(produit.id)" class="icon-btn"><img src="@/assets/boutton_supprimer.png" alt="Supprimer" /></button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="pagination">
+          <button @click="changePage(currentPage - 1)" :disabled="currentPage === 1">«</button>
+          <button
+            v-for="page in totalPages"
+            :key="page"
+            @click="changePage(page)"
+            :class="{ active: page === currentPage }"
+          >{{ page }}</button>
+          <button @click="changePage(currentPage + 1)" :disabled="currentPage === totalPages">»</button>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   export default {
@@ -63,14 +65,14 @@
     data() {
       return {
         Produits: [
-          { id: 7, image: '/src/assets/trico2.png', nameproduit: "T-shirt bleu", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 13, image: '/src/assets/pantalon2.png', nameproduit: "Pantalon-cargo", description: "cvvvvvv", quantite: "23", namecategorie: 'Pantalon' },
-          { id: 27, image: '/src/assets/robe2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'Robe' },
-          { id: 921, image: '/src/assets/lunette2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'Accessoire' },
-          { id: 14, image: 'path/to/robe.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 35, image: 'path/to/blouse.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 67, image: 'path/to/chemise.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
-          { id: 88, image: 'path/to/pull.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' }
+          { id: 7, image: '/uploads/trico2.png', nameproduit: "T-shirt bleu", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 13, image: '/uploads/pantalon2.png', nameproduit: "Pantalon-cargo", description: "cvvvvvv", quantite: "23", namecategorie: 'Pantalon' },
+          { id: 27, image: '/uploads/robe2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'Robe' },
+          { id: 921, image: '/uploads/lunette2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'Accessoire' },
+          { id: 14, image: '/uploads/robe2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 35, image: '/uploads/trico2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 67, image: '/uploads/trico2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' },
+          { id: 88, image: '/uploads/trico2.png', nameproduit: "dhdhdgd", description: "cvvvvvv", quantite: "23", namecategorie: 'T-shirt' }
         ],
         searchQuery: '',
         currentPage: 1,
@@ -115,110 +117,142 @@
   </script>
   
   <style>
-  #app {
-    font-family: Arial, sans-serif;
-    padding: 20px;
+  <style scoped>
+  .admin-page {
+    max-width: 1100px;
+    margin: 2.5rem auto;
+    padding: 0 1rem;
+  }
+  .admin-shell {
+    background: var(--surface-muted);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--border);
+  }
+  .admin-topbar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .admin-header h1 { margin: 0 0 .2rem; font-size: 1.6rem; color: var(--text); }
+  .admin-header nav { font-size: .85rem; color: var(--text-soft); }
+
+  .btn-add {
+    padding: .55rem 1.2rem;
+    background: var(--primary);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .btn-add:hover { background: var(--primary-strong); }
+
+  .admin-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+  }
+
+  .table-toolbar {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 1.25rem;
   }
   .search-bar {
-    position: relative;
-    margin-bottom: 20px;
-    border: 1px solid #d3d3d3;
-    border-radius: 4px;
-    padding: 5px;
     display: flex;
-    float: right;
-    width: 400px;
-    margin-bottom: 50px;
+    align-items: center;
+    gap: .5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: .45rem .75rem;
+    background: var(--bg-alt);
+    width: min(100%, 300px);
   }
   .search-bar input {
     border: none;
     outline: none;
-    flex: 1;
+    background: transparent;
+    color: var(--text);
+    width: 100%;
+    font-size: .9rem;
   }
-  .search-bar .search-icon {
-    margin-left: 10px;
-    font-size: 18px;
-  }
-  .add-category {
-    margin-bottom: 60px;
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
-  }
+
+  .table-wrap { overflow-x: auto; }
+
   table {
     width: 100%;
-    border-collapse: collapse; /* Fusionne les bordures des cellules */
+    border-collapse: collapse;
   }
-  th, td {
-    border: none; /* Supprime toutes les bordures */
-    border-bottom: 1px solid #ddd; /* Ajoute une bordure seulement en bas */
-    padding: 8px; /* Espacement interne des cellules */
-    text-align: center; /* Alignement du texte au centre */
+  th {
+    background: var(--surface-muted);
+    color: var(--text-soft);
+    font-size: .8rem;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+    padding: .65rem .75rem;
+    text-align: center;
+    border-bottom: 2px solid var(--border);
   }
-  .icon {
-    width: 32px;
-    height: 32px;
+  td {
+    padding: .7rem .75rem;
+    text-align: center;
+    border-bottom: 1px solid var(--border);
+    color: var(--text);
+    font-size: .9rem;
+    vertical-align: middle;
   }
-  .edit-btn, .delete-btn {
-    background-color: transparent;
+  tr:hover td { background: var(--surface-muted); }
+  .td-desc {
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .row-img { width: 44px; height: 44px; object-fit: cover; border-radius: 6px; }
+
+  .icon-btn {
+    background: transparent;
     border: none;
     cursor: pointer;
+    padding: .25rem;
   }
+  .icon-btn img { width: 28px; height: 28px; }
+
   .pagination {
-    margin-top: 20px;
-    margin-left: 600px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .4rem;
+    margin-top: 1.25rem;
   }
   .pagination button {
-    background-color: #007BFF;
-    color: white;
-    border: none;
-    padding: 10px;
-    margin: 0 2px;
+    padding: .45rem .85rem;
+    background: var(--surface-muted);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
     cursor: pointer;
+    font-size: .875rem;
+    transition: background var(--ease);
   }
-  .pagination button:disabled {
-    background-color: #d3d3d3;
-    cursor: not-allowed;
-  }
-  .partie-grise {
-    background-color: #f0f0f0;
-    padding: 30px;
-    border-radius: 35px;
-    width: 100%;
-    height: 700px;
-  }
-  .header {
-    margin-bottom: 20px;
-    text-align: left;
-    padding-left: 36px;
-  }
-  .partie-blanche {
-    background-color: white;
-    padding: 40px;
-    border-radius: 25px;
-    height: 550px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  .categorie-form {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 40px;
-  }
-  .ajustement-enface {
-    display: flex;
-    gap: 500px;
-  }
-  .controle-table {
-    border: none; /* Supprime les bordures des côtés */
-  }
-  .taille-img {
-    width: 50px;
-    height: 50px;
-  }
-  .ajustement-center {
-    text-align: center;
+  .pagination button:hover:not(:disabled) { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .pagination button.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .pagination button:disabled { opacity: .45; cursor: not-allowed; }
+
+  @media (max-width: 640px) {
+    .admin-page  { margin: 1rem auto; }
+    .admin-shell { padding: 1rem; }
+    .admin-card  { padding: .75rem; }
+    .table-toolbar { justify-content: stretch; }
+    .search-bar { width: 100%; }
   }
   </style>
   

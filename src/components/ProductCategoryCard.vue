@@ -1,9 +1,9 @@
 <template>
   <div class="col-md-2 mb-4">
     <div class="product-category-card surface-card">
-      <a :href="linkUrl">
+      <RouterLink :to="resolvedLink">
         <img :src="imageSrc" :alt="categoryTitle" class="category-image" />
-      </a>
+      </RouterLink>
       <h4>{{ categoryTitle }}</h4>
       <p>{{ productCount }} produits</p>
     </div>
@@ -29,6 +29,12 @@ export default {
     linkUrl: {
       type: String,
       required: true
+    }
+  },
+  computed: {
+    resolvedLink() {
+      const value = (this.linkUrl || '').toString().trim()
+      return value || '/search'
     }
   }
 }
@@ -57,7 +63,7 @@ export default {
 h4 {
   font-size: 1rem;
   font-weight: 800;
-  color: #0f172a;
+  color: var(--text);
 }
 
 p {

@@ -1,97 +1,116 @@
 <template>
-  <div class="container">
-    <div class="row">
-      <!-- Formulaire de livraison -->
-      <div class="col-md-6">
-        <div class="card">
-          <div class="card-body">
-            <h5 class="card-title">Information de livraison</h5>
-            <form @submit.prevent="submitForm">
-              <div class="form-group">
-                <label for="name">Nom</label>
-                <input type="text" class="form-control" id="name" v-model="deliveryInfo.name" required>
+  <div class="checkout-page">
+    <div class="container py-5">
+      <h1 class="checkout-title mb-5">
+        <v-icon size="26" class="mr-2">mdi-package-variant-closed</v-icon>
+        Finaliser la commande
+      </h1>
+
+      <div class="checkout-layout">
+        <!-- Formulaire livraison -->
+        <div class="checkout-form-col">
+          <div class="checkout-card">
+            <h2 class="checkout-card-title">
+              <v-icon size="20" class="mr-2">mdi-truck-delivery-outline</v-icon>
+              Informations de livraison
+            </h2>
+            <form @submit.prevent="submitForm" class="checkout-form">
+              <div class="field-group" v-if="savedAddresses.length">
+                <label>Choisir une adresse enregistrée</label>
+                <select class="field-input" v-model="selectedAddressId" @change="applySelectedAddress">
+                  <option value="">-- Sélectionner --</option>
+                  <option
+                    v-for="address in savedAddresses"
+                    :key="address.id"
+                    :value="String(address.id)"
+                  >
+                    {{ address.fullName }} — {{ address.address }}
+                  </option>
+                </select>
               </div>
-              <div class="form-group">
-                <label for="name">Prenom</label>
-                <input type="text" class="form-control" id="prenom" v-model="deliveryInfo.prenom" required>
+
+              <div class="form-row-grid">
+                <div class="field-group">
+                  <label>Nom <span class="req">*</span></label>
+                  <input type="text" class="field-input" v-model="deliveryInfo.name" placeholder="Dupont" required />
+                </div>
+                <div class="field-group">
+                  <label>Prénom <span class="req">*</span></label>
+                  <input type="text" class="field-input" v-model="deliveryInfo.prenom" placeholder="Marie" required />
+                </div>
               </div>
-              <div class="form-row">
-              <div class="form-group col-md-6">
-                <label for="department">Email</label>
-                <input type="email" class="form-control" id="email" v-model="deliveryInfo.email" required>
+              <div class="form-row-grid">
+                <div class="field-group">
+                  <label>Email <span class="req">*</span></label>
+                  <input type="email" class="field-input" v-model="deliveryInfo.email" placeholder="marie@email.com" required />
+                </div>
+                <div class="field-group">
+                  <label>Téléphone <span class="req">*</span></label>
+                  <input type="tel" class="field-input" v-model="deliveryInfo.phone" placeholder="+33627379360" required />
+                </div>
               </div>
-              <div class="form-group col-md-6">
-                <label for="phone">Téléphone</label>
-                <input type="tel" class="form-control" id="phone" v-model="deliveryInfo.phone" required>
+              <div class="field-group">
+                <label>Pays <span class="req">*</span></label>
+                <input type="text" class="field-input" v-model="deliveryInfo.country" placeholder="France" required />
               </div>
-            </div>
-              <div class="form-group">
-                <label for="phone">Pays</label>
-                <input type="tel" class="form-control" id="country" v-model="deliveryInfo.country" required>
+              <div class="form-row-grid">
+                <div class="field-group">
+                  <label>Département</label>
+                  <input type="text" class="field-input" v-model="deliveryInfo.department" placeholder="Ille-et-Vilaine" />
+                </div>
+                <div class="field-group">
+                  <label>Ville <span class="req">*</span></label>
+                  <input type="text" class="field-input" v-model="deliveryInfo.city" placeholder="Rennes" required />
+                </div>
               </div>
-              <div class="form-row">
-                <div class="form-group col-md-6">
-                  <label for="department">Département</label>
-                  <input type="text" class="form-control" id="department" v-model="deliveryInfo.department" required>
-               </div>
-              <div class="form-group col-md-6">
-                   <label for="city">Ville</label>
-                   <input type="text" class="form-control" id="city" v-model="deliveryInfo.city" required>
+              <div class="field-group">
+                <label>Adresse complète <span class="req">*</span></label>
+                <input type="text" class="field-input" v-model="deliveryInfo.address" placeholder="123 rue de la Paix" required />
               </div>
-            </div>
-              <div class="form-group">
-                <label for="address">Adresse</label>
-                <input type="text" class="form-control" id="address" v-model="deliveryInfo.address" required>
+              <div class="field-group">
+                <label>Commentaires</label>
+                <textarea class="field-input" rows="3" v-model="deliveryInfo.comments" placeholder="Instructions spéciales..."></textarea>
               </div>
-              <div class="form-group">
-                <label for="comments">Commentaires</label>
-                <textarea class="form-control" id="comments" rows="3" v-model="deliveryInfo.comments"></textarea>
+              <div class="form-actions">
+                <button type="button" class="btn btn-back" @click="goBack">
+                  <v-icon size="16" class="mr-1">mdi-arrow-left</v-icon> Retour
+                </button>
+                <button type="submit" class="btn btn-modern">
+                  <v-icon size="16" class="mr-1">mdi-check-circle-outline</v-icon> Valider
+                </button>
               </div>
-              <button type="submit" class="btn btn-primary" @click="proceedPaiement">Valider la commande</button>
-              <button type="button" class="btn btn-secondary ml-2" @click="goBack">Retour au panier</button>
             </form>
           </div>
         </div>
-      </div>
-      
-      <!-- Liste des articles du panier -->
-      <div class="col-md-6 text-container">
-        <div class="card summary-card">
-          <div class="card-body">
-            <h5 class="card-title">Récapitulatif de commande</h5>
-            <hr>
-             <!-- Ajout du message d'erreur -->
-             <div v-if="errorMessage" class="alert alert-danger" role="alert">
-                {{ errorMessage }}
-            </div>
-             <!-- Affichage des articles du panier -->
-             <div v-if="cartItems.length === 0" class="alert alert-info" role="alert">
-              Votre panier est vide.
-            </div>
-            <div v-else>
-            <div v-for="(item, index) in cartItems" :key="index" class="media mb-3">
-              <img :src="item.image" class="mr-3" alt="Image de l'article" style="max-width: 100px;">
-              <div class="media-body">
-                  <h5 class="mt-0">{{ item.name }}</h5>
-                  <p>{{ item.price }} € x {{ item.quantity }}</p>
+
+        <!-- Récapitulatif -->
+        <div class="checkout-summary-col">
+          <div class="checkout-card sticky-card">
+            <h2 class="checkout-card-title">
+              <v-icon size="20" class="mr-2">mdi-receipt-outline</v-icon>
+              Récapitulatif
+            </h2>
+            <div v-if="errorMessage" class="alert-inline mb-3">{{ errorMessage }}</div>
+            <div v-if="cartItems.length === 0" class="empty-cart-msg">Votre panier est vide.</div>
+            <div v-else class="summary-items">
+              <div v-for="(item, index) in cartItems" :key="index" class="summary-item">
+                <img :src="item.image" class="summary-item-img" :alt="item.name" />
+                <div class="summary-item-info">
+                  <p class="summary-item-name">{{ item.name }}</p>
+                  <p class="summary-item-price">{{ item.price }} € × {{ item.quantity }}</p>
                 </div>
               </div>
             </div>
-            <!-- Total -->
-            <hr>
-            <div class="d-flex justify-content-between mt-3 mb-3"> 
-              <div class="total-price">
-                <strong>Total:</strong>
-              </div>
-              <div class="item-price">
-              <strong>{{ getTotalPrice() }} €</strong>
-              </div>
+            <div class="summary-divider"></div>
+            <div class="summary-total-row">
+              <span>Total</span>
+              <strong class="summary-total-amount">{{ getTotalPrice() }} €</strong>
             </div>
           </div>
         </div>
-        </div>
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -100,6 +119,8 @@ import apiClient from '@/api';
 export default {
   data() {
     return {
+      selectedAddressId: '',
+      savedAddresses: [],
       deliveryInfo: {
         name: '',
         prenom:'',
@@ -120,13 +141,14 @@ export default {
   mounted() {
     // Récupérez les articles du panier depuis le backend JSON lors du montage du composant
     this.fetchCartItems();
+    this.prefillDeliveryFromAccount();
   },
   methods: {
     async fetchCartItems() {
       try {
         // Effectuez une requête GET à l'URL de votre backend JSON pour récupérer les articles du panier
         const response = await apiClient.get('/panier');
-        this.cartItems = response.data;
+        this.cartItems = Array.isArray(response.data) ? response.data : [];
       } catch (error) {
         this.errorMessage = 'Erreur lors de la récupération des articles du panier: ' + error.message;
         console.error('Erreur lors de la récupération des articles du panier:', error);
@@ -145,9 +167,67 @@ export default {
       // Retourner le prix total arrondi à deux décimales
       return totalPrice.toFixed(2);
     },
-    proceedPaiement(){
-      this.$router.push('/Cpaiement') 
-      console.log('Procéder à la caisse')
+    prefillDeliveryFromAccount() {
+      const user = this.$store.getters.user || {}
+      const addresses = Array.isArray(user.addresses) ? user.addresses : []
+      this.savedAddresses = addresses
+      const primaryAddress = addresses[0] || {}
+
+      if (primaryAddress?.id != null) {
+        this.selectedAddressId = String(primaryAddress.id)
+      }
+
+      this.deliveryInfo = {
+        ...this.deliveryInfo,
+        name: this.deliveryInfo.name || user.nom || (primaryAddress.fullName || '').split(' ')[0] || '',
+        prenom: this.deliveryInfo.prenom || user.prenom || (primaryAddress.fullName || '').split(' ').slice(1).join(' ') || '',
+        country: this.deliveryInfo.country || user.country || 'France',
+        department: this.deliveryInfo.department || primaryAddress.department || '',
+        city: this.deliveryInfo.city || primaryAddress.city || '',
+        address: this.deliveryInfo.address || primaryAddress.address || '',
+        phone: this.deliveryInfo.phone || primaryAddress.phoneNumber || user.phone || '',
+        email: this.deliveryInfo.email || primaryAddress.email || user.email || '',
+        comments: this.deliveryInfo.comments || ''
+      }
+    },
+    applySelectedAddress() {
+      if (!this.selectedAddressId) return
+      const selected = this.savedAddresses.find(
+        (address) => String(address.id) === String(this.selectedAddressId)
+      )
+      if (!selected) return
+
+      const [firstName = '', ...rest] = String(selected.fullName || '').split(' ')
+      const lastName = rest.join(' ')
+
+      this.deliveryInfo = {
+        ...this.deliveryInfo,
+        name: firstName || this.deliveryInfo.name,
+        prenom: lastName || this.deliveryInfo.prenom,
+        city: selected.city || this.deliveryInfo.city,
+        address: selected.address || this.deliveryInfo.address,
+        phone: selected.phoneNumber || this.deliveryInfo.phone,
+        email: selected.email || this.deliveryInfo.email
+      }
+    },
+    goBack() {
+      this.$router.push('/shoppingcart')
+    },
+    submitForm() {
+      if (!this.cartItems.length) {
+        this.errorMessage = 'Votre panier est vide. Ajoutez des articles avant de continuer.'
+        return
+      }
+
+      const payload = {
+        deliveryInfo: { ...this.deliveryInfo },
+        items: this.cartItems,
+        price: this.getTotalPrice(),
+        subtotal: this.cartItems.reduce((total, item) => total + item.price * item.quantity, 0).toFixed(2)
+      }
+
+      this.$store.dispatch('updatePaymentData', payload)
+      this.$router.push('/paiement')
     }
   }
 };
@@ -155,29 +235,33 @@ export default {
 
 
 <style scoped>
-  label {
-    text-align: left;
-    display: block;
-    margin-bottom: 5px;
-  }
-
-  .media-body h5, 
-  .media-body p {
-    text-align: left;
-    margin-bottom: 0; 
-  }
-
-  .summary-card {
-    max-width: 500px; /* Limite la largeur de la carte de récapitulatif */
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .total-price {
-    margin-left: 10px; /* Ajuste la marge en haut du conteneur total-price */
-  }
-
-  .item-price {
-    margin-right: 10px; /* Ajuste la marge en haut du conteneur total-price */
-  }
+.checkout-page { background: var(--bg); color: var(--text); min-height: 60vh; }
+.checkout-title { font-size: clamp(1.4rem,3vw,2rem); font-weight: 800; color: var(--text); display: flex; align-items: center; }
+.checkout-layout { display: grid; grid-template-columns: 1fr 380px; gap: 2rem; align-items: start; }
+@media (max-width: 991px) { .checkout-layout { grid-template-columns: 1fr; } }
+.checkout-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 2rem; box-shadow: var(--shadow-sm); }
+.sticky-card { position: sticky; top: 90px; }
+.checkout-card-title { font-size: 1.05rem; font-weight: 700; color: var(--text); display: flex; align-items: center; margin-bottom: 1.5rem; padding-bottom: 1rem; border-bottom: 1px solid var(--border); }
+.checkout-form { display: flex; flex-direction: column; gap: 1rem; }
+.form-row-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+@media (max-width: 575px) { .form-row-grid { grid-template-columns: 1fr; } }
+.field-group { display: flex; flex-direction: column; gap: 5px; }
+.field-group label { font-size: 0.85rem; font-weight: 600; color: var(--text-soft); }
+.req { color: #ef4444; }
+.field-input { width: 100%; padding: 0.65rem 1rem; background: var(--bg-alt); border: 1.5px solid var(--border); border-radius: 10px; color: var(--text); font-size: 0.92rem; transition: border-color var(--ease); outline: none; resize: vertical; }
+.field-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(37,99,235,0.12); }
+.form-actions { display: flex; gap: 0.75rem; justify-content: flex-end; flex-wrap: wrap; margin-top: 0.5rem; }
+.btn-back { background: var(--surface-muted); border: 1.5px solid var(--border); border-radius: 999px; padding: 0.6rem 1.4rem; color: var(--text-soft); font-weight: 600; display: flex; align-items: center; transition: border-color var(--ease), color var(--ease); cursor: pointer; }
+.btn-back:hover { border-color: var(--primary); color: var(--primary); }
+.alert-inline { background: rgba(239,68,68,0.1); border: 1px solid rgba(239,68,68,0.25); border-radius: 8px; padding: 0.75rem 1rem; color: #dc2626; font-size: 0.88rem; }
+.empty-cart-msg { color: var(--text-soft); font-style: italic; text-align: center; padding: 1.5rem 0; }
+.summary-items { display: flex; flex-direction: column; gap: 0.85rem; max-height: 340px; overflow-y: auto; }
+.summary-item { display: flex; gap: 0.75rem; align-items: center; }
+.summary-item-img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
+.summary-item-info { flex: 1; }
+.summary-item-name { font-size: 0.88rem; font-weight: 600; color: var(--text); margin: 0; }
+.summary-item-price { font-size: 0.82rem; color: var(--text-soft); margin: 2px 0 0; }
+.summary-divider { height: 1px; background: var(--border); margin: 1rem 0; }
+.summary-total-row { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; color: var(--text-soft); }
+.summary-total-amount { font-size: 1.35rem; font-weight: 800; color: var(--primary); }
 </style>

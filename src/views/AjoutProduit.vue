@@ -1,260 +1,189 @@
 <template>
-  <div class="categorie-form">
-    <div class="partie-grise">
-      <div class="header">
+  <div class="admin-page">
+    <div class="admin-shell">
+      <div class="admin-header">
         <h1>Produit</h1>
         <nav>Dashboard / Produit / <strong>Ajouter produit</strong></nav>
       </div>
-      <div class="partie-blanche">
-        <div class="form-group2">
-          <label for="name" class="custom-label">Nom</label>
-          <input
-            type="text"
-            class="taille-case"
-            v-model="name"
-            id="name"
-            placeholder="Entrez le nom"
-          />
+      <div class="admin-card">
+        <div class="field-group">
+          <label for="name" class="custom-label">Nom du produit <span class="required">*</span></label>
+          <input type="text" class="field-input" v-model="name" id="name" placeholder="Ex : T-shirt bleu" />
         </div>
 
-        <div class="form-group">
+        <div class="field-group">
+          <label for="description" class="custom-label">Description</label>
+          <textarea class="field-input field-textarea" v-model="description" id="description" placeholder="Décrivez le produit…" rows="3"></textarea>
+        </div>
+
+        <div class="field-group">
           <label for="image" class="custom-label">Image</label>
-          <input type="file" class="color" @change="handleImageUpload" id="image" />
+          <input type="file" accept="image/*" @change="handleImageUpload" id="image" />
           <div class="image-actions">
-            <a href="#" @click.prevent="clearImage" class="red">vider</a>
+            <a href="#" @click.prevent="clearImage" class="link-red">Vider</a>
           </div>
         </div>
 
-        <div class="form-group">
-          <label for="description" class="custom-label">Description</label>
-          <textarea
-            v-model="description"
-            id="description"
-            placeholder="Entrez la description"
-          ></textarea>
-        </div>
-
-        <div class="form-actions2">
-          <div class="form-group3">
-            <select v-model="category" id="category" class="custom-select">
-              <option disabled value="">Catégorie</option>
+        <div class="selects-row">
+          <div class="field-group">
+            <label for="category" class="custom-label">Catégorie</label>
+            <select v-model="category" id="category" class="field-input">
+              <option disabled value="">Choisir une catégorie</option>
               <option v-for="cat in categories" :key="cat" :value="cat">{{ cat }}</option>
             </select>
           </div>
-
-          <div class="form-group3">
-            <select v-model="quantity" id="quantity" class="custom-select">
-              <option disabled value="">Quantité</option>
+          <div class="field-group">
+            <label for="quantity" class="custom-label">Quantité</label>
+            <select v-model="quantity" id="quantity" class="field-input">
+              <option disabled value="">Choisir une quantité</option>
               <option v-for="qty in quantities" :key="qty" :value="qty">{{ qty }}</option>
             </select>
           </div>
         </div>
+
         <div class="form-actions">
-          <button class="cancel" @click="annuler">Annuler</button>
-          <button class="submit" @click="ajouter">Ajouter</button>
+          <button class="btn-ghost" @click="annuler">Annuler</button>
+          <button class="btn-submit" @click="ajouter">Ajouter le produit</button>
         </div>
       </div>
     </div>
   </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        name: '',
-        image: null,
-        description: '',
-        category: '',
-        quantity: '',
-        categories: ['Catégorie 1', 'Catégorie 2', 'Catégorie 3'],
-        quantities: ['1', '2', '3', '4', '5']
-      };
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      name: '',
+      image: null,
+      description: '',
+      category: '',
+      quantity: '',
+      categories: ['Catégorie 1', 'Catégorie 2', 'Catégorie 3'],
+      quantities: ['1', '2', '3', '4', '5']
+    };
+  },
+  methods: {
+    handleImageUpload(event) {
+      this.image = event.target.files[0];
     },
-    methods: {
-      handleImageUpload(event) {
-        this.image = event.target.files[0];
-      },
-      addImage() {
-        // Logic to handle adding an image
-        console.log('Ajouter image');
-      },
-      clearImage() {
-        this.image = null;
-        document.getElementById('image').value = '';
-      },
-      annuler() {
-        this.name = '';
-        this.image = null;
-        this.description = '';
-        this.category = '';
-        this.quantity = '';
-      },
-      ajouter() {
-        // Logic to handle adding the product
-        alert("Ceci est une alerte !");
-        console.log('Nom:', this.name);
-        console.log('Image:', this.image);
-        console.log('Description:', this.description);
-        console.log('Catégorie:', this.category);
-        console.log('Quantité:', this.quantity);
-      }
+    clearImage() {
+      this.image = null;
+      document.getElementById('image').value = '';
+    },
+    annuler() {
+      this.name = '';
+      this.image = null;
+      this.description = '';
+      this.category = '';
+      this.quantity = '';
+    },
+    ajouter() {
+      alert("Ceci est une alerte !");
+      console.log('Nom:', this.name);
+      console.log('Image:', this.image);
+      console.log('Description:', this.description);
+      console.log('Catégorie:', this.category);
+      console.log('Quantité:', this.quantity);
     }
   }
-
+}
 </script>
 
 <style scoped>
-.product-form {
-  max-width: 600px;
-  margin: 50px auto;
-  padding: 20px;
-  background-color: #f0f0f0;
-  border-radius: 10px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+.admin-page {
+  max-width: 720px;
+  margin: 2.5rem auto;
+  padding: 0 1rem;
+}
+.admin-shell {
+  background: var(--surface-muted);
+  border-radius: var(--radius-lg);
+  padding: 2rem;
+  border: 1px solid var(--border);
+}
+.admin-header { margin-bottom: 1.5rem; }
+.admin-header h1 { margin: 0 0 .25rem; font-size: 1.6rem; color: var(--text); }
+.admin-header nav { font-size: .85rem; color: var(--text-soft); }
+
+.admin-card {
+  background: var(--surface);
+  border-radius: var(--radius-md);
+  padding: 2rem;
+  box-shadow: var(--shadow-sm);
+  border: 1px solid var(--border);
 }
 
-.form-group {
-  margin-bottom: 20px;
-  text-align: left;
-  width: 600px;
-}
-.form-group2 {
-  margin-bottom: 20px;
-  text-align: left;
-  width: 400px;
-}
-.form-group3 {
-  margin-bottom: 20px;
-  text-align: left;
-  width: 150px;
-}
+.field-group { margin-bottom: 1.25rem; }
 
 .custom-label {
   display: block;
-  margin-bottom: 8px;
-  font-weight: normal;
-  font-size: 14px;
-  color: #333;
+  margin-bottom: .4rem;
+  font-size: .875rem;
+  color: var(--text-soft);
 }
+.required { color: #e05252; font-weight: 700; }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
+.field-input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
+  padding: .6rem .9rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-alt);
+  color: var(--text);
+  font-size: .95rem;
+  outline: none;
+  transition: border-color var(--ease), box-shadow var(--ease);
 }
-.form-group2 input,
-.form-group2 textarea,
-.form-group2 select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
+.field-input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(37,99,235,.15);
 }
-.form-group3 input,
-.form-group3 textarea,
-.form-group3 select {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
+.field-textarea { resize: vertical; min-height: 90px; }
+
+.selects-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
 }
 
-.image-actions {
-  margin-top: 10px;
-}
-.color {
-  color: #007bff;
-}
-
-.image-actions a {
-  margin-right: 10px;
-  text-decoration: none;
-  color: #007bff;
-}
-
-.image-actions .red {
-  color: red;
-}
+.image-actions { margin-top: .5rem; }
+.link-red { color: #e05252; font-size: .85rem; text-decoration: none; }
+.link-red:hover { text-decoration: underline; }
 
 .form-actions {
   display: flex;
   justify-content: flex-end;
-  gap: 50px;
+  gap: 1rem;
+  margin-top: 1.75rem;
+  flex-wrap: wrap;
 }
-.form-actions2 {
-  display: flex;
-  justify-content: left;
-  gap: 30px;
+.btn-ghost {
+  padding: .6rem 1.4rem;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--text-soft);
+  cursor: pointer;
 }
-
-.form-actions button {
-  padding: 10px 20px;
+.btn-ghost:hover { background: var(--surface-muted); }
+.btn-submit {
+  padding: .6rem 1.6rem;
   border: none;
-  border-radius: 5px;
+  border-radius: var(--radius-sm);
+  background: var(--primary);
+  color: #fff;
   cursor: pointer;
+  font-weight: 600;
 }
+.btn-submit:hover { background: var(--primary-strong); }
 
-.form-actions .cancel {
-  background-color: #f8d7da;
-  color: #721c24;
-}
-
-.form-actions .submit {
-  background-color: #e2e3e5;
-  color: #495057;
-}
-.partie-grise {
-  background-color: #f0f0f0;
-  padding: 30px;
-  border-radius: 35px;
-  width: 100%;
-  height: 700px;
-}
-
-.partie-blanche {
-  background-color: white;
-  padding: 40px;
-  border-radius: 25px;
-  height: 550px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-.categorie-form {
-  max-width: 1000px;
-  margin: 50px auto;
-  padding: 40px;
-}
-.header {
-  margin-bottom: 20px;
-  text-align: left;
-  padding-left: 36px;
-}
-.taille-case {
-  width: 20%;
-}
-.custom-select {
-  width: 100%;
-  padding: 10px;
-  height: 50px;
-  border: 1px solid #ddd;
-  background-color: #e2e3e5;
-  color: #333;
-  font-size: 15px;
-  font-weight: normal;
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  text-align: left;
-}
-
-.custom-select option {
-  padding: 10px;
+@media (max-width: 640px) {
+  .admin-page { margin: 1rem auto; }
+  .admin-shell { padding: 1rem; }
+  .admin-card  { padding: 1rem; }
+  .selects-row { grid-template-columns: 1fr; }
+  .form-actions { justify-content: stretch; }
+  .form-actions button { flex: 1 1 100%; }
 }
 </style>

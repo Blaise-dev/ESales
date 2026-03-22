@@ -1,6 +1,7 @@
 <template>
   <!-- Carousel Section -->
-  <div id="carouselExampleSlidesOnly" class="carousel slide home-hero" data-ride="carousel">
+  <!-- Bannière masquée sur mobile -->
+  <div id="carouselExampleSlidesOnly" class="carousel slide home-hero d-none d-md-block" data-ride="carousel">
     <ol class="carousel-indicators">
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="0" class="active"></li>
       <li data-target="#carouselExampleSlidesOnly" data-slide-to="1"></li>
@@ -37,11 +38,10 @@
     </a>
   </div>
 
-  <br />
-  <!--première partie -->
+  <!-- Bande vedettes -->
   <div class="container-fluid featured-strips">
-    <div class="row no-gutters">
-      <div v-for="product2 in products2" class="col-12 col-md-4">
+    <div class="row g-0">
+      <div v-for="product2 in products2" :key="product2.id" class="col-12 col-md-4">
         <ProductCard2
           :id="product2.id"
           :title="product2.title"
@@ -53,77 +53,56 @@
     </div>
   </div>
 
-  <br />
-  <br />
-  <!-- New Product Category Section with Carousel -->
-  <h2 class="text-center section-title">Nouvelles catégories</h2>
-  <p class="text-center section-subtitle">Explore les tendances du moment par univers.</p>
-
-  <div id="product-category-section" class="container mt-5">
-    <div id="productCarousel" class="carousel slide" data-ride="carousel">
-      <div class="carousel-inner">
-        <div
-          v-for="(chunk, chunkIndex) in categoryChunks"
-          :key="chunkIndex"
-          :class="['carousel-item', { active: chunkIndex === 0 }]"
-        >
-          <div class="row justify-content-center">
-            <ProductCategoryCard
-              v-for="(category, index) in chunk"
-              :key="index"
-              :imageSrc="category.imageSrc"
-              :categoryTitle="category.categoryTitle"
-              :productCount="category.productCount"
-              :linkUrl="category.linkUrl"
-            />
-          </div>
-        </div>
+  <!-- Section catégories -->
+  <div class="home-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Nouvelles catégories</h2>
+        <p class="section-subtitle">Explore les tendances du moment par univers.</p>
       </div>
-      <a class="carousel-control-prev" href="#productCarousel" role="button" data-slide="prev">
-        <span
-          class="carousel-control-prev-icon custom-carousel-control-icon"
-          aria-hidden="true"
-        ></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a
-        class="carousel-control-next custom-carousel-control-icon"
-        href="#productCarousel"
-        role="button"
-        data-slide="next"
-      >
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
+
+      <div class="row row-cols-2 row-cols-sm-3 row-cols-md-4 row-cols-lg-5 g-3 justify-content-center">
+        <ProductCategoryCard
+          v-for="(category, index) in categories"
+          :key="index"
+          :imageSrc="category.imageSrc"
+          :categoryTitle="category.categoryTitle"
+          :productCount="category.productCount"
+          :linkUrl="category.linkUrl"
+        />
+      </div>
     </div>
   </div>
-  <br />
-  <br />
-  <br />
-  <br />
-  <!-- New Arrivals Section -->
-  <div id="new-arrivals-section" class="container mt-5">
-    <h2 class="text-center section-title">Nouvelles arrivées</h2>
-    <p class="text-center section-subtitle">Sélection fraîchement ajoutée, prête à shopper.</p>
-    <div class="row">
-      <ProductCard
-        v-for="(product, index) in products"
-        :key="index"
-        :imageSrc="product.photos[0].src"
-        :productId="product.id"
-        :productTitle="product.name"
-        :productPrice="product.price"
-        :productRating="4"
-        :productReviews="product.comments.length"
-      />
-    </div>
 
-    <div class="text-center mt-4">
-      <a href="#" class="btn btn-modern" @click="loadMoreProducts" v-if="!isLoading">Voir plus</a>
-    </div>
-    <div v-if="isLoading" class="text-center mt-4">
-      <div class="spinner-border" role="status">
-        <span class="sr-only">Loading...</span>
+  <!-- Section nouvelles arrivées -->
+  <div class="home-section">
+    <div class="container">
+      <div class="section-header">
+        <h2 class="section-title">Nouvelles arrivées</h2>
+        <p class="section-subtitle">Sélection fraîchement ajoutée, prête à shopper.</p>
+      </div>
+      <div class="row row-cols-2 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+        <ProductCard
+          v-for="(product, index) in products"
+          :key="index"
+          :imageSrc="product.photos[0].src"
+          :productId="product.id"
+          :productTitle="product.name"
+          :productPrice="product.price"
+          :productRating="4"
+          :productReviews="product.comments.length"
+        />
+      </div>
+
+      <div class="text-center mt-5">
+        <button type="button" class="btn btn-modern btn-lg px-5" @click="loadMoreProducts" v-if="!isLoading">
+          <v-icon left class="mr-2">mdi-plus-circle-outline</v-icon> Voir plus
+        </button>
+        <div v-if="isLoading" class="d-flex justify-content-center mt-4">
+          <div class="spinner-border" style="color: var(--primary)" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -135,7 +114,6 @@ import ProductCategoryCard from '@/components/ProductCategoryCard.vue'
 import ProductCard2 from '@/components/ProductCard2.vue'
 import CarouselItem from '@/components/CarouselItem.vue'
 import apiClient from '@/api'
-import { Carousel } from 'bootstrap'
 
 export default {
   components: {
@@ -146,11 +124,12 @@ export default {
   },
   data() {
     return {
-      carousselProducts: null,
-      products: null,
-      categories: null,
+      carousselProducts: [],
+      products: [],
+      categories: [],
       isLoading: false,
-      products2: null
+      products2: [],
+      error: ''
     }
   },
   computed: {
@@ -173,83 +152,109 @@ export default {
   methods: {
     async fetchCarousselProducts() {
       try {
-        // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get('/carousselProducts')
-        this.carousselProducts = response.data
+        this.carousselProducts = Array.isArray(response.data) ? response.data : []
       } catch (error) {
-        // Gérer les erreurs de requête
-        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.error = "Une erreur s'est produite lors du chargement du carrousel."
         console.error('Erreur de connexion:', error)
       }
     },
     async fetchProducts2() {
       try {
-        // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get('/products2')
-        this.products2 = response.data
+        this.products2 = Array.isArray(response.data) ? response.data : []
       } catch (error) {
-        // Gérer les erreurs de requête
-        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.error = "Une erreur s'est produite lors du chargement des produits vedettes."
         console.error('Erreur de connexion:', error)
       }
     },
     async fetchNewProducts() {
       try {
-        // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get('/products4')
-        this.products = response.data
+        this.products = Array.isArray(response.data) ? response.data : []
       } catch (error) {
-        // Gérer les erreurs de requête
-        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.error = "Une erreur s'est produite lors du chargement des nouveautés."
         console.error('Erreur de connexion:', error)
       }
     },
     async fetchCategories() {
       try {
-        // On vérifie si l'email existe dans la base de données
         const response = await apiClient.get('/categories3')
-        this.categories = response.data
+        const rawCategories = Array.isArray(response.data) ? response.data : []
+        this.categories = rawCategories.map((category) => ({
+          ...category,
+          linkUrl: this.buildCategorySearchLink(category?.categoryTitle)
+        }))
       } catch (error) {
-        // Gérer les erreurs de requête
-        this.error = "Une erreur s'est produite lors de la connexion. Veuillez réessayer."
+        this.error = "Une erreur s'est produite lors du chargement des catégories."
         console.error('Erreur de connexion:', error)
       }
     },
-    loadMoreProducts(event) {
-      event.preventDefault()
+    normalizeText(value) {
+      return (value || '')
+        .toString()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase()
+    },
+    inferCategoryKey(label) {
+      const normalized = this.normalizeText(label)
+
+      if (
+        normalized.includes('headphone') ||
+        normalized.includes('bluetooth') ||
+        normalized.includes('mobile') ||
+        normalized.includes('cpu') ||
+        normalized.includes('watch') ||
+        normalized.includes('smart')
+      ) {
+        return 'technologie'
+      }
+
+      if (
+        normalized.includes('cosmet') ||
+        normalized.includes('beaute') ||
+        normalized.includes('parfum')
+      ) {
+        return 'cosmetique'
+      }
+
+      if (
+        normalized.includes('aliment') ||
+        normalized.includes('food') ||
+        normalized.includes('snack')
+      ) {
+        return 'alimentaire'
+      }
+
+      return 'vestimentaire'
+    },
+    buildCategorySearchLink(categoryTitle) {
+      const categoryKey = this.inferCategoryKey(categoryTitle)
+      return `/search?category=${encodeURIComponent(categoryKey)}`
+    },
+    loadMoreProducts() {
       this.isLoading = true
-      // Simuler un chargement asynchrone
-      setTimeout(() => {
-        const moreProducts = [
-          {
-            imageSrc:
-              'https://s.alicdn.com/@sc04/kf/Hdd38f5e36a7943c5bb758982a4ca7517W.jpg_720x720q50.jpg',
-            productTitle: 'Jean Denim déchiré 3xl pour femme, Skinny, vente en gros',
-            productPrice: '8,13 €',
-            productRating: 3,
-            productReviews: 9
-          },
-          {
-            imageSrc:
-              'https://www.cdiscount.com/pdt2/8/3/3/1/700x700/mp57929833/rw/jean-homme-jean-homme-slim-fit-stretch-jeans-car.jpg',
-            productTitle:
-              'Jean Homme Cargo Grandes Poches, Jean Homme Skinny Pantalon Denim Jogging Travail',
-            productPrice: '36,06 €',
-            productRating: 4,
-            productReviews: 10
-          },
-          {
-            imageSrc: 'https://m.media-amazon.com/images/I/71+Rfs3mkYL._AC_UY1000_.jpg',
-            productTitle:
-              'Pantalon Homme Jean Homme Casual Jean Homme Regular Pantalon Homme Jeans avec Poche',
-            productPrice: '25,87 €',
-            productRating: 4,
-            productReviews: 10
+      apiClient
+        .get('/produits')
+        .then((response) => {
+          const allProducts = Array.isArray(response.data) ? response.data : []
+          const existingIds = new Set(this.products.map((product) => String(product.id)))
+          const moreProducts = allProducts
+            .filter((product) => !existingIds.has(String(product.id)))
+            .slice(0, 6)
+
+          if (moreProducts.length) {
+            this.products.push(...moreProducts)
           }
-        ]
-        this.products.push(...moreProducts)
-        this.isLoading = false
-      }, 2000)
+        })
+        .catch((error) => {
+          this.error = "Impossible de charger plus d'articles pour le moment."
+          console.error('Erreur de chargement supplémentaire:', error)
+        })
+        .finally(() => {
+          this.isLoading = false
+        })
     },
     chunkArray(arr, size) {
       const result = []
@@ -265,66 +270,38 @@ export default {
 </script>
 
 <style scoped>
+/* ── Bannière hero ── */
 .home-hero {
   border-radius: var(--radius-lg);
   overflow: hidden;
-  margin: 16px;
+  margin: 1rem;
   box-shadow: var(--shadow-md);
 }
 
+/* ── Bande vedettes ── */
 .featured-strips {
   animation: fade-slide-up 560ms var(--ease) both;
 }
 
-#product-category-section {
-  margin-top: 50px;
+/* ── Sections génériques ── */
+.home-section {
+  padding: 4rem 0 2rem;
 }
 
-.product-category-card {
-  background: #fff;
-  border: 1px solid #ccc;
-  padding: 10px;
-  margin: 10px;
-  border-radius: 5px;
+.section-header {
   text-align: center;
+  margin-bottom: 2.5rem;
 }
 
-.product-category-card img {
-  max-width: 100%;
-  height: auto;
-}
-
-.custom-title {
-  text-transform: uppercase;
-  font-weight: bold;
-}
-
-.custom-link {
-  color: #333;
-  text-decoration: underline;
-}
-
+/* ── Image carousel ── */
 .custom-carousel-img {
   max-height: 500px;
   object-fit: cover;
 }
 
-/* New CSS for Carousel Controls */
-.custom-carousel-control-icon {
-  filter: invert(1);
-}
-
-.container-fluid {
-  padding: 5;
-}
-
-.row.no-gutters {
-  margin-right: 0;
-  margin-left: 0;
-}
-product-card-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
+@media (max-width: 575px) {
+  .home-section {
+    padding: 2.5rem 0 1rem;
+  }
 }
 </style>

@@ -1,44 +1,37 @@
 <template>
-    <div class="categorie-form">
-      <div class="partie-grise">
-        <div class="header">
-          <h1>Profil</h1>
-          <nav>Dashboard / Profil / <strong>Mot de passe</strong></nav>
+  <div class="admin-page">
+    <div class="admin-shell">
+      <div class="admin-header">
+        <h1>Profil</h1>
+        <nav>Dashboard / Profil / <strong>Mot de passe</strong></nav>
+      </div>
+      <div class="admin-card">
+        <div class="field-group">
+          <label for="currentPassword" class="custom-label">
+            Mot de passe actuel <span class="required">*</span>
+          </label>
+          <input type="password" class="field-input" v-model="currentPassword" id="currentPassword" required />
         </div>
-        <div class="partie-blanche">
-          <div class="taille-formule">
-            <br><br>
-            <div class="form-group">
-              <label for="currentPassword" class="custom-label">
-                Mot de passe actuel <span class="required">*</span>
-              </label>
-              <input type="password" v-model="currentPassword" id="currentPassword" required />
-            </div>
-  
-            <div class="form-group">
-              <label for="newPassword" class="custom-label">
-                Nouveau mot de passe <span class="required">*</span>
-              </label>
-              <input type="password" v-model="newPassword" id="newPassword" required />
-            </div>
-  
-            <div class="form-group">
-              <label for="confirmPassword" class="custom-label">
-                Confirmer mot de passe <span class="required">*</span>
-              </label>
-              <input type="password" v-model="confirmPassword" id="confirmPassword" required />
-            </div>
-  
-            <br><br>
-            <div class="form-actions">
-              <button class="cancel" @click="annuler">Annuler</button>
-              <button class="submit" @click="validatePasswords">Modifier</button>
-            </div>
-          </div>
+        <div class="field-group">
+          <label for="newPassword" class="custom-label">
+            Nouveau mot de passe <span class="required">*</span>
+          </label>
+          <input type="password" class="field-input" v-model="newPassword" id="newPassword" required />
+        </div>
+        <div class="field-group">
+          <label for="confirmPassword" class="custom-label">
+            Confirmer le mot de passe <span class="required">*</span>
+          </label>
+          <input type="password" class="field-input" v-model="confirmPassword" id="confirmPassword" required />
+        </div>
+        <div class="form-actions">
+          <button class="btn-ghost" @click="annuler">Annuler</button>
+          <button class="btn-submit" @click="validatePasswords">Modifier</button>
         </div>
       </div>
     </div>
-  </template>
+  </div>
+</template>
   
   <script>
   export default {
@@ -68,102 +61,95 @@
   </script>
   
   <style scoped>
-  .categorie-form {
-    max-width: 1000px;
-    margin: 50px auto;
-    padding: 40px;
+  .admin-page {
+    max-width: 640px;
+    margin: 2.5rem auto;
+    padding: 0 1rem;
   }
-  
-  .header {
-    margin-bottom: 20px;
-    text-align: left;
-    padding-left: 36px;
+
+  .admin-shell {
+    background: var(--surface-muted);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    border: 1px solid var(--border);
   }
-  
-  .header h1 {
-    margin: 0;
-    font-size: 28px;
+
+  .admin-header { margin-bottom: 1.5rem; }
+  .admin-header h1 { margin: 0 0 .25rem; font-size: 1.6rem; color: var(--text); }
+  .admin-header nav { font-size: .85rem; color: var(--text-soft); }
+
+  .admin-card {
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    padding: 2rem;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
   }
-  
-  .header nav {
-    font-size: 14px;
-    color: #666;
-  }
-  
-  .partie-grise {
-    background-color: #f0f0f0;
-    padding: 30px;
-    border-radius: 35px;
-    width: 100%;
-    height: 700px;
-  }
-  
-  .partie-blanche {
-    background-color: white;
-    padding: 40px;
-    border-radius: 25px;
-    height: 550px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .form-group {
-    margin-bottom: 30px;
-    text-align: left;
-    padding-left: 36px;
-    width: 620px;
-  }
-  
-  .form-group label {
+
+  .field-group { margin-bottom: 1.25rem; }
+
+  .custom-label {
     display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
+    margin-bottom: .4rem;
+    font-size: .875rem;
+    color: var(--text-soft);
   }
-  
-  .form-group input {
+
+  .required { color: #e05252; font-weight: 700; }
+
+  .field-input {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-sizing: border-box;
+    padding: .6rem .9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-alt);
+    color: var(--text);
+    font-size: .95rem;
+    outline: none;
+    transition: border-color var(--ease), box-shadow var(--ease);
   }
-  
+  .field-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+  }
+
   .form-actions {
     display: flex;
-    justify-content: center;
-    gap: 30px;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1.75rem;
+    flex-wrap: wrap;
   }
-  
-  .form-actions button {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
+
+  .btn-ghost {
+    padding: .6rem 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text-soft);
     cursor: pointer;
+    font-size: .9rem;
   }
-  
-  .form-actions .cancel {
-    background-color: #f8d7da;
-    color: #721c24;
+  .btn-ghost:hover { background: var(--surface-muted); }
+
+  .btn-submit {
+    padding: .6rem 1.6rem;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: #fff;
+    cursor: pointer;
+    font-size: .9rem;
+    font-weight: 600;
   }
-  
-  .form-actions .submit {
-    background-color: #e2e3e5;
-    color: #495057;
-  }
-  
-  .taille-formule {
-    height: 4000px;
-  }
-  
-  .custom-label {
-    font-weight: normal;
-    font-size: 16px;
-    color: #918888;
-    font-stretch: condensed;
-  }
-  
-  .required {
-    color: red;
-    font-weight: bold;
+  .btn-submit:hover { background: var(--primary-strong); }
+
+  @media (max-width: 640px) {
+    .admin-page { margin: 1rem auto; }
+    .admin-shell { padding: 1rem; }
+    .admin-card  { padding: 1rem; }
+    .form-actions { justify-content: stretch; }
+    .form-actions button { flex: 1 1 100%; }
   }
   </style>
   
